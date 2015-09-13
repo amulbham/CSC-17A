@@ -1,0 +1,50 @@
+/* 
+ * File:   main.cpp
+ * Author: Amul Bham
+ * Created on September 13, 2015, 3:50 PM
+ * Purpose: Create a program that will
+ * predict the size of a population of 
+ * organisms
+ */
+ 
+using namespace std;
+
+//System Libraries
+#include <iostream> //Input/Output stream Library
+
+
+//User Libraries
+
+//Global Constants
+
+//Function Prototypes
+
+//Execution begins here
+int main(int argc, char **argv)
+{
+    //Declare Variables     
+    long int sPop; //Starting size of the population
+    float avgIn; //average daily increase of population in percent 
+    int nDays; //Number of days the calculation 
+    long int nPop; //New population after increase
+    
+    //Initialize the Variables- get values from user
+    cout<<"Enter the starting size of the population"<<endl;
+    cin>>sPop;
+    nPop = sPop; //set the new population value to the current one
+    cout<<"Enter the daily average increase in population (%)"<<endl;
+    cin>>avgIn;
+    avgIn= avgIn/100; //convert percent to decimal value
+    cout<<"How many days would you like to see displayed?"<<endl;
+    cin>>nDays;
+    
+    //Output the result using a for loop 
+    for(int i = 0; i<nDays;i++){ //Will display growth over a given period of time
+        nPop += (sPop*avgIn);
+        cout<<"Population after day "<<i+1<<":"<<nPop<<endl;
+        }
+    
+    //Exit stage right!
+	return 0;
+}
+                
