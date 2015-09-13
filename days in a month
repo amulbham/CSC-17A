@@ -1,0 +1,72 @@
+/* 
+ * File:   main.cpp
+ * Author: Amul Bham
+ * Created on September 13, 2015, 3:37 PM
+ * Purpose: Take a user inputed month and year
+ and display the number of days in that month
+ */
+ 
+using namespace std;
+
+//System Libraries
+#include <iostream> //Input/Output stream Library
+
+
+//User Libraries
+
+//Global Constants
+
+//Function Prototypes
+
+//Execution begins here!
+int main(int argc, char** argv) {
+    //Declare Variables
+    int month;
+    int year;
+    int days;
+    
+    //Initialize Variables
+    cout<<"Enter a month (1-12)"<<endl;
+    cin>>month;
+    cout<<"Enter a year"<<endl;
+    cin>>year;
+    
+    //Determine the number of days based on the month (28,20, or 31 days)
+    switch(month){
+        case 1: days = 31;break;
+        //In case of february, one must account for leap years
+        case 2: 
+            if (year%100 == 0){ //if it is divisble by 100 and 400, it is a leap year
+                if (year%400 == 0){
+                days = 29;
+                }else{
+                days = 28;
+                }
+            }else{
+                if (year % 4 == 0){ //if it is divisible by 4, it is also a leap year
+                days = 29;
+                    }
+                else{
+                days = 28;    
+                    }    
+                }
+            break;
+        case 3: days = 31;break;
+        case 4: days = 30;break;
+        case 5: days = 31;break;
+        case 6: days = 30;break;
+        case 7: days = 31;break;
+        case 8: days = 31;break;
+        case 9: days = 30;break;
+        case 10: days = 31;break;
+        case 11: days = 30;break;
+        case 12: days = 31;break;
+        } 
+
+    //Output the results
+    cout<<days<<" days"<<endl;
+     
+    //Exit stage right
+    return 0;
+        
+}   
