@@ -1,0 +1,56 @@
+/* 
+ * File:   main.cpp
+ * Author: Amul Bham
+ * Created on September 13, 2015, 4:23 PM
+ * Purpose: Display a table of Fahrenheit
+ * tempertures and their Celsius equivalents
+ */
+ 
+using namespace std;
+
+//System Libraries
+#include <iostream> //Input/Output stream Library
+#include <iomanip>
+
+//User Libraries
+
+//Global Constants
+
+//Function Prototypes
+float getCelsius(float);
+
+//Execution begins here
+int main(int argc, char **argv)
+{
+    //Declare Variables
+    float fahr;
+    float cels;
+    
+    //Initialize variables
+    cout<<"Enter a temperture in Fahrenheit"<<endl;
+    cin>>fahr;
+    
+    /*convert the fahr. temp to celsius using function, loop
+    to show change over 20 degrees*/
+    
+    for(int i =0; i<20; i++){
+    cels = getCelsius(fahr); //call function to determine temp in celsius
+    
+    //Output the results, in table format, showing degrees comparing 20 degrees.
+    cout<<fixed<<setprecision(1)<<showpoint;
+    cout<<"Fahrenheit: "<<fahr<<"   "<<"Celsius: "<<cels<<endl;
+    fahr++; //increment the fahr. with the loop so it counts up 20 degrees
+    }
+    
+    //Exit stage right~!
+	return 0;
+}
+
+
+float getCelsius(float fahr){
+    //convert fahrenheit temp. to celsius
+    float celsius = (5/9.0)*(fahr-32);
+    
+    return celsius;
+    
+    }
