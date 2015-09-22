@@ -4,7 +4,7 @@
  * Purpose: Create a function 
  * that determines the median of 
  * an array returned as a float
- * passing as a pointer
+ * utilizing pointers
  *
  * Created on September 22, 2015, 1:02 PM
  */
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     int arr[SIZE];      //array where list will be stored
     float med;          //variable to store median value
     
-    //Initialize array with random values 1-100
+    //Initialize array with random values 1-100 
     for (int i = 0; i<SIZE;i++){
         *(arr + i) = (rand()%100)+1;
         cout<<*(arr + i)<<endl;
