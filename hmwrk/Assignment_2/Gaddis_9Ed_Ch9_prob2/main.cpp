@@ -33,15 +33,15 @@ int main(int argc, char** argv) {
     
     //Initialize array with random values 1-100
     for (int i = 0; i<SIZE;i++){
-        arr[i] = (rand()%100)+1;
-        cout<<arr[i]<<endl;
+        *(arr + i) = (rand()%100)+1;
+        cout<<*(arr + i)<<endl;
     }
     cout<<endl<<endl;
     //Pass to the get median function to determine median
     med = getMed(arr,SIZE);
     
     //Output the median and the size of the list 
-    cout<<"The array had "<<SIZE<<" numbers"<<endl;
+    cout<<"The array had "<<SIZE<<" numbers\n"<<endl;
     cout<<"The median of the list is "<<med<<endl;
     
     //Exit stage right!
