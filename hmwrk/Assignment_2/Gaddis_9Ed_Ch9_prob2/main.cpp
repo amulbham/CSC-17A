@@ -4,22 +4,21 @@
  * Purpose: Create a function 
  * that determines the median of 
  * an array returned as a float
+ * passing as a pointer
  *
  * Created on September 22, 2015, 1:02 PM
  */
 //System Libraries
-#include <cstdlib>
-#include <iostream>
-#include <ctime>
-#include <algorithm>
-#include <vector>
-
+#include <iostream>//cout - output data to the user
+#include <ctime> //Used to plant random number seed for array and size
+#include <algorithm> //Used for the sort function to sort the array
+#include <vector>   //Used to store the array so we could use sort function
 
 using namespace std;
 //Global Constants
 
 //Function Prototypes
-float getMed(int *,int); //get the median of array - use pointer notation  
+float getMed(int *,int); //sort array and return the median  
 
 //User Libraries
 
@@ -41,7 +40,7 @@ int main(int argc, char** argv) {
     //Pass to the get median function to determine median
     med = getMed(arr,SIZE);
     
-    //Output the median 
+    //Output the median and the size of the list 
     cout<<"The array had "<<SIZE<<" numbers"<<endl;
     cout<<"The median of the list is "<<med<<endl;
     
@@ -53,9 +52,10 @@ float getMed(int *arr,int size){
     //Declare Variables
     float med; //Median of the array
     vector<int> temp; //create a temp vector to store the array
-    temp.assign(arr, arr + size); //puts all the arr data into the vector
     
-    //Sort the vector in ascending order using sort function
+    /*Put the data from array into a vector, this allows us to use the sort
+    function to easily sort the list in ascending order*/
+    temp.assign(arr, arr + size); 
     sort(temp.begin(),temp.end()); 
     
     //Output the new sorted list to verify sort
@@ -64,12 +64,11 @@ float getMed(int *arr,int size){
         }
     
     //Determine if median is even or odd - then determine median number
-     if (size  % 2 == 0){ //determines if even
+    if (size  % 2 == 0){ //determines if even
       med = (temp[size / 2 - 1] + temp[size / 2]) / 2;
-    }else { //Odd number of values = size / 2;
+    }else{ //Odd number of values = size / 2;
       med = temp[size / 2];
     }
-    
     //Return the median back to the main function
     return med; 
 }
