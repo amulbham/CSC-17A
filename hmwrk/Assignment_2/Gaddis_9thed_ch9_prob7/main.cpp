@@ -4,13 +4,12 @@
  * Purpose: Modify program 9-19 so that
  * the donations are sorted in descending order
  * versus ascending order
- *
  * Created on September 25, 2015, 2:15 PM
  */
     //System Libraries
 #include <iostream>//used to gain user input and ouput
 #include <vector> //used to for dynamic storage of donations
-#include <algorithm>
+#include <algorithm> //used for the sort function 
  using namespace std;
 
  // Function prototypes
@@ -36,9 +35,7 @@
  for (int i =0; i<NUM_DONATIONS;i++){
      cout<<"#"<<i+1<<": ";cin>>donations[i];
      cout<<endl;
- 
  }
- 
  // An array of pointers to int.
  int *arrPtr[NUM_DONATIONS];
 
@@ -60,15 +57,12 @@
  showArrPtr(arrPtr, NUM_DONATIONS);
  
  //Sort the donations in descending order
- sort(donations.rbegin(), donations.rend());
+ sort(donations.rbegin(), donations.rend()); //use sort function with reverse instance
  cout << "The donations, sorted in descending order are: \n";
  for(int i =0;i<NUM_DONATIONS;i++){
      cout<<donations[i]<<" ";
- 
  }
- cout<<endl;
-
-    
+  //Exit the stage right!  
     return 0;
 }
 //****************************************************************
