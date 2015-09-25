@@ -1,29 +1,44 @@
 /* 
  * File:   main.cpp
  * Author: Amul Bham
- * Purpose:
+ * Purpose: Modify program 9-19 so that
+ * it can be used with any 
+ * set of donations - dynamically
+ * allocate the donations array
  *
  * Created on September 25, 2015, 2:15 PM
  */
     //System Libraries
- #include <iostream>
+#include <iostream>
+#include <vector>
  using namespace std;
 
  // Function prototypes
  void arrSelectSort(int *[], int);
- void showArray(const int [], int);
+ void showArray(vector <int> , int);
  void showArrPtr(int *[], int);
 
  
  //Execution Begins here
  int main(){
- const int NUM_DONATIONS = 15; // Number of donations
+     
+ int NUM_DONATIONS; // Number of donations
+ 
+ //Determine how many donations the user would like to sort
+     cout<<"Please Enter how many donations you would like to sort"<<endl;
+     cin>>NUM_DONATIONS;
 
- // An array containing the donation amounts.
- int donations[NUM_DONATIONS] = { 5, 100, 5, 25, 10,
- 5, 25, 5, 5, 100,
- 10, 15, 10, 5, 10 };
-
+ 
+// An array containing the donation amounts.
+ vector <int> donations(NUM_DONATIONS);
+ 
+ //Initialize the donations vector using a for loop
+ for (int i =0; i<NUM_DONATIONS;i++){
+     cout<<"#"<<i+1<<": ";cin>>donations[i];
+     cout<<endl;
+ 
+ }
+ 
  // An array of pointers to int.
  int *arrPtr[NUM_DONATIONS];
 
@@ -83,7 +98,7 @@
  // number of elements. *
  //***********************************************************
 
- void showArray(const int arr[], int size)
+ void showArray(vector<int> arr, int size)
  {
  for (int count = 0; count < size; count++)
  cout << arr[count] << " ";
