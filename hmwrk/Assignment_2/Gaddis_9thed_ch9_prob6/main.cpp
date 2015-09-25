@@ -9,8 +9,8 @@
  * Created on September 25, 2015, 2:15 PM
  */
     //System Libraries
-#include <iostream>
-#include <vector>
+#include <iostream>//used to gain user input and ouput
+#include <vector> //used to for dynamic storage of donations
  using namespace std;
 
  // Function prototypes
