@@ -10,9 +10,9 @@ using namespace std;
 
 //System Libraries
 #include <iostream> //Input/Output stream Library
-#include <cstring>
-#include <string>
-#include <cctype>
+#include <cstring>  //to format the character tolower
+#include <string>   
+#include <cctype>   //to use the string span function
 
 //User Libraries
 
@@ -28,7 +28,6 @@ int main(int argc, char** argv) {
     const int SIZE = 50;
     char wrds[SIZE];
     int choice;
-    int both;
     
    //Ask the user to enter a string value 
     cout<<endl<<"Enter a String"<<endl;
@@ -45,11 +44,11 @@ int main(int argc, char** argv) {
     "4) Enter another string\n"
     "5) Exit the program"<<endl;
     cin>>choice;
-    
+    //Use a switch to create a menu for the user
     switch(choice){
-        case 1:cntvwls(wrds);break;
-        case 2:cntconst(wrds);break;
-        case 3:both = cntconst(wrds) + cntvwls(wrds);
+        case 1:cout<<"Your string has "<<cntvwls(wrds)<<" vowels"<<endl;break;
+        case 2:cout<<"Your string has "<<cntconst(wrds)<<" constants"<<endl;break;
+        case 3:cout<<cntconst(wrds) + cntvwls(wrds)<<" of both"<<endl;break;
         case 4:cout<<endl<<"Enter a String"<<endl;
             cin>>wrds; break;
         case 5:break;  
@@ -60,6 +59,7 @@ int main(int argc, char** argv) {
     return 0;
     }
 
+//Function used to count the vowels
 int cntvwls(char* wrds){
     int vowels = 0;
 	while(*wrds){
@@ -67,20 +67,19 @@ int cntvwls(char* wrds){
 			vowels++;
 		wrds++;
 	}
-
-	cout<<"Your string has "<<vowels<<" vowels"<<endl;        
+    //Return the vowels back to the main function 
 return vowels;        
         }
-        
+//Function used to count the constants
 int cntconst(char* wrds){
     int cons = 0;
-
+    //While the characer is not a vowels or a space, then increment the constants
 	while(*wrds){
 		if(!strspn(wrds, "aeiou") & !strspn(wrds," "))
 			cons++;
 		wrds++;
 	}
-
-	cout<<"Your string has "<<cons<<" constants"<<endl;      
+    //Return the constants back to main. 
+	    
 return cons;          
         }
