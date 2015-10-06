@@ -2,8 +2,8 @@
  * File:   main.cpp
  * Author: Amul Bham
  * Created on October 10, 2015, 2:27 PM
- * Purpose: Create a program that converts
- * Celsius to Farhrenheit
+ * Purpose:Count the Number of words
+ * in a user inputted C-String
  */
  
 using namespace std;
