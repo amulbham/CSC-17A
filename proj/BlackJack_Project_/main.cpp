@@ -1,10 +1,10 @@
 /* 
  * File:   main.cpp
- * Author: Amul Bham (Project 2 - 46090)
+ * Author: Amul Bham (Project 1)
  * Purpose: To play Blackjack against 
- * A.I. implementing new and more efficient methods
- * learned in class
- * Created on July 15, 2015, 3:35 PM
+ * A.I. implementing methods learned from
+ * chapters 9-12.
+ * Created on October 17, 2015, 2:42 PM
  */
 //System Libraries
 #include <iostream>     
