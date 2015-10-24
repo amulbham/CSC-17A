@@ -21,6 +21,11 @@ struct Play {
     int balance;
 };
 
+struct CurPlay{
+
+
+};
+
 struct Deck {
 
 
@@ -32,7 +37,7 @@ struct Deck {
 //Function Prototypes
 void displayGreeting(Play &); //function for greeting player
 void valueCards(int& ,int);       //function add card values + suit
-int genRand (int i) { return rand()%i;} //function to generate a random number
+int genRand (int i) { srand (time(0)); return rand()%i;} //function to generate a random number
 void getShuffle(int deck[],int cards); //creates deck and shuffles cards
 void getUser(Play &,int &); //determines user, initiates greeting
 void hitORstay(int& pcard, int& pCardt,int deck[],int& z);//handles logic for hitting/staying
@@ -40,20 +45,18 @@ void hitORstay(int& pcard, int& pCardt,int deck[],int& z);//handles logic for hi
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
-     srand (time(0));
-     string name;   //name of player
      int pcard;     //user cards
      int dcard;     //dealer cards
      int pCardt=0;  //user card value total
      int dCardt=0;  //dealer card value total
-     const int CARDS = 52;
-     int deck[CARDS];//deck of cards with 53 values
-     int y;         //set = to the user balance
+     const int CARDS = 52; //Number of cards in a standard deck
+     int deck[CARDS];//deck of cards with 52 values
+     int y;         //set = to the user balance to calculate their winnings/losings
      char answ;     //sentinel value used to trigger new hand or end game
-     int bal=0,bet;   //user balance, and amount user wants to bet for a hand
+     int bet;       //user balance, and amount user wants to bet for a hand
      int z = 0;     //variable used to track cards in deck
-     int num = 0;
-     Play x;
+     int num = 0;   //number used to track where the user is in the file
+     Play x;        //object of the player for the current game.
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
      getUser(x,num);
@@ -62,14 +65,12 @@ int main(int argc, char** argv) {
      y = x.balance;
      fstream player_info("player.txt", ios::in | ios::out | ios::binary);
   //game loop begins here   
-  do{   
+  do{
+      //Only seek to the beginning of the record if the player is continuing, 
+      //If the player is new, the record must be appended versus rewritten
+      if(num!=0){
      player_info.seekg(sizeof(Play)*num, ios::beg);
-   
-    string trig;   // Trigger to begin game
-    cout<<"Press any key and hit enter when you are ready to play "<<name<<endl;
-    cin>>trig;
-    cout<<"****************************************************************\n";
-    
+      }
     //Initialize the deck with values 2-53.
     if (z==0 || z>40){ //only shuffles at beginning or when deck is running low
         getShuffle(deck,CARDS);
@@ -88,7 +89,7 @@ int main(int argc, char** argv) {
         pcard = deck[z];z++; //z incremented after ever card draw for next card
         valueCards (pCardt,pcard);
     }  
-    cout<<name<<" your hand equates to "<<pCardt<<endl<<endl; //first two card total
+    cout<<x.name<<" your hand equates to "<<pCardt<<endl<<endl; //first two card total
     cout<<"****************************************************************\n";
     
     int win = 0; /*value to guide program NOT to display 21 message again if 
@@ -175,12 +176,19 @@ int main(int argc, char** argv) {
  cout<<"You winnings for the day are $"<<x.balance - y<<"\ngo buy yourself"
          " something nice "<<x.name<<endl; 
  }else {
- cout<<"Looks like you lost $"<<y - x.balance<<" today, better luck next time "<<name<<endl;
+ cout<<"Looks like you lost $"<<y - x.balance<<" today, better luck next time "<<x.name<<endl;
  } 
      
      //write the remaining balance to the balance folder
-     player_info.seekp(num * sizeof(Play), ios::beg);
-     player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
+     if (num == 0){
+         player_info.close();
+         fstream player_info("player.txt",ios::binary| ios::app);
+         player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
+     }else{
+        player_info.seekp(num * sizeof(Play), ios::beg);
+        player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
+     }
+     
      player_info.close();
     
     //Exit stage right    
