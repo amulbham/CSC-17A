@@ -17,17 +17,16 @@
 using namespace std;
 //Structures
 struct Play {
-    char name[25];
-    int balance;
+    char name[25]; //The user name
+    int balance;   //The user balance  
 };
-
-struct CurPlay{
-
-
+struct Curhand{
+    int cards;
+    int cardTot;
+    int bet;
 };
-
 struct Deck {
-
+    int count; //The current card number in the deck . 
 
 };
 //Global Constants
@@ -36,19 +35,15 @@ struct Deck {
 
 //Function Prototypes
 void displayGreeting(Play &); //function for greeting player
-void valueCards(int& ,int);       //function add card values + suit
+void valueCards(Curhand &);       //function add card values + suit
 int genRand (int i) { srand (time(0)); return rand()%i;} //function to generate a random number
 void getShuffle(int deck[],int cards); //creates deck and shuffles cards
 void getUser(Play &,int &); //determines user, initiates greeting
-void hitORstay(int& pcard, int& pCardt,int deck[],int& z);//handles logic for hitting/staying
+void hitORstay(Curhand &,int deck[],int& z);//handles logic for hitting/staying
 
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
-     int pcard;     //user cards
-     int dcard;     //dealer cards
-     int pCardt=0;  //user card value total
-     int dCardt=0;  //dealer card value total
      const int CARDS = 52; //Number of cards in a standard deck
      int deck[CARDS];//deck of cards with 52 values
      int y;         //set = to the user balance to calculate their winnings/losings
@@ -56,7 +51,9 @@ int main(int argc, char** argv) {
      int bet;       //user balance, and amount user wants to bet for a hand
      int z = 0;     //variable used to track cards in deck
      int num = 0;   //number used to track where the user is in the file
-     Play x;        //object of the player for the current game.
+     Play x;        //created to store/restore a players balance and name
+     Curhand player;//Object to player the player hand
+     Curhand dealer;//object to track the dealer hand
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
      getUser(x,num);
@@ -78,76 +75,76 @@ int main(int argc, char** argv) {
     
     //Game begins here by asking how the user would like to bet on first hand
     cout<<"How much would you like to bet?"<<endl;
-    cin>>bet;
-    x.balance -=bet; //subtract bet from starting balance
+    cin>>player.bet;
+    x.balance -=player.bet; //subtract bet from starting balance
     cout<<"Okay sounds good, your remaining balance is $"<<x.balance<<endl;
     cout<<"****************************************************************\n";
     
     //first two player cards are dealt
     cout<<"Your first two cards are.... "<<endl;  
     for(int i = 0;i<2;i++){
-        pcard = deck[z];z++; //z incremented after ever card draw for next card
-        valueCards (pCardt,pcard);
+        player.cards = deck[z];z++; //z incremented after ever card draw for next card
+        valueCards (player);
     }  
-    cout<<x.name<<" your hand equates to "<<pCardt<<endl<<endl; //first two card total
+    cout<<x.name<<" your hand equates to "<<player.cardTot<<endl<<endl; //first two card total
     cout<<"****************************************************************\n";
     
     int win = 0; /*value to guide program NOT to display 21 message again if 
                   user draws a 21 on first two cards*/
-    if(pCardt==21){ 
+    if(player.cardTot==21){ 
         cout<<"Congratulations you got blackjack! ☜(˚▽˚)☞"<<endl;
         cout<<"****************************************************************\n";
-         win = 1; //prevents a repeat 
+        win = 1; //prevents a repeat 
     }
     
     //Then the dealer draws their first card value
     cout<<"My first card is a.... "<<endl;
-    dcard = deck[z];z++;
-    valueCards(dCardt,dcard);
-    cout<<"My hand so far equates to "<<dCardt<<endl; //dealer first card total
+    dealer.cards = deck[z];z++;
+    valueCards(dealer);
+    cout<<"My hand so far equates to "<<dealer.cardTot<<endl; //dealer first card total
     cout<<"****************************************************************\n";
     
     /*Player then must decide to hit or stay, loop continues until
      player busts, hits a 21, or decides to stay */    
     if (win != 1){ //only runs if player has not already hit a 21    
-        hitORstay(pcard,pCardt,deck,z);
+        hitORstay(player,deck,z);
     }
      
     /*At this point, the program determines if the user has busted or reached
     blackjack, if user busts, dealer hand is skipped as the user has lost,
     else the dealer hand continues until dealer hits 17 or goes over 21*/
-     if(pCardt==21 && win !=1){
+     if(player.cardTot==21 && win !=1){
         cout<<"Congratulations you got blackjack! ☜(˚▽˚)☞"<<endl;
         cout<<"****************************************************************\n";
-     }else if(pCardt>21){
+     }else if(player.cardTot>21){
         cout<<"Busted! You lose! ¯|_(ツ)_/¯ "<<endl;
     cout<<"****************************************************************\n";
    
     /*Dealer hand continues until dealer hits 17 or higher or goes over 21,
      only executes if player has not busted*/
-    }if (pCardt <=21){
+    }if (player.cardTot <=21){
         cout<<"And now, the rest of my hand..."<<endl;
         do{ //Loop dealer hand till card total at 17 or higher
-          dcard = deck[z];z++;
-          valueCards(dCardt,dcard);
-        }while(dCardt <17);
+          dealer.cards = deck[z];z++;
+          valueCards(dealer);
+        }while(dealer.cardTot <17);
         
-   cout<<"My Hand equates to "<<dCardt<<endl;  //dealer card value total
+   cout<<"My Hand equates to "<<dealer.cardTot<<endl;  //dealer card value total
    cout<<"****************************************************************\n";
   
    /*Program then determines who had the higher card value total,
   if user wins, they win twice the amount they bet, if they lose user
   loses their bet, if a tie, bet is returned to the user*/
-        if (dCardt<pCardt || dCardt>21){ //if user value is higher or dealer busts
+        if (dealer.cardTot<player.cardTot || dealer.cardTot>21){ //if user value is higher or dealer busts
             cout<<"Congratulations "<<x.name<<
                 " you won the hand ☜(˚▽˚)☞ "<<endl;
-            x.balance +=bet *2; //user wins 2 * the amount they bet
-        }else if (dCardt>pCardt && dCardt<=21){ //if dealer value is higher
+            x.balance +=player.bet *2; //user wins 2 * the amount they bet
+        }else if (dealer.cardTot>player.cardTot && dealer.cardTot<=21){ //if dealer value is higher
             cout<<"Thank you for playing "<<x.name<< ", but you lose (◑‿◐)"<<endl;
-        }else if (dCardt == pCardt){ //if card values are equal
+        }else if (dealer.cardTot == player.cardTot){ //if card values are equal
             cout<<"Draw!"<<" I guess that means you technically "
                     "aren't a loser..."<<x.name<<endl;
-            x.balance +=bet; //if draw, user gets the bet back
+            x.balance +=player.bet; //if draw, user gets the bet back
         }
     }  
   /*Program then lets the user know of their remaining balance to inform them
@@ -162,8 +159,9 @@ int main(int argc, char** argv) {
     cin>>answ; 
     
     /*set dealer and player card totals back to 0 for new hand*/
-    dCardt = 0; 
-    pCardt = 0;
+    player.cardTot = 0;
+    dealer.cardTot = 0;
+    player.bet = 0;
    
  /*if user would like to play a new hand, program loops back to making a bet
   * ,asks the user for a new bet, and the rest of the program
@@ -352,7 +350,7 @@ void getShuffle(int deck[],int cards){
  
  Return --> void
  ******************************************************************************/
-void hitORstay(int &pcard,int &pCardt,int deck[],int &z){
+void hitORstay(Curhand &player,int deck[],int &z){
 int b =0;      //sentinel value to break out of player card loop
         do{
             char nxtC;  //variable used to determine if user wants to hit or stay
@@ -361,13 +359,13 @@ int b =0;      //sentinel value to break out of player card loop
             "hit or stay? h/s"<<endl;
             cin>>nxtC;
             
-            if (nxtC == 'h' || nxtC == 'H'){
-            pcard = deck[z];z++;
-            valueCards (pCardt,pcard);
-            cout<<pCardt<<" is your new card total"<<endl;
+            if (tolower(nxtC) == 'h'){
+            player.cards = deck[z];z++;
+            valueCards (player);
+            cout<<player.cardTot<<" is your new card total"<<endl;
             cout<<"**********************************************************\n";
            
-            }if (pCardt>21 || pCardt == 21 || nxtC=='s' || nxtC=='S'){ 
+            }if (player.cardTot>21 || player.cardTot == 21 || tolower(nxtC)=='s'){ 
                 b = 1;
       cout<<"****************************************************************\n";
             }
@@ -387,72 +385,71 @@ int b =0;      //sentinel value to break out of player card loop
  Return --> card total to the main program for further calculation
  *******************************************************************************/
 
- void valueCards(int &cardTot,int card){       
+ void valueCards(Curhand &player){       
         string faceValue; //face value of card
         string face;      //suit of the card
-       
     /*The suit of the card is determined by the value of the card(2-54), 
      then a value is subtracted so the card falls between 2-14*/
-          if (card<=14){ 
+          if (player.cards<=14){ 
               face = "Hearts";
-          }else if (card>14 && card<=27){
-              card -= 13; 
+          }else if (player.cards>14 &&player.cards<=27){
+              player.cards -= 13; 
               face = "Diamonds";
-          }else if (card>27 && card<=40){
-              card -= 26; 
+          }else if (player.cards>27 && player.cards<=40){
+              player.cards -= 26; 
               face = "Cloves";
-          }else if (card>40){
-              card -=39;
+          }else if (player.cards>40){
+              player.cards -=39;
               face = "Spades";
             }
         /*switch statement used to calculate card total, face value is assigned*/
-        switch(card){ 
+        switch(player.cards){ 
             case 2:
-                cardTot+=2;
+                player.cardTot+=2;
                 faceValue="Two";
                 break;
             case 3:
-                cardTot+=3;
+                player.cardTot+=3;
                 faceValue = "Three";
                 break;   
             case 4:
-                cardTot+=4;
+                player.cardTot+=4;
                 faceValue = "Four";
                 break;    
             case 5:
-                cardTot+=5;
+                player.cardTot+=5;
                 faceValue = "Five";
                 break;
             case 6:
-                cardTot+=6;
+                player.cardTot+=6;
                 faceValue = "Six";
                 break;
             case 7:
-                cardTot+=7;
+                player.cardTot+=7;
                  faceValue = "Seven";
                 break; 
             case 8:
-                cardTot+=8;
+                player.cardTot+=8;
                 faceValue = "Eight";
                 break;
             case 9:
-                cardTot+=9;
+                player.cardTot+=9;
                 faceValue = "Nine";
                 break;    
             case 10:
-                cardTot+=10;
+                player.cardTot+=10;
                 faceValue = "Ten";
                 break; 
             case 11:
-                cardTot+=10;
+                player.cardTot+=10;
                 faceValue = "Jack";
                 break; 
             case 12:
-                cardTot+=10;
+                player.cardTot+=10;
                 faceValue = "Queen";
                 break; 
             case 13:
-                cardTot+=10;
+                player.cardTot+=10;
                 faceValue = "King";
                 break;
             /*since ace represents two values(1 & 11), program must determine
@@ -460,10 +457,10 @@ int b =0;      //sentinel value to break out of player card loop
             represents an 11 else it represents a 1*/   
             case 14: 
                 faceValue = "Ace";
-                if(cardTot>10){
-                    cardTot+=1; 
-                }else if (cardTot<=10){
-                    cardTot+=11;}
+                if(player.cardTot>10){
+                   player.cardTot+=1; 
+                }else if (player.cardTot<=10){
+                    player.cardTot+=11;}
     }
         //Output the face value and the suit of the card
         cout<<faceValue<<" of "<<face<<endl;
