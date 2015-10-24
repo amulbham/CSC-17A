@@ -34,7 +34,7 @@ void displayGreeting(Play &); //function for greeting player
 void valueCards(int& ,int);       //function add card values + suit
 int genRand (int i) { return rand()%i;} //function to generate a random number
 void getShuffle(int deck[],int cards); //creates deck and shuffles cards
-void getUser(Play &); //determines user, initiates greeting
+void getUser(Play &,int &); //determines user, initiates greeting
 void hitORstay(int& pcard, int& pCardt,int deck[],int& z);//handles logic for hitting/staying
 
 //Execution begins here
@@ -52,16 +52,18 @@ int main(int argc, char** argv) {
      char answ;     //sentinel value used to trigger new hand or end game
      int bal=0,bet;   //user balance, and amount user wants to bet for a hand
      int z = 0;     //variable used to track cards in deck
+     int num = 0;
      Play x;
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
-     getUser(x);
+     getUser(x,num);
      
      //set y = to the user balance at start of hand
      y = x.balance;
-     
+     fstream player_info("player.txt", ios::in | ios::out | ios::binary);
   //game loop begins here   
   do{   
+     player_info.seekg(sizeof(Play)*num, ios::beg);
    
     string trig;   // Trigger to begin game
     cout<<"Press any key and hit enter when you are ready to play "<<name<<endl;
@@ -177,7 +179,7 @@ int main(int argc, char** argv) {
  } 
      
      //write the remaining balance to the balance folder
-     fstream player_info("player.txt", ios::app | ios::binary);
+     player_info.seekp(num * sizeof(Play), ios::beg);
      player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
      player_info.close();
     
@@ -199,14 +201,13 @@ int main(int argc, char** argv) {
  Return --> void
  *******************************************************************************/
 
-void getUser(Play &play){
+void getUser(Play &play,int &num){
     fstream player_info;
     char c;
     cout<<"Would you like to continue(c) or start a new game(n)? c/n"<<endl;
     cin.get(c);
     cin.ignore();
     int count = 1;
-    int num;
     
     /*if continuing, read file for name and balance*/
     if (tolower(c) == 'c'){
@@ -225,8 +226,9 @@ void getUser(Play &play){
          cout<<"Enter the player number of the account you would\n"
                 "like to play on"<<endl;
          cin>>num;
+         num-=1;
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
-         player_info.seekg(sizeof(Play)*num, ios::beg);
+         player_info.seekg(sizeof(play)*num, ios::beg);
          player_info.read(reinterpret_cast<char *>(&play),sizeof(play));
          cout<<"Welcome Back "<<play.name<<"!"<<endl;
          cout<<"Your current balance is $"<<play.balance<<", would"
@@ -240,13 +242,11 @@ void getUser(Play &play){
      to the file*/     
     }else{
     //Begin greeting, get user name 
-    player_info.open("player.txt",ios::app|ios::binary);
     displayGreeting(play);
     cout<<"****************************************************************\n";
     //Determine how much the player wants to buy into game
     cout<<"How much would you like to buy in "<<play.name<<" ?"<<endl;
     cin>>play.balance;
-    player_info.close();
     }
 }
 
