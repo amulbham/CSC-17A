@@ -12,19 +12,29 @@
 #include <ctime>        
 #include <cstdlib>
 #include <fstream>
+#include <cctype>
 
 using namespace std;
+//Structures
+struct Play {
+    char name[25];
+    int balance;
+};
 
+struct Deck {
+
+
+};
 //Global Constants
 
 //User Libraries
 
 //Function Prototypes
-string displayGreeting(string); //function for greeting player
+void displayGreeting(Play &); //function for greeting player
 void valueCards(int& ,int);       //function add card values + suit
 int genRand (int i) { return rand()%i;} //function to generate a random number
 void getShuffle(int deck[],int cards); //creates deck and shuffles cards
-void getUser(string& name,int& bal); //determines user, initiates greeting
+void getUser(Play &); //determines user, initiates greeting
 void hitORstay(int& pcard, int& pCardt,int deck[],int& z);//handles logic for hitting/staying
 
 //Execution begins here
@@ -42,13 +52,13 @@ int main(int argc, char** argv) {
      char answ;     //sentinel value used to trigger new hand or end game
      int bal=0,bet;   //user balance, and amount user wants to bet for a hand
      int z = 0;     //variable used to track cards in deck
-     
+     Play x;
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
-     getUser(name,bal);
+     getUser(x);
      
      //set y = to the user balance at start of hand
-     y = bal; 
+     y = x.balance;
      
   //game loop begins here   
   do{   
@@ -66,8 +76,8 @@ int main(int argc, char** argv) {
     //Game begins here by asking how the user would like to bet on first hand
     cout<<"How much would you like to bet?"<<endl;
     cin>>bet;
-    bal -=bet; //subtract bet from starting balance
-    cout<<"Okay sounds good, your remaining balance is $"<<bal<<endl;
+    x.balance -=bet; //subtract bet from starting balance
+    cout<<"Okay sounds good, your remaining balance is $"<<x.balance<<endl;
     cout<<"****************************************************************\n";
     
     //first two player cards are dealt
@@ -126,22 +136,22 @@ int main(int argc, char** argv) {
   if user wins, they win twice the amount they bet, if they lose user
   loses their bet, if a tie, bet is returned to the user*/
         if (dCardt<pCardt || dCardt>21){ //if user value is higher or dealer busts
-            cout<<"Congratulations "<<name<<
+            cout<<"Congratulations "<<x.name<<
                 " you won the hand ☜(˚▽˚)☞ "<<endl;
-            bal +=bet *2; //user wins 2 * the amount they bet
+            x.balance +=bet *2; //user wins 2 * the amount they bet
         }else if (dCardt>pCardt && dCardt<=21){ //if dealer value is higher
-            cout<<"Thank you for playing "<<name<< ", but you lose (◑‿◐)"<<endl;
+            cout<<"Thank you for playing "<<x.name<< ", but you lose (◑‿◐)"<<endl;
         }else if (dCardt == pCardt){ //if card values are equal
             cout<<"Draw!"<<" I guess that means you technically "
-                    "aren't a loser..."<<name<<endl;
-            bal +=bet; //if draw, user gets the bet back
+                    "aren't a loser..."<<x.name<<endl;
+            x.balance +=bet; //if draw, user gets the bet back
         }
     }  
   /*Program then lets the user know of their remaining balance to inform them
     on their winnings/losings or if they are the same, and prompts the user
     if they would like to play a new hand*/
     cout<<"****************************************************************\n";
-    cout<<"Your remaining balance is $"<<bal<<endl; 
+    cout<<"Your remaining balance is $"<<x.balance<<endl; 
     
     cout<<"****************************************************************\n";
     cout<<"Do you want to play another hand, or walk away now?"<<endl;
@@ -155,22 +165,21 @@ int main(int argc, char** argv) {
  /*if user would like to play a new hand, program loops back to making a bet
   * ,asks the user for a new bet, and the rest of the program
     proceeds as normal, when card 40 (z=40) is reached, the deck shuffles*/
- }while(answ == 'y' || answ == 'Y');
+ }while(tolower(answ) == 'y');
  
  //Output the results of the game, if the user has lost or gained money
- if (bal>=y){
+ if (x.balance>=y){
  cout<<"****************************************************************\n";
- cout<<"You winnings for the day are $"<<bal - y<<"\ngo buy yourself"
-         " something nice "<<name<<endl; 
+ cout<<"You winnings for the day are $"<<x.balance - y<<"\ngo buy yourself"
+         " something nice "<<x.name<<endl; 
  }else {
- cout<<"Looks like you lost $"<<y - bal<<" today, better luck next time "<<name<<endl;
+ cout<<"Looks like you lost $"<<y - x.balance<<" today, better luck next time "<<name<<endl;
  } 
      
      //write the remaining balance to the balance folder
-     ofstream balance;
-     balance.open("balance.txt");
-     balance << bal ;
-     balance.close();
+     fstream player_info("player.txt", ios::app | ios::binary);
+     player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
+     player_info.close();
     
     //Exit stage right    
      
@@ -190,41 +199,54 @@ int main(int argc, char** argv) {
  Return --> void
  *******************************************************************************/
 
-void getUser(string &name, int &bal){
+void getUser(Play &play){
+    fstream player_info;
     char c;
     cout<<"Would you like to continue(c) or start a new game(n)? c/n"<<endl;
-    cin>>c;
+    cin.get(c);
+    cin.ignore();
+    int count = 1;
+    int num;
+    
     /*if continuing, read file for name and balance*/
-    if (c == 'c' || c=='C'){
-         ifstream name_file;
-         name_file.open("name.txt");
-         name_file >> name;
-         name_file.close();
-         ifstream balance;
-         balance.open("balance.txt");
-         balance >>bal;
-         balance.close();
-         cout<<"Welcome Back "<<name<<"!"<<endl;
-         cout<<"Your current balance is $"<<bal<<", would"
+    if (tolower(c) == 'c'){
+        player_info.open("player.txt", ios::in | ios::binary);
+        
+        cout<<"The current players on record are ..."<<endl;
+        player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
+        while(!player_info.eof()){
+            cout<<"Player "<<count<<endl;
+            cout<<"Name: "<<play.name<<endl;
+            cout<<"Balance: $"<<play.balance<<endl<<endl;
+            player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
+            count++;
+        }
+         player_info.close();
+         cout<<"Enter the player number of the account you would\n"
+                "like to play on"<<endl;
+         cin>>num;
+         player_info.open("player.txt", ios::in|ios::out|ios::binary);
+         player_info.seekg(sizeof(Play)*num, ios::beg);
+         player_info.read(reinterpret_cast<char *>(&play),sizeof(play));
+         cout<<"Welcome Back "<<play.name<<"!"<<endl;
+         cout<<"Your current balance is $"<<play.balance<<", would"
                  " you like to buy in more? y/n"<<endl;
          char x; cin>>x;
-         if (x == 'y' || x == 'Y'){
-             cout<<"Enter how much more you like to buy in "<<name<<endl;
-         int x;  cin>>x;
-         bal +=x;}
+         if (tolower(x) == 'y'){
+             cout<<"Enter how much more you like to buy in or type 0 for none "<<play.name<<endl;
+         int x;  cin>>x; play.balance+=x;}
+                  player_info.close();
     /*if the user is new, call the greeting function and input the name
      to the file*/     
     }else{
     //Begin greeting, get user name 
-    name = displayGreeting(name); 
-    ofstream name_file;
-    name_file.open("name.txt");
-    name_file<<name;
-    name_file.close();
+    player_info.open("player.txt",ios::app|ios::binary);
+    displayGreeting(play);
     cout<<"****************************************************************\n";
     //Determine how much the player wants to buy into game
-    cout<<"How much would you like to buy in "<<name<<" ?"<<endl;
-    cin>>bal;
+    cout<<"How much would you like to buy in "<<play.name<<" ?"<<endl;
+    cin>>play.balance;
+    player_info.close();
     }
 }
 
@@ -243,7 +265,7 @@ void getUser(string &name, int &bal){
  Return --> user name to the main program
  *******************************************************************************/
 
-string displayGreeting(string name){
+void displayGreeting(Play &play){
     //Declare Variables
     char answ; //sentinel value used to trigger rules or not
     
@@ -252,15 +274,15 @@ string displayGreeting(string name){
     cout<<"Welcome to the Casino Bham! \n My name is Amul (◕‿◕) and i will "
             "be your dealer today!";
     cout<<"What is your name? ";
-    cin>>name; //Get user name, to create a more personal experience
-    cout<<"Ah! nice to meet you "<<name<<", you have a lovely name";
+    cin>>play.name; //Get user name, to create a more personal experience
+    cout<<"Ah! nice to meet you "<<play.name<<", you have a lovely name";
     cout<<"\nAnyways, Im going to assume you know how to play BlackJack"
             " as you would be foolish\nto play against me without any "
             "experience... "<<endl;
     cout<<"Would you like the rules explained? y/n"<<endl;
     cin>>answ;//Only display rules if user does not know how to play to avoid
    
-    if (answ == 'y' || answ == 'Y'){
+    if (tolower(answ) == 'y'){
     //Program explains rules of the game    
         cout<<"Well this is awkward... \n anyways ill try to explain my best,\n"
                 "and do not expect me to go easy on you just because you are a "
@@ -287,7 +309,6 @@ string displayGreeting(string name){
     }else { //program skips to here if user knows the rules
         cout<<"Thank gosh, I hate explaining rules...⊙﹏⊙\n";
     }
-    return name; //return name so rest of program can use user name
 }
 
 /****************************************************************************
