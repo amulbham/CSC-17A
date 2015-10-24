@@ -13,7 +13,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <cctype>
-
 using namespace std;
 //Structures
 struct Play {
@@ -26,9 +25,12 @@ struct Curhand{
     int bet;
 };
 struct Deck {
-    int count; //The current card number in the deck . 
+    
+    int deck[52];//deck of cards with 52 values
+    int count; //The current card number in the deck .
 
 };
+    
 //Global Constants
 
 //User Libraries
@@ -49,11 +51,11 @@ int main(int argc, char** argv) {
      int y;         //set = to the user balance to calculate their winnings/losings
      char answ;     //sentinel value used to trigger new hand or end game
      int bet;       //user balance, and amount user wants to bet for a hand
-     int z = 0;     //variable used to track cards in deck
      int num = 0;   //number used to track where the user is in the file
      Play x;        //created to store/restore a players balance and name
      Curhand player;//Object to player the player hand
      Curhand dealer;//object to track the dealer hand
+     Deck cards;
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
      getUser(x,num);
@@ -68,11 +70,15 @@ int main(int argc, char** argv) {
       //Only seek to the beginning of the record if the player is continuing, 
       //If the player is new, the record must be appended versus rewritten
       if(num!=0){
-     player_info.seekg(sizeof(Play)*num, ios::beg);
+     player_info.seekg(sizeof(Play)*(num-1), ios::beg);
       }
     //Initialize the deck with values 2-53.
-    if (z==0 || z>40){ //only shuffles at beginning or when deck is running low
+    if (cards.count==0 || cards.count>40){ //only shuffles at beginning or when deck is running low
         getShuffle(deck,CARDS);
+        cards.count = 0; //Reset the card count for the new deck 
+        for (int i =0;i<=CARDS;i++){
+            cards.deck[i] =  deck[i];
+        }
     } 
     
     //Game begins here by asking how the user would like to bet on first hand
@@ -81,12 +87,12 @@ int main(int argc, char** argv) {
     x.balance -=player.bet; //subtract bet from starting balance
     cout<<"Okay sounds good, your remaining balance is $"<<x.balance<<endl;
     cout<<"****************************************************************\n";
-    
+    cards.count = 0;
     //first two player cards are dealt
     cout<<"Your first two cards are.... "<<endl;  
     for(int i = 0;i<2;i++){
-        player.cards = deck[z];z++; //z incremented after ever card draw for next card
-        valueCards (player);
+    player.cards = cards.deck[cards.count]; cards.count++; 
+    valueCards (player);
     }  
     cout<<x.name<<" your hand equates to "<<player.cardTot<<endl<<endl; //first two card total
     cout<<"****************************************************************\n";
@@ -101,7 +107,7 @@ int main(int argc, char** argv) {
     
     //Then the dealer draws their first card value
     cout<<"My first card is a.... "<<endl;
-    dealer.cards = deck[z];z++;
+    dealer.cards = cards.deck[cards.count]; cards.count++; 
     valueCards(dealer);
     cout<<"My hand so far equates to "<<dealer.cardTot<<endl; //dealer first card total
     cout<<"****************************************************************\n";
@@ -109,7 +115,7 @@ int main(int argc, char** argv) {
     /*Player then must decide to hit or stay, loop continues until
      player busts, hits a 21, or decides to stay */    
     if (win != 1){ //only runs if player has not already hit a 21    
-        hitORstay(player,deck,z);
+        hitORstay(player,cards.deck,cards.count);
     }
      
     /*At this point, the program determines if the user has busted or reached
@@ -127,7 +133,7 @@ int main(int argc, char** argv) {
     }if (player.cardTot <=21){
         cout<<"And now, the rest of my hand..."<<endl;
         do{ //Loop dealer hand till card total at 17 or higher
-          dealer.cards = deck[z];z++;
+          dealer.cards = cards.deck[cards.count]; cards.count++;
           valueCards(dealer);
         }while(dealer.cardTot <17);
         
@@ -178,20 +184,23 @@ int main(int argc, char** argv) {
  } 
      
      //write the remaining balance to the balance folder
+     //If the user is a new user, then append their information to the end of the file
+     //to create a new account
      if (num == 0){
          player_info.close();
          fstream player_info("player.txt",ios::binary| ios::app);
          player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
-     }else{
+     }else{//If the user already has an account, rewrite their account with their 
+         //New balance
         player_info.seekp((num-1) * sizeof(Play), ios::beg);
         player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
      }
-     
+     //Close out the player info file to prevent memory leaks
      player_info.close();
     
     //Exit stage right    
-     
-    return 0;}
+    return 0;
+}
 
 /****************************************************************************
                           getUser    
