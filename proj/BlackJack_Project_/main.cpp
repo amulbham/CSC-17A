@@ -50,7 +50,6 @@ int main(int argc, char** argv) {
      int deck[CARDS];//deck of cards with 52 values
      int y;         //set = to the user balance to calculate their winnings/losings
      char answ;     //sentinel value used to trigger new hand or end game
-     int bet;       //user balance, and amount user wants to bet for a hand
      int num = 0;   //number used to track where the user is in the file
      Play x;        //created to store/restore a players balance and name
      Curhand player;//Object to player the player hand
@@ -252,7 +251,9 @@ void getUser(Play &play,int &num){
          if (tolower(x) == 'y'){
              cout<<"Enter how much more you like to buy in or type 0 for none "<<play.name<<endl;
          int x;  cin>>x; play.balance+=x;}
+         cout<<"Your current balance is $"<<play.balance<<endl;
                   player_info.close();
+                  
     /*if the user is new, call the greeting function and input the name
      to the file*/     
     }else{
