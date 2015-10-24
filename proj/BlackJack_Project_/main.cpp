@@ -63,6 +63,8 @@ int main(int argc, char** argv) {
      fstream player_info("player.txt", ios::in | ios::out | ios::binary);
   //game loop begins here   
   do{
+      player.cardTot = 0;
+      dealer.cardTot = 0;
       //Only seek to the beginning of the record if the player is continuing, 
       //If the player is new, the record must be appended versus rewritten
       if(num!=0){
@@ -159,8 +161,6 @@ int main(int argc, char** argv) {
     cin>>answ; 
     
     /*set dealer and player card totals back to 0 for new hand*/
-    player.cardTot = 0;
-    dealer.cardTot = 0;
     player.bet = 0;
    
  /*if user would like to play a new hand, program loops back to making a bet
@@ -183,7 +183,7 @@ int main(int argc, char** argv) {
          fstream player_info("player.txt",ios::binary| ios::app);
          player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
      }else{
-        player_info.seekp(num * sizeof(Play), ios::beg);
+        player_info.seekp((num-1) * sizeof(Play), ios::beg);
         player_info.write(reinterpret_cast<char *>(&x),sizeof(x));
      }
      
@@ -232,9 +232,9 @@ void getUser(Play &play,int &num){
          cout<<"Enter the player number of the account you would\n"
                 "like to play on"<<endl;
          cin>>num;
-         num-=1;
+         
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
-         player_info.seekg(sizeof(play)*num, ios::beg);
+         player_info.seekg(sizeof(play)*(num-1), ios::beg);
          player_info.read(reinterpret_cast<char *>(&play),sizeof(play));
          cout<<"Welcome Back "<<play.name<<"!"<<endl;
          cout<<"Your current balance is $"<<play.balance<<", would"
@@ -462,6 +462,7 @@ int b =0;      //sentinel value to break out of player card loop
                 }else if (player.cardTot<=10){
                     player.cardTot+=11;}
     }
+        player.cards = 0;
         //Output the face value and the suit of the card
         cout<<faceValue<<" of "<<face<<endl;
         
