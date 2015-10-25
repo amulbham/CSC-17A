@@ -45,7 +45,7 @@ void valueCards(Curhand &);       //function add card values + suit
 int genRand (int i) { srand (time(0)); return rand()%i;} //function to generate a random number
 void getShuffle(int deck[],int cards); //creates deck and shuffles cards
 void getUser(Play &,int &); //determines user, initiates greeting
-void hitORstay(Curhand &,int deck[],int& z);//handles logic for hitting/staying
+void hitORstay(Curhand &,Deck &);//handles logic for hitting/staying
 
 //Execution begins here
 int main(int argc, char** argv) {
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     /*Player then must decide to hit or stay, loop continues until
      player busts, hits a 21, or decides to stay */    
     if (!win){ //only runs if player has not already hit a 21    
-        hitORstay(player,cards.deck,cards.count);
+        hitORstay(player,cards);
     }
      
     /*At this point, the program determines if the user has busted or reached
@@ -378,7 +378,7 @@ void getShuffle(int deck[],int cards){
  
  Return --> void
  ******************************************************************************/
-void hitORstay(Curhand &player,int deck[],int &z){
+void hitORstay(Curhand &player,Deck &cards){
 int b =0;      //sentinel value to break out of player card loop
         do{
             char nxtC;  //variable used to determine if user wants to hit or stay
@@ -389,7 +389,7 @@ int b =0;      //sentinel value to break out of player card loop
             cin.get(nxtC);
             
             if (tolower(nxtC) == 'h'){
-            player.cards = deck[z];z++;
+            player.cards = cards.deck[cards.count]; cards.count++;
             valueCards (player);
             cout<<player.cardTot<<" is your new card total"<<endl;
             cout<<"**********************************************************\n";
