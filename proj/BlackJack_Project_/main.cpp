@@ -385,7 +385,8 @@ int b =0;      //sentinel value to break out of player card loop
            
             cout<<"Would you like to "
             "hit or stay? h/s"<<endl;
-            cin>>nxtC;
+            cin.ignore();
+            cin.get(nxtC);
             
             if (tolower(nxtC) == 'h'){
             player.cards = deck[z];z++;
