@@ -61,6 +61,8 @@ int main(int argc, char** argv) {
      Deck cards;
      /*call the get user function to determine if the player is
       continuing or starting a new game*/
+     //Get the user information, pass the object of the players, with a number
+     //to store the block of memory that user occupies on the file
      getUser(x,num);
      
      //set y = to the user balance at start of hand
@@ -90,7 +92,6 @@ int main(int argc, char** argv) {
     x.balance -=player.bet; //subtract bet from starting balance
     cout<<"Okay sounds good, your remaining balance is $"<<x.balance<<endl;
     cout<<"****************************************************************\n";
-    cards.count = 0;
     //first two player cards are dealt
     cout<<"Your first two cards are.... "<<endl;  
     for(int i = 0;i<2;i++){
@@ -100,12 +101,12 @@ int main(int argc, char** argv) {
     cout<<x.name<<" your hand equates to "<<player.cardTot<<endl<<endl; //first two card total
     cout<<"****************************************************************\n";
     
-    int win = 0; /*value to guide program NOT to display 21 message again if 
+    bool win = false; /*value to guide program NOT to display 21 message again if 
                   user draws a 21 on first two cards*/
     if(player.cardTot==21){ 
         cout<<"Congratulations you got blackjack! ☜(˚▽˚)☞"<<endl;
         cout<<"****************************************************************\n";
-        win = 1; //prevents a repeat 
+        win = true; //prevents a repeat 
     }
     
     //Then the dealer draws their first card value
@@ -117,14 +118,14 @@ int main(int argc, char** argv) {
     
     /*Player then must decide to hit or stay, loop continues until
      player busts, hits a 21, or decides to stay */    
-    if (win != 1){ //only runs if player has not already hit a 21    
+    if (!win){ //only runs if player has not already hit a 21    
         hitORstay(player,cards.deck,cards.count);
     }
      
     /*At this point, the program determines if the user has busted or reached
     blackjack, if user busts, dealer hand is skipped as the user has lost,
     else the dealer hand continues until dealer hits 17 or goes over 21*/
-     if(player.cardTot==21 && win !=1){
+     if(player.cardTot==21 && !win){
         cout<<"Congratulations you got blackjack! ☜(˚▽˚)☞"<<endl;
         cout<<"****************************************************************\n";
      }else if(player.cardTot>21){
