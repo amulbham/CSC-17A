@@ -222,17 +222,22 @@ int main(int argc, char** argv) {
 void getUser(Play &play,int &num){
     fstream player_info;
     char c;
+    //Determine if the user is returning or if it is their first time 
     cout<<"Would you like to continue(c) or start a new game(n)? c/n"<<endl;
     cin.get(c);
     cin.ignore();
     int count = 1;
     
-    /*if continuing, read file for name and balance*/
+    /*if continuing, read all the players currently in the file and ask
+     the user to select which account they would like to play on */
     if (tolower(c) == 'c'){
         player_info.open("player.txt", ios::in | ios::binary);
-        
+        //Open the player file for binary input 
         cout<<"The current players on record are ..."<<endl;
+        //Static cast the binary data to character and display
         player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
+       /*Read out all the players, incremented by byte size, each player
+        being stored as an object, until the end of the file is reached*/
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
             cout<<"Name: "<<play.name<<endl;
@@ -240,22 +245,28 @@ void getUser(Play &play,int &num){
             player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
             count++;
         }
+        //Close the file to prevent memory leaks 
          player_info.close();
+         //Allow the user to choose an account to play on 
          cout<<"Enter the player number of the account you would\n"
                 "like to play on"<<endl;
          cin>>num;
-         
+         //Read in the player information based on the account choosen 
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
+         //Seek to the memory location of the user account, based on the num
          player_info.seekg(sizeof(play)*(num-1), ios::beg);
+         //Read in the player information, including their name and balance 
          player_info.read(reinterpret_cast<char *>(&play),sizeof(play));
          cout<<"Welcome Back "<<play.name<<"!"<<endl;
+         //Determine if the user would like to purchase more coins 
          cout<<"Your current balance is $"<<play.balance<<", would"
                  " you like to buy in more? y/n"<<endl;
          char x; cin>>x;
          if (tolower(x) == 'y'){
              cout<<"Enter how much more you like to buy in or type 0 for none "<<play.name<<endl;
+         //Get the buy in as a cstring to prevent run time errors, convert to int using atoi.     
          char y[6];cin.ignore();  cin.getline(y,6);
-         play.balance+=atoi(y);}
+         play.balance+=atoi(y);} //Add the buy in to the total player balance 
          cout<<"Your current balance is $"<<play.balance<<endl;
                   player_info.close();
                   
