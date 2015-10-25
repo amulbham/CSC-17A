@@ -13,18 +13,22 @@
 #include <cstdlib>
 #include <fstream>
 #include <cctype>
+#include <string>
+#include <vector>
+
 using namespace std;
 //Structures
+//Play - accounts for the player data, to be stored in player_info.txt
 struct Play {
     char name[25]; //The user name
     int balance;   //The user balance  
 };
 struct Curhand{
-    int cards;
-    int cardTot;
-    int bet;
+    int cards;  //the players cards for the current hand 
+    int cardTot;//the player cart total for the current hand
+    int bet;    //the player bet for the current hand 
 };
-struct Deck {
+struct Deck {//allocates an array with 52 values, keeps track of current 
     
     int deck[52];//deck of cards with 52 values
     int count; //The current card number in the deck .
@@ -250,7 +254,8 @@ void getUser(Play &play,int &num){
          char x; cin>>x;
          if (tolower(x) == 'y'){
              cout<<"Enter how much more you like to buy in or type 0 for none "<<play.name<<endl;
-         int x;  cin>>x; play.balance+=x;}
+         char y[6];cin.ignore();  cin.getline(y,6);
+         play.balance+=atoi(y);}
          cout<<"Your current balance is $"<<play.balance<<endl;
                   player_info.close();
                   
@@ -289,8 +294,9 @@ void displayGreeting(Play &play){
     cout<<"****************************************************************\n";
     cout<<"Welcome to the Casino Bham! \n My name is Amul (◕‿◕) and i will "
             "be your dealer today!";
-    cout<<"What is your name? ";
-    cin>>play.name; //Get user name, to create a more personal experience
+    cout<<"Your name and balance will be saved when you are finished....\n";
+    cout<<"What is your name anyway? "<<endl;
+    cin.getline(play.name,25); //Get user name, to create a more personal experience
     cout<<"Ah! nice to meet you "<<play.name<<", you have a lovely name";
     cout<<"\nAnyways, Im going to assume you know how to play BlackJack"
             " as you would be foolish\nto play against me without any "
