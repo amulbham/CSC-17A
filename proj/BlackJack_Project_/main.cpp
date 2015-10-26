@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     //Declare Variables
      const int CARDS = 52; //Number of cards in a standard deck
      int deck[CARDS];//deck of cards with 52 values
-     int y;         //set = to the user balance to calculate their winnings/losings
+     int *y = NULL; //set = to the user balance to calculate their winnings/losings
      char answ;     //sentinel value used to trigger new hand or end game
      int num = 0;   //number used to track where the user is in the file
      Play x;        //created to store/restore a players balance and name
@@ -65,12 +65,13 @@ int main(int argc, char** argv) {
      //to store the block of memory that user occupies on the file
      getUser(x,num);
      
-     //set y = to the user balance at start of hand
-     y = x.balance;
+     int begBal = x.balance; //tracks what the user started out with
      fstream player_info("player.txt", ios::in | ios::out | ios::binary);
   //game loop begins here   
   do{
-      player.cardTot = 0;
+      //Values that must be reset at the start of each hand
+      y = &x.balance; //Pointer to track winning/losses of money
+      player.cardTot = 0;   //RESET dealer and player hands at the beginning of each hand
       dealer.cardTot = 0;
       //Only seek to the beginning of the record if the player is continuing, 
       //If the player is new, the record must be appended versus rewritten
@@ -89,8 +90,8 @@ int main(int argc, char** argv) {
     //Game begins here by asking how the user would like to bet on first hand
     cout<<"How much would you like to bet?"<<endl;
     cin>>player.bet;
-    x.balance -=player.bet; //subtract bet from starting balance
-    cout<<"Okay sounds good, your remaining balance is $"<<x.balance<<endl;
+    *y -=player.bet; //subtract bet from starting balance
+    cout<<"Okay sounds good, your remaining balance is $"<<*y<<endl;
     cout<<"****************************************************************\n";
     //first two player cards are dealt
     cout<<"Your first two cards are.... "<<endl;  
@@ -150,20 +151,20 @@ int main(int argc, char** argv) {
         if (dealer.cardTot<player.cardTot || dealer.cardTot>21){ //if user value is higher or dealer busts
             cout<<"Congratulations "<<x.name<<
                 " you won the hand ☜(˚▽˚)☞ "<<endl;
-            x.balance +=player.bet *2; //user wins 2 * the amount they bet
+            *y +=player.bet *2; //user wins 2 * the amount they bet
         }else if (dealer.cardTot>player.cardTot && dealer.cardTot<=21){ //if dealer value is higher
             cout<<"Thank you for playing "<<x.name<< ", but you lose (◑‿◐)"<<endl;
         }else if (dealer.cardTot == player.cardTot){ //if card values are equal
             cout<<"Draw!"<<" I guess that means you technically "
                     "aren't a loser..."<<x.name<<endl;
-            x.balance +=player.bet; //if draw, user gets the bet back
+            *y +=player.bet; //if draw, user gets the bet back
         }
     }  
   /*Program then lets the user know of their remaining balance to inform them
     on their winnings/losings or if they are the same, and prompts the user
     if they would like to play a new hand*/
     cout<<"****************************************************************\n";
-    cout<<"Your remaining balance is $"<<x.balance<<endl; 
+    cout<<"Your remaining balance is $"<<*y<<endl; 
     
     cout<<"****************************************************************\n";
     cout<<"Do you want to play another hand, or walk away now?"<<endl;
@@ -179,12 +180,12 @@ int main(int argc, char** argv) {
  }while(tolower(answ) == 'y');
  
  //Output the results of the game, if the user has lost or gained money
- if (x.balance>=y){
+ if (x.balance>=begBal){
  cout<<"****************************************************************\n";
- cout<<"You winnings for the day are $"<<x.balance - y<<"\ngo buy yourself"
+ cout<<"You winnings for the day are $"<<x.balance - begBal<<"\ngo buy yourself"
          " something nice "<<x.name<<endl; 
  }else {
- cout<<"Looks like you lost $"<<y - x.balance<<" today, better luck next time "<<x.name<<endl;
+ cout<<"Looks like you lost $"<<begBal - x.balance<<" today, better luck next time "<<x.name<<endl;
  } 
      
      //write the remaining balance to the balance folder
