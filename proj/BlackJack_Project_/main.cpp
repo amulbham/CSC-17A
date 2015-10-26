@@ -14,7 +14,6 @@
 #include <fstream>
 #include <cctype>
 #include <string>
-#include <vector>
 
 using namespace std;
 //Structures
@@ -305,8 +304,8 @@ void displayGreeting(Play &play){
     
     cout<<"                  BlackJack ☜(˚▽˚)☞"<<endl;
     cout<<"****************************************************************\n";
-    cout<<"Welcome to the Casino Bham! \n My name is Amul (◕‿◕) and i will "
-            "be your dealer today!";
+    cout<<"Welcome to the Casino Bham!\nMy name is Amul (◕‿◕) and i will "
+            "be your dealer today!\n";
     cout<<"Your name and balance will be saved when you are finished....\n";
     cout<<"What is your name anyway? "<<endl;
     cin.getline(play.name,25); //Get user name, to create a more personal experience
