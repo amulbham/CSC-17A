@@ -16,6 +16,15 @@
 #include <vector>
 #include <cstring>
 using namespace std;
+ 
+//Structures
+//Problem #2
+struct Employee {
+            string name;
+            float hrs;
+            float rtepy;
+            float total;
+        };
 
 //Global Constants Here!!!
 
@@ -142,6 +151,48 @@ void problem1(){
 
 void problem2(){
         cout<<"In problem # 2"<<endl<<endl;
+        //Declare Variables
+        vector<Employee> curr; //vector of structures to hold current employee
+        float gross; //Gross pay for all employees
+        char c;
+        int i =0;
+        do{
+         //Create a new instance of the employee structure
+          curr.push_back(Employee());cin.ignore();
+          cout<<"Employee Name: "; getline(cin,curr[i].name);
+          _hrs:
+            cout<<"Hours worked: "; cin>>curr[i].hrs;
+            if (curr[i].hrs<0){cout<<"Cant have negative hours!"<<endl; 
+            goto _hrs;}
+          _rate:
+            cout<<"Rate of Pay: "; cin>>curr[i].rtepy;
+            if (curr[i].rtepy<0){cout<<"Cant have a negative rate of pay!"<<endl; 
+            goto _rate;}
+          
+          //Determine if the employee has worked overtime 
+          if (curr[i].hrs<=40) curr[i].total = curr[i].hrs * curr[i].rtepy;
+          else if (curr[i].hrs>40 && curr[i].hrs<=50){
+              curr[i].total = (curr[i].rtepy*40)+ ((curr[i].hrs-40)*(2*curr[i].rtepy));
+          }else{curr[i].total = (curr[i].rtepy*40)+ (2*curr[i].rtepy * 10) 
+                  + (curr[i].hrs-50)*(3*curr[i].rtepy);}
+          
+          //Output the employee check 
+          cout<<showpoint<<fixed<<setprecision(2);
+          cout<<"*****************************************************"<<endl;
+          cout<<"Employee: "<<curr[i].name<<endl;
+          cout<<"Hours worked: "<<curr[i].hrs<<endl;
+          cout<<"Rate of Pay: $"<<curr[i].rtepy<<endl;
+          cout<<"------------------------------------------------------"<<endl;
+          cout<<"                    "<<"Gross Pay:   $"<<curr[i].total<<endl;
+          cout<<"*****************************************************"<<endl;
+          //add the employee gross pay to the gross overall pay
+          gross += curr[i].total;
+          cout<<"The Gross overall pay for all employees thus far is $"<<gross<<endl;
+          //Determine if the user would like to enter more employees
+          cout<<"Would you like to add another employee? Y/N"<<endl;
+          cin.ignore(); cin.get(c); i++;
+        }while(tolower(c) == 'y');
+        
 }
 
 void problem3(){
