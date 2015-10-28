@@ -201,6 +201,24 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 4"<<endl<<endl;
+        //Declare variables
+        char code[4];
+        cin.ignore();
+        
+       _error: 
+        bool digs = false;
+        cout<<"Enter a 4 digit integer with digits (0-7)"<<endl;
+        cin>>code;
+        for(int i =0; i<5;i++){
+            if(code[i] == '8' || code[i] == '9'){
+                digs = true;
+                break;
+            }
+        }
+        if (strlen(code)!=4 || digs){
+            cout<<"Error!4 digits are required and they "
+                    "must be digits 0-7!"<<endl;
+            goto _error;}
 }
 
 void problem5(){
