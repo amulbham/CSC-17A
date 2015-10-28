@@ -203,8 +203,8 @@ void problem4(){
         cout<<"In problem # 4"<<endl<<endl;
         //Declare variables
         char code[4];
-        cin.ignore();
-        
+        char x0[1],y2[1];
+        int num[4];
        _error: 
         bool digs = false;
         cout<<"Enter a 4 digit integer with digits (0-7)"<<endl;
@@ -219,6 +219,26 @@ void problem4(){
             cout<<"Error!4 digits are required and they "
                     "must be digits 0-7!"<<endl;
             goto _error;}
+        //Swap the digits of the number
+        x0[0] = code[0];
+        y2[0]= code[2];
+        code[0] = code[1];
+        code[1] = x0[0];
+        code[2] = code[3];
+        code[3] = y2[0];
+        
+        //Convert the string to an int, preform encryption, and output results
+        cout<<"Your encrypted 4 digit number is : ";
+        for (int i = 0;i<4;i++){
+        num[i] = code[i]-'0';
+        num[i]+=5;
+        num[i]%=8;
+         cout<<num[i];
+        }
+        
+       
+       
+
 }
 
 void problem5(){
