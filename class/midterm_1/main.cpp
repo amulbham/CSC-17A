@@ -69,21 +69,20 @@ void problem1(){
       cout<<"In problem # 1"<<endl<<endl;
       //Declare Structures
       struct Userinfo {
-          int aNum;
-          float bal;
-          float checks;
-          float deposits;
+          int aNum; //account number
+          float bal;//user balance
+          float checks;//sum of checks written
+          float deposits;//sum of deposits received 
       };
        //Declare Variables
       Userinfo x; 
-      int LIM = 6;
-      char accNum[LIM];
-      int fee = 15;
-      char c;
+      int LIM = 6; //account number limit 
+      char accNum[LIM];//account number of user
+      int fee = 15; //fee for overdrawn accounts
+      char c;       //sentinel value to end account number loop
       
       //Initialize the variables
-     
-      
+      //First get the user account number, validate input using loop and strlen
       do{
         error:
         cout<<"Please enter your 5 digit account number and press enter"<<endl;
@@ -91,7 +90,8 @@ void problem1(){
         if (strlen(accNum)>=LIM){
         cout<<"An error has appeared, please try again"<<endl;
         cin.ignore();
-        goto error;}       
+        goto error;}  
+        //Convert the cstring to a int for output
         x.aNum = atoi (accNum);
         cout<<"You entered "<<x.aNum<<endl;
         cout<<"Would you like to reenter your account number?"<<endl;
@@ -105,7 +105,7 @@ void problem1(){
       //Get the amount of checks written by the user
       cout<<"Please Enter the amount of each check written this month"<<endl;
       cout<<"Enter 0 when you are finished entering checks"<<endl;
-      float value;
+      float value; //user inputted value
       do{
         cout<<"$";
         cin>>value;
@@ -115,21 +115,24 @@ void problem1(){
       //Get the amount of deposits received by the user  
       cout<<"Please Enter the amount of each deposit received this month"<<endl;
       cout<<"Enter 0 when you are finished entering deposits"<<endl;
-      value = 0;
+      value = 0; //Reset the value variable
       do{
         cout<<"$";
         cin>>value;
         x.deposits +=value;
        }while(value != 0);
        
-      //Calculate the new monthly balance
+      //Calculate the new monthly balance 
       x.bal = (x.bal + x.deposits) - x.checks;
+      //Output the results
       
+      //If the user has overdrawn, let the user know of the 15 dollar fee
       if (x.bal<0){
           cout<<"You have overdrawn your account this month!"<<endl;
           cout<<"We have applied a $"<<fee<<" fee to your account"<<endl;
           cout<<showpoint<<setprecision(2)<<fixed<<"Account Balance: $"<<x.bal-fee<<endl;
       }
+      //If the user has not overdrawn, output the balance
       else {
           cout<<"Your account balance for the month"<<endl;
           cout<<showpoint<<setprecision(2)<<fixed<<"Balance: $"<<x.bal<<endl;
