@@ -229,10 +229,14 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 4"<<endl<<endl;
+       
+        
         //Declare variables
         char code[4];
         char x0[1],y2[1];
         int num[4];
+        char a;
+        int y;
        _error: 
         bool digs = false;
         cout<<"Enter a 4 digit integer with digits (0-7)"<<endl;
@@ -247,6 +251,11 @@ void problem4(){
             cout<<"Error!4 digits are required and they "
                     "must be digits 0-7!"<<endl;
             goto _error;}
+        _input:
+        cout<<"Would you like to encrypt or decrypt? 1 or 2"<<endl;
+        cin>>y;
+        switch(y){
+            case 1:   { 
         //Swap the digits of the number
         x0[0] = code[0];
         y2[0]= code[2];
@@ -260,27 +269,39 @@ void problem4(){
         for (int i = 0;i<4;i++){
         num[i] = code[i]-'0';
         num[i]+=5;
-        num[i]%=8;
+        num[i] = num[i]% 8;
         cout<<num[i];
         }
+        break;
         cout<<endl;
-       
-        code[1] = code[0];
-        code[0] = x0[0];
-        code[3] =  code[2];
-        code[2] = y2[0];
+        }
+            
+            case 2:{
+        x0[0] = code[0];
+        y2[0] = code[2];
+        code[0] = code[1];
+        code[1] = x0[0];
+        code[2] =  code[3];
+        code[3] = y2[0];
         
         //Determine if the user would like to decrypt
         cout<<"Your decrypted 4 digit number is : ";
         for (int i = 0;i<4;i++){
         num[i] = code[i]-'0';
-        num[i]+=8;
-        num[i]-=5;
-        num[i]%=8;
-        cout<<num[i];
+        num[i] = (num[i] + 8 - 5) %8;
+        
+        cout<<num[i];}
+        break;
         }
+            default: goto _input;    
+            
+        }
+        
         cout<<endl;
-           
+        cout<<"Would you like to run the program again? y/n"<<endl;
+        cin.ignore(); cin.get(a);
+        if (tolower(a) == 'y') goto _error;
+        
        
 }
 
@@ -360,7 +381,7 @@ statsResult *avgMedMode(vector<int> arr,int num){
 
 void printStat(struct statsResult y){
     //Output the results of the array
-    cout<<showpoint<<fixed<<setprecision(2);
+    cout<<showpoint<<fixed<<setprecision(2)<<endl<<endl;
     cout<<"Mean: "<<y.avg<<endl;
     cout<<"Median: "<<y.median<<endl;
     cout<<"Number of Modes: "<<y.nModes<<endl;
