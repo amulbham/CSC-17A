@@ -9,9 +9,7 @@
 //Library includes Here!!!
 #include <iostream>     
 #include <algorithm>    
-#include <ctime>        
 #include <cstdlib>
-#include <fstream>
 #include <cctype>
 #include <iomanip>
 #include <vector>
@@ -327,12 +325,11 @@ void problem5(){
          }
         count--;
         b = 1;
-        for(int i=1;i<=count;i++){
+        for(int i=1;i<=17;i++){
          b =b*i;
          }
         
-        cout<<b<<endl<<endl;
-        cout<<count<<endl<<endl;
+       
         //Output the results
         cout<<"Int: 33"<<endl;
         cout<<"Unsigned Int: 33"<<endl;
@@ -345,13 +342,12 @@ void problem5(){
         cout<<"Long Long Int: 65"<<endl;
         cout<<"Unsigned Long Long Int: 65"<<endl<<endl;
         
- 
-        
-        
 }
 
 void problem6(){
         cout<<"In problem # 6"<<endl<<endl;
+        
+        
 }
 
 void def(int inN){
@@ -427,7 +423,7 @@ void printStat(struct statsResult y){
     cout<<"Median: "<<y.median<<endl;
     cout<<"Number of Modes: "<<y.nModes<<endl;
    //Loop through the new array to output all of its data 
-    for(int i =0; i<=(sizeof y.mode / sizeof y.mode[0]);i++){
+    for(int i =0; i<(sizeof y.mode / sizeof y.mode[0]);i++){
     cout<<"Mode: "<<*(y.mode)<<endl;
     y.mode++;
     }
