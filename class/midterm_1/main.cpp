@@ -35,7 +35,6 @@ struct Employee {
     int maxFreq; //max frequency of modes
 };
 //Global Constants Here!!!
-vector<int> m;
 //Function Prototypes Here!!!
 void Menu();
 int getN();
@@ -186,14 +185,15 @@ void problem2(){
                   + (curr[i].hrs-50)*(3*curr[i].rtepy);}
           
           //Output the employee check 
-          cout<<showpoint<<fixed<<setprecision(2);
+            for(int j = 0; j<curr.size();j++)
+            { cout<<showpoint<<fixed<<setprecision(2);
           cout<<"*****************************************************"<<endl;
-          cout<<"Employee: "<<curr[i].name<<endl;
-          cout<<"Hours worked: "<<curr[i].hrs<<endl;
-          cout<<"Rate of Pay: $"<<curr[i].rtepy<<endl;
+          cout<<"Employee: "<<curr[j].name<<endl;
+          cout<<"Hours worked: "<<curr[j].hrs<<endl;
+          cout<<"Rate of Pay: $"<<curr[j].rtepy<<endl;
           cout<<"------------------------------------------------------"<<endl;
-          cout<<"                    "<<"Gross Pay:   $"<<curr[i].total<<endl;
-          cout<<"*****************************************************"<<endl;
+          cout<<"                    "<<"Gross Pay:   $"<<curr[j].total<<endl;
+          cout<<"*****************************************************"<<endl;}
           //add the employee gross pay to the gross overall pay
           gross += curr[i].total;
           cout<<"The Gross overall pay for all employees thus far is $"<<gross<<endl;
@@ -207,9 +207,9 @@ void problem2(){
 void problem3(){
         cout<<"In problem # 3"<<endl<<endl;
         //Declare Variables
-        vector <int> arr;
-        int num;
-        statsResult *x;
+        vector <int> arr; //vector used to store the inputted values
+        int num;         //User input for how many values they would like to calc for. 
+        statsResult *x;  //Structure to hold the information produced in function
         
         //Initialize the variables
         cout<<"How many input would you like to fill in the array?"<<endl;
@@ -220,8 +220,9 @@ void problem3(){
             arr.push_back(int());
             cin>>arr[i];
         }
+        //Set the pointer memory = the pointer created in the function to a structure
         x = avgMedMode (arr,arr.size());
-        
+        //Send the structure to the print function to output the results
         printStat(*x);
         
 }
@@ -312,7 +313,6 @@ statsResult *avgMedMode(vector<int> arr,int num){
     function to easily sort the list in ascending order*/
     sort(arr.begin(),arr.end()); //must be sorted for median 
     
-    cout<<endl;
     //Determine if median is even or odd - then determine median number
     if (num  % 2 == 0){ //determines if even
       z->median = (arr[num / 2 - 1] + arr[num / 2]) / 2;
@@ -324,6 +324,8 @@ statsResult *avgMedMode(vector<int> arr,int num){
     int number = arr[0]; //compare number
     int count = 1;        //counter to track the frequency
     int freq = 1;           //frequency of the mode  
+    vector<int> m;          //Temp vector to store the modes
+
     for (int i=1; i<num; i++){
       if (arr[i] == number){ //if the numbers are the same
          count++; //add 1 to the frequency
@@ -340,13 +342,16 @@ statsResult *avgMedMode(vector<int> arr,int num){
            number = arr[i]; //set the number = to the old one
   }
 }
-   
+   //Assign the new values to the structures
     z->maxFreq = freq;
     z->nModes = m.size();
+    //Create a new dynamic array with the number of modes
     z->mode = new int[m.size()];
+    //Assign the modes to the new array using a loop
     for(int i = 0; i<m.size();i++){
     z->mode[i] = m[i];
     }
+    //Return the pointer to the structure back to the main function 
     return z;
 
 
@@ -354,14 +359,16 @@ statsResult *avgMedMode(vector<int> arr,int num){
 
 
 void printStat(struct statsResult y){
+    //Output the results of the array
+    cout<<showpoint<<fixed<<setprecision(2);
     cout<<"Mean: "<<y.avg<<endl;
     cout<<"Median: "<<y.median<<endl;
-    for(int i =0; i<(sizeof y.mode / sizeof y.mode[0]);i++){
+    cout<<"Number of Modes: "<<y.nModes<<endl;
+   //Loop through the new array to output all of its data 
+    for(int i =0; i<=(sizeof y.mode / sizeof y.mode[0]);i++){
     cout<<"Mode: "<<*(y.mode)<<endl;
     y.mode++;
     }
-    
-    cout<<"Number of Modes: "<<y.nModes<<endl;
     cout<<"Mode Frequency: "<<y.maxFreq<<endl;
     
 }
