@@ -236,6 +236,7 @@ void problem4(){
         char a;         //Used to end the program 
         int y;          //Determines if user would like to run program again
        _error: 
+            
         bool digs = false; //Sets a flag if the user has made an input error
         cout<<"Enter a 4 digit integer with digits (0-7)"<<endl;
         cin>>code;
@@ -328,8 +329,6 @@ void problem5(){
         for(int i=1;i<=17;i++){
          b =b*i;
          }
-        
-       
         //Output the results
         cout<<"Int: 33"<<endl;
         cout<<"Unsigned Int: 33"<<endl;
@@ -423,7 +422,7 @@ void printStat(struct statsResult y){
     cout<<"Median: "<<y.median<<endl;
     cout<<"Number of Modes: "<<y.nModes<<endl;
    //Loop through the new array to output all of its data 
-    for(int i =0; i<(sizeof y.mode / sizeof y.mode[0]);i++){
+    for(int i =0; i<y.nModes;i++){
     cout<<"Mode: "<<*(y.mode)<<endl;
     y.mode++;
     }
