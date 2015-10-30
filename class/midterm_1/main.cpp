@@ -1,6 +1,7 @@
 /* 
  * File:   main.cpp
  * Author: Amul.bham
+ * Purpose: Midterm CSC-17A
  *
  * Created on October 27, 2015, 5:09 PM
  */
@@ -186,14 +187,15 @@ void problem2(){
           
           //Output the employee check 
             for(int j = 0; j<curr.size();j++)
-            { cout<<showpoint<<fixed<<setprecision(2);
+            { cout<<endl<<endl<<showpoint<<fixed<<setprecision(2);
           cout<<"*****************************************************"<<endl;
           cout<<"Employee: "<<curr[j].name<<endl;
           cout<<"Hours worked: "<<curr[j].hrs<<endl;
           cout<<"Rate of Pay: $"<<curr[j].rtepy<<endl;
           cout<<"------------------------------------------------------"<<endl;
           cout<<"                    "<<"Gross Pay:   $"<<curr[j].total<<endl;
-          cout<<"*****************************************************"<<endl;}
+          cout<<"*****************************************************"<<endl;
+            cout<<endl;}
           //add the employee gross pay to the gross overall pay
           gross += curr[i].total;
           cout<<"The Gross overall pay for all employees thus far is $"<<gross<<endl;
@@ -229,28 +231,30 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 4"<<endl<<endl;
-       
-        
         //Declare variables
-        char code[4];
-        char x0[1],y2[1];
-        int num[4];
-        char a;
-        int y;
+        char code[4];   //4 digit intger
+        char x0[1],y2[1];//Used for temp swaps
+        int num[4];     //Stores the encrypted/decrypted number
+        char a;         //Used to end the program 
+        int y;          //Determines if user would like to run program again
        _error: 
-        bool digs = false;
+        bool digs = false; //Sets a flag if the user has made an input error
         cout<<"Enter a 4 digit integer with digits (0-7)"<<endl;
         cin>>code;
+        //Check for input errors and proper lengthm
+        //If error occurs, goto the input again
         for(int i =0; i<5;i++){
             if(code[i] == '8' || code[i] == '9'){
                 digs = true;
                 break;
             }
         }
+        //Warn the user they have made an error
         if (strlen(code)!=4 || digs){
             cout<<"Error!4 digits are required and they "
                     "must be digits 0-7!"<<endl;
             goto _error;}
+        //Determine if the user is encrypting or decrypting 
         _input:
         cout<<"Would you like to encrypt or decrypt? 1 or 2"<<endl;
         cin>>y;
@@ -275,8 +279,9 @@ void problem4(){
         break;
         cout<<endl;
         }
-            
+            //If the user wants to decrypt a number
             case 2:{
+                //Swap the digits back to the proper place
         x0[0] = code[0];
         y2[0] = code[2];
         code[0] = code[1];
@@ -284,7 +289,7 @@ void problem4(){
         code[2] =  code[3];
         code[3] = y2[0];
         
-        //Determine if the user would like to decrypt
+        //Output the results 
         cout<<"Your decrypted 4 digit number is : ";
         for (int i = 0;i<4;i++){
         num[i] = code[i]-'0';
@@ -296,7 +301,7 @@ void problem4(){
             default: goto _input;    
             
         }
-        
+        //Determine if the user would like to run the program again 
         cout<<endl;
         cout<<"Would you like to run the program again? y/n"<<endl;
         cin.ignore(); cin.get(a);
@@ -307,6 +312,42 @@ void problem4(){
 
 void problem5(){
         cout<<"In problem # 5"<<endl<<endl;
+        //Declare Variables
+        int a =1; unsigned int a1 = 1;
+        short int b = 1; unsigned short b1 = 1;
+        long int c = 1; unsigned long int c1 = 1;
+        float d =1;    
+        double e = 1;
+        long long int f =1; unsigned long long int f1 =1;
+        int count =0;
+        
+        for(int i=1;b != 0;i++){
+            count ++;
+            b =b*i;
+         }
+        count--;
+        b = 1;
+        for(int i=1;i<=count;i++){
+         b =b*i;
+         }
+        
+        cout<<b<<endl<<endl;
+        cout<<count<<endl<<endl;
+        //Output the results
+        cout<<"Int: 33"<<endl;
+        cout<<"Unsigned Int: 33"<<endl;
+        cout<<"Short Int: 17"<<endl;
+        cout<<"Unsigned Short: 17"<<endl;
+        cout<<"Long Int: 65"<<endl;
+        cout<<"Unsigned Long Int: 65"<<endl;
+        cout<<"Float: 34"<<endl;
+        cout<<"Double: 170"<<endl;
+        cout<<"Long Long Int: 65"<<endl;
+        cout<<"Unsigned Long Long Int: 65"<<endl<<endl;
+        
+ 
+        
+        
 }
 
 void problem6(){
