@@ -25,9 +25,17 @@ struct Employee {
             float rtepy;
             float total;
         };
-
+//Problem 3
+        struct statsResult
+{
+    float avg;
+    float median;
+    int  *mode;   //array containing the modes
+    int nModes;  //number of modes in the array
+    int maxFreq; //max frequency of modes
+};
 //Global Constants Here!!!
-
+vector<int> m;
 //Function Prototypes Here!!!
 void Menu();
 int getN();
@@ -38,7 +46,8 @@ void problem3();
 void problem4();
 void problem5();
 void problem6();
-
+statsResult *avgMedMode(vector<int> ,int); 
+void printStat(struct statsResult);
 //Begin Execution Here!!!
 int main(int argv,char *argc[]){
     int inN;
@@ -197,6 +206,24 @@ void problem2(){
 
 void problem3(){
         cout<<"In problem # 3"<<endl<<endl;
+        //Declare Variables
+        vector <int> arr;
+        int num;
+        statsResult *x;
+        
+        //Initialize the variables
+        cout<<"How many input would you like to fill in the array?"<<endl;
+        cin>>num;
+        cout<<"Please enter the array values:"<<endl;
+        for(int i = 0; i<num;i++){
+            cout<<"Value "<<i+1<<":";
+            arr.push_back(int());
+            cin>>arr[i];
+        }
+        x = avgMedMode (arr,arr.size());
+        
+        printStat(*x);
+        
 }
 
 void problem4(){
@@ -233,12 +260,27 @@ void problem4(){
         num[i] = code[i]-'0';
         num[i]+=5;
         num[i]%=8;
-         cout<<num[i];
+        cout<<num[i];
         }
+        cout<<endl;
+       
+        code[1] = code[0];
+        code[0] = x0[0];
+        code[3] =  code[2];
+        code[2] = y2[0];
         
+        //Determine if the user would like to decrypt
+        cout<<"Your decrypted 4 digit number is : ";
+        for (int i = 0;i<4;i++){
+        num[i] = code[i]-'0';
+        num[i]+=8;
+        num[i]-=5;
+        num[i]%=8;
+        cout<<num[i];
+        }
+        cout<<endl;
+           
        
-       
-
 }
 
 void problem5(){
@@ -251,4 +293,75 @@ void problem6(){
 
 void def(int inN){
         cout<<"You typed "<<inN<<" to exit the program"<<endl;
+}
+
+//Problem 3
+statsResult *avgMedMode(vector<int> arr,int num){
+    //Declare Variables
+    statsResult *z = new statsResult;  
+    //calculate mean - add all values /2
+        for(int i = 0; i<num;i++){
+            z->avg += arr[i];
+    }
+    //divide by the total number of values to obtain mean
+    z->avg /= num;
+    
+    
+    //Median
+    /*Put the data from array into a vector, this allows us to use the sort
+    function to easily sort the list in ascending order*/
+    sort(arr.begin(),arr.end()); //must be sorted for median 
+    
+    cout<<endl;
+    //Determine if median is even or odd - then determine median number
+    if (num  % 2 == 0){ //determines if even
+      z->median = (arr[num / 2 - 1] + arr[num / 2]) / 2;
+    }else{ //Odd number of values = size / 2;
+      z->median = arr[num / 2];
+    }
+    
+        //Use a loop to compare values of array
+    int number = arr[0]; //compare number
+    int count = 1;        //counter to track the frequency
+    int freq = 1;           //frequency of the mode  
+    for (int i=1; i<num; i++){
+      if (arr[i] == number){ //if the numbers are the same
+         count++; //add 1 to the frequency
+      }else{
+            if (count > freq) //if the new number has a greater freq.
+            {     m.clear();
+                  freq = count;
+                  m.push_back(int(number));
+            }else if (count == freq){
+                  m.push_back(int(number));  
+            }
+            
+           count = 1;       //reset the count for the next number
+           number = arr[i]; //set the number = to the old one
+  }
+}
+   
+    z->maxFreq = freq;
+    z->nModes = m.size();
+    z->mode = new int[m.size()];
+    for(int i = 0; i<m.size();i++){
+    z->mode[i] = m[i];
+    }
+    return z;
+
+
+} 
+
+
+void printStat(struct statsResult y){
+    cout<<"Mean: "<<y.avg<<endl;
+    cout<<"Median: "<<y.median<<endl;
+    for(int i =0; i<(sizeof y.mode / sizeof y.mode[0]);i++){
+    cout<<"Mode: "<<*(y.mode)<<endl;
+    y.mode++;
+    }
+    
+    cout<<"Number of Modes: "<<y.nModes<<endl;
+    cout<<"Mode Frequency: "<<y.maxFreq<<endl;
+    
 }
