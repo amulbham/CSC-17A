@@ -345,6 +345,22 @@ void problem5(){
 
 void problem6(){
         cout<<"In problem # 6"<<endl<<endl;
+        cout<<"Part A:"<<endl;
+        cout<<"2.125: "<<endl;
+        cout<<"Binary: 10.001\n"
+                "Hex: 2.2\n"
+                "Octal: 2.1\n"
+                "Float Hex: C0080000"<<endl<<endl;
+        cout<<".06640625: "<<endl;
+        cout<<"Binary: 0.00010001\n"
+                "Hex: 0.000011\n"
+                "Octal: 0.042\n"
+                "Float Hex: 3D880000"<<endl<<endl;
+        
+        cout<<"Part B: Convert Float to Decimal"<<endl;
+        cout<<"46666601: 14,745"<<endl;
+        cout<<"46666602: 14,746"<<endl;
+        cout<<"B9999AFE: -1.200042486 * 2^-12 or -0.0002929791"<<endl;
         
         
 }
