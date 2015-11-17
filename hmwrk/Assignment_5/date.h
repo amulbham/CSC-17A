@@ -28,6 +28,5 @@ private:
     string mon;
     string getMonth(int);
 };
-
 #endif	/* DATE_H */
 
