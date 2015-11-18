@@ -5,6 +5,7 @@
  * Created on November 17, 2015, 2:16 PM
  */
 #include <iostream>
+#include <vector>
 using namespace std;
 #ifndef PERSONAL_H
 #define	PERSONAL_H
@@ -20,7 +21,7 @@ public:
     void getName(){cout<<name<<endl;}
     void getAdd(){cout<<address<<endl;}
     void getAge(){cout<<age<<endl;}
-    void getPhone(){cout<<phone<<endl;};
+    void getPhone(){cout<<phone<<endl;}
     virtual ~personal();
 private:
     string name, address,phone;

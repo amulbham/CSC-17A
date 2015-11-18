@@ -6,6 +6,7 @@
 //Library includes Here!!!
 #include <iostream>
 #include <cstring>
+#include <vector>
 #include "date.h"
 #include "personal.h"
 
@@ -100,14 +101,43 @@ void problem1(){
 void problem2(){
         cout<<"In problem # 2"<<endl<<endl;
         //Declare variable to temp store the information
-        string x;
-        int y;
-        personal me;
+        string x; //Dummy variable used to store the string values of the objects
+        int y; //Dummy variable used to fill the age 
+        char z; //Sentinel value used to end the loops
+        int i =0; //int to keep track of the records of users 
+        vector<personal> user;
         //Get personal information from the user
-        cout<<"Please enter your name: ";cin>>x;
-        me.setName(x);
+        do{
+        user.push_back (personal());
+        cin.ignore();
+        cout<<"Please enter your name: ";getline(cin,x);
+        user[i].setName(x);
+        cout<<"\nPlease enter your address: "; getline(cin,x);
+        user[i].setAdd(x);
+        cout<<"\nPlease enter your age: "; cin>>y;
+        cin.ignore();
+        user[i].setAge(y);
+        cout<<"\nPlease enter your phone number: "; getline(cin,x);
+        user[i].setPhone(x);
+        i++; //Increment to the next user in case new data in entered
+        cout<<"\nWould you like to enter another user?"<<endl;
+        cin.get(z); 
+        }while(tolower(z)== 'y');
         
-        
+        //Output the relevant user information based on the user choice 
+        do{
+        _restart:
+        cout<<"Which user information would you like to see? (1-3)"<<endl;
+        cin>>i;
+        if (i<1 || i>user.size() ) {cout<<"No such user exits!Enter a valid user!"<<endl; goto _restart;}
+        i-=1;
+        user[i].getName();
+        user[i].getAge();
+        user[i].getPhone();
+        user[i].getAdd();
+        cout<<"Would you to view someone else? y/n"<<endl;
+        cin.ignore(); cin.get(z);
+        }while(tolower(z) == 'y');
 }
 
 void problem3(){
