@@ -9,6 +9,7 @@
 #include <vector>
 #include "date.h"
 #include "personal.h"
+#include "RetailItem.h"
 
 using namespace std;
 
@@ -108,6 +109,7 @@ void problem2(){
         vector<personal> user;
         //Get personal information from the user
         do{
+        //Create a new instance of the personal object, store in the user vector    
         user.push_back (personal());
         cin.ignore();
         cout<<"Please enter your name: ";getline(cin,x);
@@ -122,30 +124,72 @@ void problem2(){
         i++; //Increment to the next user in case new data in entered
         cout<<"\nWould you like to enter another user?"<<endl;
         cin.get(z); 
+        //If the user would like to enter a new record, create a new instance of
+        //user and loop back to the questions 
         }while(tolower(z)== 'y');
         
         //Output the relevant user information based on the user choice 
         do{
+         //Restart point incase the user enters an invalid option 
         _restart:
+        //Determine which user information they would like to see 
         cout<<"Which user information would you like to see? (1-3)"<<endl;
         cin>>i;
         if (i<1 || i>user.size() ) {cout<<"No such user exits!Enter a valid user!"<<endl; goto _restart;}
-        i-=1;
+        i-=1; //Subtract 1, as the data begins at 0
         user[i].getName();
         user[i].getAge();
         user[i].getPhone();
         user[i].getAdd();
+        //Determine if the user would like to view a new record 
         cout<<"Would you to view someone else? y/n"<<endl;
         cin.ignore(); cin.get(z);
         }while(tolower(z) == 'y');
 }
 
 void problem3(){
-        cout<<"In problem # 3"<<endl<<endl;
+        cout<<"In problem # 5"<<endl<<endl;
+        //Declare the variables
+        float pri; //stores the price of an item
+        string d;   //stores the description of an item 
+        int stock; //stores the number of stock of an item 
+        char c;    //determines if user wants to continue
+        vector<RetailItem> item; //stores each instance of each item 
+        
+        //Initialize the instances of the retail item vector
+        do{
+            //Create a new item and store as a retail item class 
+            cout<<"Please enter a brief description of the product"<<endl;
+            cin.ignore();
+            getline(cin,d);
+            cout<<"Please enter the units currently on hand: "; cin>>stock;
+            cout<<"Please enter the retail price: $"; cin>>pri;
+            //Setup the constructor for the RetailItem instance
+            item.push_back(RetailItem(d,stock,pri));
+             //Loop back if the user would like to enter a new product 
+            cout<<"\nWould you like to enter another product? y/n"<<endl;
+            cin.ignore(); cin.get(c);
+        }while(tolower(c) == 'y');
+        do{
+        _again:
+        int i = 0;
+        cout<<"Which item information would you like to see? Type an item #"<<endl;
+        cin>>i;
+        if (i<1 || i>item.size() || isalpha(i) ) {cout<<"Item information does not exist!"<<endl; goto _again;}
+        i-=1; //Subtract 1, as the data begins at 0
+        cout<<"Description: "<<endl<<item[i].getDesc()<<endl;
+        cout<<"Price: "<<item[i].getPrice()<<endl;
+        cout<<"Units on hand: "<<item[i].getUnits()<<endl;
+        //Determine if the user would like to view a new record 
+        cout<<"Would you to view another item? y/n"<<endl;
+        cin.ignore(); cin.get(c);
+        }while(tolower(c) == 'y');
+        
+        
 }
 
 void problem4(){
-        cout<<"In problem # 4"<<endl<<endl;
+        cout<<"In problem # 6"<<endl<<endl;
 }
 
 

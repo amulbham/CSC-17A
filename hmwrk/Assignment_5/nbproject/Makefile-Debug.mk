@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/RetailItem.o \
 	${OBJECTDIR}/date.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/personal.o
@@ -63,6 +64,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/assignment_5.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/assignment_5 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/RetailItem.o: RetailItem.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RetailItem.o RetailItem.cpp
 
 ${OBJECTDIR}/date.o: date.cpp 
 	${MKDIR} -p ${OBJECTDIR}
