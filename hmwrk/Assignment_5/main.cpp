@@ -10,6 +10,7 @@
 #include "date.h"
 #include "personal.h"
 #include "RetailItem.h"
+#include "inventory.h"
 
 using namespace std;
 
@@ -190,6 +191,44 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 6"<<endl<<endl;
+        //Declare the variables
+        vector <inventory> item;
+        float x;
+        int y;
+        char c;
+        int i = 0;
+        //Intiailize an instance of item
+        //Loop until the user is finished entering in products
+        do{
+            //Create a new instance of the item, which is initilized to zero
+            item.push_back(inventory());
+            cout<<"Please enter the item #"<<endl;
+            cin>>y; item[i].setItemNumber(y);
+            cout<<"Please enter the quantity of the item"<<endl;
+            cin>>y; item[i].setQuantity(y);
+            cout<<"What is the wholesale cost per unit?"<<endl;
+            cin>>x; item[i].setCost(x);
+            item[i].setTotalCost(); //Calculate the total cost 
+            cout<<"Would you like to enter a new product? y/n"<<endl;
+            cin.ignore(); cin.get(c);
+            i++; //increment to the next instance 
+        }while(tolower(c) == 'y');
+        
+        //Output the item information based on the request
+        do{
+        _do:
+        cout<<"Please Enter the item number of the product you would like to see"<<endl;
+        cin>>i;
+        i-=1;
+        if (i<0 || i>item.size()) {cout<<"Item does not exist!"<<endl; goto _do;}
+        cout<<"Item # "<<item[i].getItemNumber()<<endl;
+        cout<<"Quantity: "<<item[i].getQuantity()<<endl;
+        cout<<"Cost per Unit: $"<<item[i].getCost()<<endl;
+        cout<<"Total Cost: $"<<item[i].getTotalCost()<<endl;
+        cout<<"Would you like to view another product?"<<endl;
+        cin.ignore(); cin.get(c);
+        }while(tolower(c)== 'y');
+        
 }
 
 
