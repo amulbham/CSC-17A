@@ -134,7 +134,7 @@ void problem2(){
          //Restart point incase the user enters an invalid option 
         _restart:
         //Determine which user information they would like to see 
-        cout<<"Which user information would you like to see? (1-3)"<<endl;
+        cout<<"Which user information would you like to see?"<<endl;
         cin>>i;
         if (i<1 || i>user.size() ) {cout<<"No such user exits!Enter a valid user!"<<endl; goto _restart;}
         i-=1; //Subtract 1, as the data begins at 0
@@ -197,6 +197,7 @@ void problem4(){
         int y;
         char c;
         int i = 0;
+        bool found = true;
         //Intiailize an instance of item
         //Loop until the user is finished entering in products
         do{
@@ -213,19 +214,26 @@ void problem4(){
             cin.ignore(); cin.get(c);
             i++; //increment to the next instance 
         }while(tolower(c) == 'y');
-        
+        int j;
         //Output the item information based on the request
         do{
         _do:
         cout<<"Please Enter the item number of the product you would like to see"<<endl;
         cin>>i;
-        i-=1;
-        if (i<0 || i>item.size()) {cout<<"Item does not exist!"<<endl; goto _do;}
-        cout<<"Item # "<<item[i].getItemNumber()<<endl;
-        cout<<"Quantity: "<<item[i].getQuantity()<<endl;
-        cout<<"Cost per Unit: $"<<item[i].getCost()<<endl;
-        cout<<"Total Cost: $"<<item[i].getTotalCost()<<endl;
-        cout<<"Would you like to view another product?"<<endl;
+        for(j = 0; j<item.size();j++){
+            int k = item[j].getItemNumber();
+            if (i == k){
+                found = false;
+                goto next;
+            }
+        }
+        next:
+        if (found) {cout<<"Item does not exist!"<<endl; goto _do;}
+        cout<<"Item # "<<item[j].getItemNumber()<<endl;
+        cout<<"Quantity: "<<item[j].getQuantity()<<endl;
+        cout<<"Cost per Unit: $"<<item[j].getCost()<<endl;
+        cout<<"Total Cost: $"<<item[j].getTotalCost()<<endl;
+        cout<<"Would you like to view another product?y/n"<<endl;
         cin.ignore(); cin.get(c);
         }while(tolower(c)== 'y');
         
