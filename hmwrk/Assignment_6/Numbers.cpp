@@ -177,18 +177,10 @@ void Numbers::print(int digits){
                               break;
                          }
             }
-                         
-       
-       
-       
        cout<<endl<<endl;
                        
        }
                               
-       
-       
-
-
 Numbers::Numbers(const Numbers& orig) {
 }
 
