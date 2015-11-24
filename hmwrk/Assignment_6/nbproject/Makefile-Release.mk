@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/DayOfYear.o \
+	${OBJECTDIR}/DayOfYear2.o \
 	${OBJECTDIR}/Numbers.o \
 	${OBJECTDIR}/main.o
 
@@ -68,6 +69,11 @@ ${OBJECTDIR}/DayOfYear.o: DayOfYear.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DayOfYear.o DayOfYear.cpp
+
+${OBJECTDIR}/DayOfYear2.o: DayOfYear2.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DayOfYear2.o DayOfYear2.cpp
 
 ${OBJECTDIR}/Numbers.o: Numbers.cpp 
 	${MKDIR} -p ${OBJECTDIR}

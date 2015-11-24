@@ -12,6 +12,8 @@ using namespace std;
 //Classes created for each problem 
 #include "Numbers.h"
 #include "DayOfYear.h"
+#include "DayOfYear2.h"
+
 //Global Constants Here!!!
 
 //Function Prototypes Here!!!
@@ -75,7 +77,6 @@ void problem1(){
 
 void problem2(){
         cout<<"In problem # 2"<<endl<<endl;
-        
         //Declare variables
         int day;
         
@@ -96,6 +97,29 @@ void problem2(){
 
 void problem3(){
         cout<<"In problem # 3"<<endl<<endl;
+        //Declare variables
+        int day;
+        
+        redo:
+        //Initialize the day the user would like to see
+        cout<<"Enter the day of the year you would like to see"<<endl;
+        cin>>day;
+        
+        //Validate the user input to make sure it is valid day
+        if (day<0 || day>365){cout<<"Error! Day must be between 1-365"<<endl;goto redo;}
+        
+        //Create three instances of the dayofyear class, once to represent
+        //the current day, the previous day, and the upcoming day. 
+        cout<<"Current Day"<<endl;
+        DayOfYear2 date(day);
+        cout<<"Previous Day"<<endl;
+        DayOfYear2 date3 = --date;
+        cout<<"Next Day"<<endl;
+        DayOfYear2 date2 = ++date;
+        
+       
+        
+        
 }
 
 void problem4(){
