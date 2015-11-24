@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>DayOfYear.h</itemPath>
       <itemPath>DayOfYear2.h</itemPath>
+      <itemPath>NumDays.h</itemPath>
       <itemPath>Numbers.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -17,6 +18,7 @@
                    projectFiles="true">
       <itemPath>DayOfYear.cpp</itemPath>
       <itemPath>DayOfYear2.cpp</itemPath>
+      <itemPath>NumDays.cpp</itemPath>
       <itemPath>Numbers.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -49,6 +51,10 @@
       <item path="DayOfYear2.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DayOfYear2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NumDays.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NumDays.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Numbers.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -84,6 +90,10 @@
       <item path="DayOfYear2.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DayOfYear2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NumDays.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NumDays.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Numbers.cpp" ex="false" tool="1" flavor2="0">
       </item>

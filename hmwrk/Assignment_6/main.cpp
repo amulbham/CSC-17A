@@ -13,7 +13,8 @@ using namespace std;
 #include "Numbers.h"
 #include "DayOfYear.h"
 #include "DayOfYear2.h"
-
+#include "NumDays.h"
+#include <vector>
 //Global Constants Here!!!
 
 //Function Prototypes Here!!!
@@ -124,6 +125,47 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 4"<<endl<<endl;
+        
+        //Declare Variables
+        float hrs;
+        float sum,diff;
+        vector<NumDays> x;      
+        x.push_back(NumDays()); 
+        x.push_back(NumDays()); 
+        
+        for(int i = 0; i<2;i++){
+        //Initialize the hours worked
+        cout<<"User "<<i+1<<endl; 
+        cout<<"Please Enter the amount of hours worked:"; cin>>hrs;
+        //Set the hours for the x instance of the numdays class
+        x[i].setHrs(hrs);
+        x[i].print();
+        cout<<endl;
+        }
+        sum = x[0]+x[1];
+        diff = x[0] - x[1];
+        cout<<endl;
+        
+        //Output the sum and difference of the hours worked by both users
+        cout<<"The sum of the hours worked is : "<<sum<<endl;
+        cout<<"The difference between the hours worked is : "<<diff<<endl<<endl;
+      
+        //Now increment the hours by 1 and display difference
+        cout<<"Hours Incremented by 1: "<<endl;
+        for (int i = 0; i<2; i++){
+            ++x[i];
+            x[i].print();
+            --x[i];
+        }
+        //Decrement hours by 1 and display the difference
+        cout<<endl<<"Hours worked decremented by 1: "<<endl;
+        for (int i =0; i<2; i++){
+            --x[i];
+            x[i].print();
+            --x[i];
+        
+        }
+        
 }
 
 
