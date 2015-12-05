@@ -11,13 +11,14 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-
+//User Created classes
 #include "ProductionWorker.h"
 #include "Employee.h"
 #include "Time.h"
 #include "ProductionWorker.h"
 #include "MilTime.h"
 #include "TimeClock.h"
+#include "Essay.h"
 using namespace std;
 
 //Global Constants Here!!!
@@ -48,11 +49,11 @@ int main(int argv,char *argc[]){
 }
 
 void Menu(){
-    cout<<"Menu for the Assignment_7"<<endl;
+    cout<<"Menu for the Assignment 7"<<endl;
     cout<<"Type 1 for problem 1"<<endl;
-    cout<<"Type 4 for problem 2"<<endl;
-    cout<<"Type 5 for problem 3"<<endl;
-    cout<<"Type 6 for problem 4"<<endl;
+    cout<<"Type 2 for problem 4"<<endl;
+    cout<<"Type 3 for problem 5"<<endl;
+    cout<<"Type 4 for problem 6"<<endl;
     cout<<"Type anything else to exit \n"<<endl;
 }
 
@@ -72,9 +73,9 @@ void problem1(){
         string n;   //name of the employee
         
         //Initialize the variables from the user
-        cout<<"Please enter the employee name: "; getline(cin,n);
+        cout<<"Please enter the employee name: ";cin.ignore(); getline(cin,n);
         error:
-        cout<<"Please enter the hire date: "; getline(cin,hire);
+        cout<<"Please enter the hire date: "; getline(cin,hire);   
         if (sizeof(hire)>9){cout<<"Please enter as xx/xx/xxxx format"<<endl;goto error;}
         cout<<"Please enter employee number: "; cin>>nm;
         cout<<"Please enter the rate of pay: $"; cin>>p;
@@ -82,15 +83,17 @@ void problem1(){
         cout<<"Please enter the shift (1 or 2) :"; cin>>s;
         if (s != 1 && s != 2){cout<<"Enter a valid shift"<<endl;goto shift;}
         
+        cout<<endl;
         //Create object for the employee with the required parameters
         ProductionWorker x(n,nm,hire,s,p);
         
         //Output the record of the employee
-        x.giveName();
-        x.giveDate();
-        x.giveNum();
-        x.givePay();
-        x.giveShift();
+        cout<<"Employee Name: "; x.giveName();
+        cout<<"Hire Date: "; x.giveDate();
+        cout<<"Employee #: "; x.giveNum();
+        cout<<"Pay Rate :"; x.givePay();
+        cout<<"Shift: "; x.giveShift();
+        cout<<endl<<endl;
         
         
 }
@@ -174,6 +177,34 @@ void problem3(){
 
 void problem4(){
         cout<<"In problem # 6"<<endl<<endl;
+        cout<<"This programs determines a students grade for an Essay"<<endl;
+        
+        //Declare Variables
+        int g,s,l,c; //Temp variables to store the user input
+        
+        //Initialize the variables
+        gram:
+        cout<<"Please Enter the points earned on Grammar(30 Max): "; cin>>g;
+        if (g > 30 || g< 0){cout<<"Must between 0 and 30 points!"<<endl; goto gram;}
+        
+        spell:
+        cout<<"Please Enter the points earned on Spelling(20 Max): "; cin>>s;
+        if (s > 20 || s< 0){cout<<"Must between 0 and 20 points!"<<endl; goto spell;}
+
+        len:
+        cout<<"Please Enter the points earned on Length(20 Max): "; cin>>l;
+        if (l > 20 || l< 0){cout<<"Must between 0 and 20 points!"<<endl; goto len;}
+        
+        cont:
+        cout<<"Please Enter the points earned on Content(30 Max): "; cin>>c;
+        if (c > 30 || c< 0){cout<<"Must between 0 and 30 points!"<<endl; goto cont;}
+        
+        //Create a new essay object for the student
+        Essay x(g,s,l,c);
+        
+        //Output the score to the user
+        cout<<endl<<"Score: "<<x.getScore()<<endl;
+        cout<<"Grade: "<<x.getLetterGrade()<<endl<<endl;
 }
 
 void def(int inN){

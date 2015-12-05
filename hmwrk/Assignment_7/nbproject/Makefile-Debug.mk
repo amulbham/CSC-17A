@@ -36,6 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Employee.o \
+	${OBJECTDIR}/Essay.o \
+	${OBJECTDIR}/GradedActivity.o \
 	${OBJECTDIR}/MilTime.o \
 	${OBJECTDIR}/ProductionWorker.o \
 	${OBJECTDIR}/Time.o \
@@ -71,6 +73,16 @@ ${OBJECTDIR}/Employee.o: Employee.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Employee.o Employee.cpp
+
+${OBJECTDIR}/Essay.o: Essay.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Essay.o Essay.cpp
+
+${OBJECTDIR}/GradedActivity.o: GradedActivity.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GradedActivity.o GradedActivity.cpp
 
 ${OBJECTDIR}/MilTime.o: MilTime.cpp 
 	${MKDIR} -p ${OBJECTDIR}
