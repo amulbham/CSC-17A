@@ -36,7 +36,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Employee.o \
+	${OBJECTDIR}/MilTime.o \
 	${OBJECTDIR}/ProductionWorker.o \
+	${OBJECTDIR}/Time.o \
 	${OBJECTDIR}/main.o
 
 
@@ -69,10 +71,20 @@ ${OBJECTDIR}/Employee.o: Employee.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Employee.o Employee.cpp
 
+${OBJECTDIR}/MilTime.o: MilTime.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MilTime.o MilTime.cpp
+
 ${OBJECTDIR}/ProductionWorker.o: ProductionWorker.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ProductionWorker.o ProductionWorker.cpp
+
+${OBJECTDIR}/Time.o: Time.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Time.o Time.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

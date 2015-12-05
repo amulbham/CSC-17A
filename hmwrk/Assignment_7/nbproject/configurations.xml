@@ -5,7 +5,9 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Employee.h</itemPath>
+      <itemPath>MilTime.h</itemPath>
       <itemPath>ProductionWorker.h</itemPath>
+      <itemPath>Time.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,7 +17,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Employee.cpp</itemPath>
+      <itemPath>MilTime.cpp</itemPath>
       <itemPath>ProductionWorker.cpp</itemPath>
+      <itemPath>Time.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -44,9 +48,17 @@
       </item>
       <item path="Employee.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MilTime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MilTime.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ProductionWorker.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProductionWorker.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Time.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Time.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -75,9 +87,17 @@
       </item>
       <item path="Employee.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MilTime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MilTime.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ProductionWorker.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProductionWorker.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Time.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Time.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

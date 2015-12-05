@@ -14,6 +14,9 @@
 
 #include "ProductionWorker.h"
 #include "Employee.h"
+#include "Time.h"
+#include "ProductionWorker.h"
+#include "MilTime.h"
 using namespace std;
 
 //Global Constants Here!!!
@@ -92,15 +95,49 @@ void problem1(){
 }
 
 void problem2(){
-        cout<<"In problem # 2"<<endl<<endl;
+        cout<<"In problem # 4"<<endl<<endl;
+        
+        //Declare Variables
+        int milHours;//24 hour format for hours
+        int milSec; //24 hour format for seconds 
+        int hour; //to store the standard hours
+        int min;
+        int sec; //to store the standard seconds
+        
+        //Get the military hours for conversion from the user
+        _hours:
+        cout<<"Please Enter the time in Military Format: "; cin>>milHours;
+        if (milHours>2359 || milHours<0 || milHours %100>59 || milHours %100<0){cout<<"Invalid Hour!"<<endl;
+        goto _hours;}
+        _sec:
+        cout<<"Please enter the seconds: "; cin>>milSec;
+        if (milSec>59 || milSec<0){cout<<"Invalid seconds!"<<endl; 
+        goto _sec;}
+        
+        //Create a new object for the military time class
+        MilTime x(milHours,milSec);
+        
+        //Output the hours in standard time format for the user
+        hour = x.getHour();
+        if (hour == 0){hour = 12;}
+        sec = x.getSec();
+        min = x.getMin();
+        
+        cout<<"Military Time - "<<milHours<<" hours "<<milSec<<" seconds"<<endl;
+        if (milHours>=1200){
+        cout<<"Standard Time - "; x.check(hour); cout<<hour; cout<<":"; x.check(min); cout<<min; cout<<":"; x.check(sec); cout<<sec<<" PM"<<endl<<endl;
+        }else if (milHours<1200){
+        cout<<"Standard Time - "; x.check(hour); cout<<hour; cout<<":"; x.check(min); cout<<min; cout<<":"; x.check(sec); cout<<sec<<" AM"<<endl<<endl;
+        }
+        
 }
 
 void problem3(){
-        cout<<"In problem # 3"<<endl<<endl;
+        cout<<"In problem # 6"<<endl<<endl;
 }
 
 void problem4(){
-        cout<<"In problem # 4"<<endl<<endl;
+        cout<<"In problem # "<<endl<<endl;
 }
 
 void def(int inN){
