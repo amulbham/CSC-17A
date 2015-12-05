@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MilTime.o \
 	${OBJECTDIR}/ProductionWorker.o \
 	${OBJECTDIR}/Time.o \
+	${OBJECTDIR}/TimeClock.o \
 	${OBJECTDIR}/main.o
 
 
@@ -85,6 +86,11 @@ ${OBJECTDIR}/Time.o: Time.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Time.o Time.cpp
+
+${OBJECTDIR}/TimeClock.o: TimeClock.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeClock.o TimeClock.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

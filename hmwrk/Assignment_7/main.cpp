@@ -17,6 +17,7 @@
 #include "Time.h"
 #include "ProductionWorker.h"
 #include "MilTime.h"
+#include "TimeClock.h"
 using namespace std;
 
 //Global Constants Here!!!
@@ -49,9 +50,9 @@ int main(int argv,char *argc[]){
 void Menu(){
     cout<<"Menu for the Assignment_7"<<endl;
     cout<<"Type 1 for problem 1"<<endl;
-    cout<<"Type 2 for problem 2"<<endl;
-    cout<<"Type 3 for problem 3"<<endl;
-    cout<<"Type 4 for problem 4"<<endl;
+    cout<<"Type 4 for problem 2"<<endl;
+    cout<<"Type 5 for problem 3"<<endl;
+    cout<<"Type 6 for problem 4"<<endl;
     cout<<"Type anything else to exit \n"<<endl;
 }
 
@@ -133,11 +134,46 @@ void problem2(){
 }
 
 void problem3(){
-        cout<<"In problem # 6"<<endl<<endl;
+        cout<<"In problem # 5"<<endl<<endl;
+        
+        //Declare Variables
+        int hours[2]; //Starting time and ending time
+        int sec[2];
+        int diff,diffS; //To hold the difference in hours and seconds
+        
+        cout<<"This program determines the time elapsed between two two times"<<endl;
+        cout<<endl;
+        
+        //Initilize the the starting and ending time
+        
+        //Use a for loop to get two inputs for times, verify the inputs
+        for(int i = 0; i<2; i++){
+        cout<<"Time "<<i+1<<": "<<endl;    
+        _hours:
+            if (i == 0){cout<<"Please enter the starting time : ";}
+            else{cout<<"Please enter the ending time: ";}
+            cin>>hours[i];
+        if (hours[i]>2359 || hours[i]<0 || hours[i] %100>59 || hours[i] %100<0){cout<<"Invalid Hour!"<<endl;
+        goto _hours;}
+        _sec:
+        cout<<"Please enter the seconds: "; cin>>sec[i];
+        if (sec[i]>59 || sec[i]<0){cout<<"Invalid seconds!"<<endl; 
+        goto _sec;}
+        cout<<endl;
+        }
+        
+        //Create a new TimeClock object
+        TimeClock x(hours[0],sec[0],hours[1],sec[1]);
+        
+        //Output the difference between the two times
+        cout<<"Time Elapsed: "; x.check(x.getHour()); cout<<x.getHour()
+        <<":"; x.check(x.getMin()); cout<<x.getMin()<<":";
+        x.check(x.getSec()); cout<<x.getSec()
+                <<" (hrs:mins:secs)"<<endl<<endl;
 }
 
 void problem4(){
-        cout<<"In problem # "<<endl<<endl;
+        cout<<"In problem # 6"<<endl<<endl;
 }
 
 void def(int inN){

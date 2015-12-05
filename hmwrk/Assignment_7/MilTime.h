@@ -25,6 +25,7 @@ public:
     void convert (int mH, int mS){
         if (mH<1200){hour = mH / 100;min = mH % 100;sec = mS;}
         else if (mH>=1200){hour = (mH - 1200) /100;min = (mH - 1200)%100;sec = mS;}
+        if (min>60){min -=40;}
     }
     void setTime(int h, int s){
         milHours = h;
@@ -38,7 +39,7 @@ public:
     int getMsec(){return milSeconds;}
     MilTime(const MilTime& orig);
     virtual ~MilTime();
-private:
+protected:
     int milHours;
     int milSeconds;
     
