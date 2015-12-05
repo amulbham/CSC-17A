@@ -1,15 +1,16 @@
 /* 
  * File:   ProductionWorker.cpp
- * Author: rcc
+ * Author: Amul.bham
  * 
- * Created on December 2, 2015, 12:11 PM
+ * Created on December 4, 2015, 7:02 PM
  */
 
 #include "ProductionWorker.h"
 #include <iostream>
+#include <string>
+#include <cstring>
+using namespace std;
 
-ProductionWorker::ProductionWorker() {
-}
 
 ProductionWorker::ProductionWorker(const ProductionWorker& orig) {
 }
