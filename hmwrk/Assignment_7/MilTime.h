@@ -32,6 +32,7 @@ public:
         milSeconds = s;
         convert(h,s);
     }
+    //Checks if the digit is 0, if so, add another 0 to fit 00:00:00 format
     void check(int x){
         if (x<10){cout<<"0";}
     }

@@ -15,7 +15,9 @@ class TimeClock : public MilTime {
 public:
     TimeClock(): MilTime(){diff = 0;diffS = 0;}
     TimeClock(int start,int sec, int end,int sec2){
+        //Determine the difference in the hours
         diff = start - end;
+        //Determine the difference in the seconds
         diffS = sec - sec2;
         //Check to make sure the difference is positive
         if (diff < 0){diff *=-1;}
