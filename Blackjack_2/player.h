@@ -7,17 +7,19 @@
 
 #ifndef PLAYER_H
 #define	PLAYER_H
+
 #include <vector>
 #include <iostream>
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <fstream>
+#include <cstring>
 using namespace std;
 
 class player {
 public:
     player();
-    
     string getName(){return name;}
     int getBal(){return bal;}
     void setBal(int b){bal += b;}

@@ -4,15 +4,17 @@
  * 
  * Created on December 8, 2015, 7:37 PM
  */
+using namespace std;
 
-#include "Deck.h"
+
 #include <vector>
 #include <iostream>
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <fstream>
+#include "Deck.h"
 
-using namespace std;
 
 Deck::Deck() {
     card = 0;
@@ -25,8 +27,8 @@ Deck::Deck() {
 
 void Deck::makeDeck(){
     //Initialize a vector with values 2-53 to represent each card in a 52 card deck
-    for(int x=2;deck.size() < tCards ;x++){
-        deck.push_back(x);
+    for(y=2;deck.size() < tCards ;y++){
+        deck.push_back(y);
         }
     //After creating a array of 2-53, send to function to random shuffle the cards
         shuffleCards();
@@ -36,13 +38,17 @@ int Deck::drawCard(){
     /*Re shuffle the cards only if the card count goes over 30, this 
       allows the game to not be predictive, also let the players know 
       so that its fair and the players are aware a new deck is being used*/
-     if (card>30) {shuffleCards(); cout<<"\nCurrently Re-shuffling Cards..."<<endl;}  
+     if (card>30) {shuffleCards();} 
+     
     //Reset the total prior to each new card drawn
     total = 0;
+    
     //Draw a card from deck and first determine the face and the numerical value
        getFace();
+       
     //Then the numerical value of the card must be translated to a string   
        getValue();
+       
     //Display the drawn card for the user   
        dispCards();
        
@@ -55,6 +61,7 @@ int Deck::drawCard(){
 }
 
 void Deck::shuffleCards(){
+    cout<<"\nShuffling Cards..."<<endl;
     srand (time(0));
     random_shuffle(deck.begin(),deck.end());
 }
@@ -62,6 +69,7 @@ void Deck::shuffleCards(){
 void Deck::getFace(){
         //Set the total to be returned equal to the current card value
         total = deck[card];
+        
         //Determine suit and card total based on value of drawn card 2-53
           if (deck[card]<=14){ 
               face = "Hearts";

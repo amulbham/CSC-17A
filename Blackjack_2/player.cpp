@@ -11,6 +11,8 @@
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <fstream>
+#include <cstring>
 
 using namespace std;
 player::player() {

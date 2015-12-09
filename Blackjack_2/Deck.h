@@ -14,6 +14,8 @@ using namespace std;
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <fstream>
+#include <cstring>
 
 class Deck {
 public:
@@ -28,7 +30,7 @@ public:
     virtual ~Deck();
 private:
     vector<int> deck;
-    int card,total;
+    int card,total,y;
     string face,value;
     static const int tCards = 52;
     
