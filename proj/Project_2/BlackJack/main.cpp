@@ -357,15 +357,7 @@ void displayGreeting(Play &play){
  Return --> the shuffled array back to main
  ******************************************************************************/
 
-void getShuffle(int deck[],int cards){
-    srand (time(0));
-    for(int x=0;x <cards;x++){
-        deck[x]= x+2;
-        }
-     /*Shuffle the deck for all values, using a random number
-     to determine how its shuffled*/ 
-        random_shuffle(&deck[0], &deck[52],genRand);
-}
+
 /****************************************************************************
                           hitORstay  
  ***************************************************************************
@@ -415,82 +407,10 @@ int b =0;      //sentinel value to break out of player card loop
  *******************************************************************************/
 
  void valueCards(Curhand &player){       
-        string faceValue; //face value of card
-        string face;      //suit of the card
-    /*The suit of the card is determined by the value of the card(2-54), 
-     then a value is subtracted so the card falls between 2-14*/
-          if (player.cards<=14){ 
-              face = "Hearts";
-          }else if (player.cards>14 &&player.cards<=27){
-              player.cards -= 13; 
-              face = "Diamonds";
-          }else if (player.cards>27 && player.cards<=40){
-              player.cards -= 26; 
-              face = "Cloves";
-          }else if (player.cards>40){
-              player.cards -=39;
-              face = "Spades";
-            }
+         //face value of card
+    
         /*switch statement used to calculate card total, face value is assigned*/
-        switch(player.cards){ 
-            case 2:
-                player.cardTot+=2;
-                faceValue="Two";
-                break;
-            case 3:
-                player.cardTot+=3;
-                faceValue = "Three";
-                break;   
-            case 4:
-                player.cardTot+=4;
-                faceValue = "Four";
-                break;    
-            case 5:
-                player.cardTot+=5;
-                faceValue = "Five";
-                break;
-            case 6:
-                player.cardTot+=6;
-                faceValue = "Six";
-                break;
-            case 7:
-                player.cardTot+=7;
-                 faceValue = "Seven";
-                break; 
-            case 8:
-                player.cardTot+=8;
-                faceValue = "Eight";
-                break;
-            case 9:
-                player.cardTot+=9;
-                faceValue = "Nine";
-                break;    
-            case 10:
-                player.cardTot+=10;
-                faceValue = "Ten";
-                break; 
-            case 11:
-                player.cardTot+=10;
-                faceValue = "Jack";
-                break; 
-            case 12:
-                player.cardTot+=10;
-                faceValue = "Queen";
-                break; 
-            case 13:
-                player.cardTot+=10;
-                faceValue = "King";
-                break;
-            /*since ace represents two values(1 & 11), program must determine
-            which to represent, if card total is below or equal to ten, it
-            represents an 11 else it represents a 1*/   
-            case 14: 
-                faceValue = "Ace";
-                if(player.cardTot>10){
-                   player.cardTot+=1; 
-                }else if (player.cardTot<=10){
-                    player.cardTot+=11;}
-    }
+        
         player.cards = 0;
         //Output the face value and the suit of the card
         cout<<faceValue<<" of "<<face<<endl;
