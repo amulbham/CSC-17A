@@ -27,42 +27,40 @@ struct Curhand{
     int cardTot;//the player cart total for the current hand
     int bet;    //the player bet for the current hand 
 };
-struct Deck {//allocates an array with 52 values, keeps track of current 
-    
-    int deck[52];//deck of cards with 52 values
-    int count; //The current card number in the deck .
 
-};
-    
 //Global Constants
 
 //User Libraries
-
+#include "Deck.h"
 //Function Prototypes
 void displayGreeting(Play &); //function for greeting player
-void valueCards(Curhand &);       //function add card values + suit
-int genRand (int i) { srand (time(0)); return rand()%i;} //function to generate a random number
-void getShuffle(int deck[],int cards); //creates deck and shuffles cards
 void getUser(Play &,int &); //determines user, initiates greeting
 void hitORstay(Curhand &,Deck &);//handles logic for hitting/staying
 
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
-     const int CARDS = 52; //Number of cards in a standard deck
-     int deck[CARDS];//deck of cards with 52 values
      int *y = NULL; //set = to the user balance to calculate their winnings/losings
      char answ;     //sentinel value used to trigger new hand or end game
-     int num = 0;   //number used to track where the user is in the file
      Play x;        //created to store/restore a players balance and name
      Curhand player;//Object to player the player hand
      Curhand dealer;//object to track the dealer hand
-     Deck cards;
-     /*call the get user function to determine if the player is
-      continuing or starting a new game*/
-     //Get the user information, pass the object of the players, with a number
-     //to store the block of memory that user occupies on the file
-     getUser(x,num);
+     
+     
+     int p;
+         
+    cout<<"                 Casino Bham's BlackJack"<<endl;
+    cout<<"****************************************************************"<<endl;
+   
+     //Determine how many players are going to play
+    _np:
+     cout<<"How many players would like to play? (Up to 4 total)"<<endl;
+     cin>>p;
+     
+     if (p<1 || p>4) {cout<<"Invalid players!"<<endl; goto _np;}
+     
+     
+     
      
      int begBal = x.balance; //tracks what the user started out with
      fstream player_info("player.txt", ios::in | ios::out | ios::binary);
@@ -77,14 +75,6 @@ int main(int argc, char** argv) {
       if(num!=0){
      player_info.seekg(sizeof(Play)*(num-1), ios::beg);
       }
-    //Initialize the deck with values 2-53.
-    if (cards.count==0 || cards.count>40){ //only shuffles at beginning or when deck is running low
-        getShuffle(deck,CARDS);
-        cards.count = 0; //Reset the card count for the new deck 
-        for (int i =0;i<=CARDS;i++){
-            cards.deck[i] =  deck[i];
-        }
-    } 
     
     //Game begins here by asking how the user would like to bet on first hand
     cout<<"How much would you like to bet?"<<endl;
@@ -301,11 +291,7 @@ void getUser(Play &play,int &num){
 void displayGreeting(Play &play){
     //Declare Variables
     char answ; //sentinel value used to trigger rules or not
-    
-    cout<<"                  BlackJack ☜(˚▽˚)☞"<<endl;
-    cout<<"****************************************************************\n";
-    cout<<"Welcome to the Casino Bham!\nMy name is Amul (◕‿◕) and i will "
-            "be your dealer today!\n";
+
     cout<<"Your name and balance will be saved when you are finished....\n";
     cout<<"What is your name anyway? "<<endl;
     cin.getline(play.name,25); //Get user name, to create a more personal experience
@@ -405,14 +391,3 @@ int b =0;      //sentinel value to break out of player card loop
  
  Return --> card total to the main program for further calculation
  *******************************************************************************/
-
- void valueCards(Curhand &player){       
-         //face value of card
-    
-        /*switch statement used to calculate card total, face value is assigned*/
-        
-        player.cards = 0;
-        //Output the face value and the suit of the card
-        cout<<faceValue<<" of "<<face<<endl;
-        
-}
