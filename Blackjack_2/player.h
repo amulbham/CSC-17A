@@ -17,20 +17,23 @@ using namespace std;
 class player {
 public:
     player();
+    string getName(){return name;}
+    int getBal(){return bal;}
+    void setBal(int b){bal += b;}
+    void setB(int n){binN = n;}
+    int returnB(){return binN;}
     player(const player& orig);
     virtual ~player();
+ 
 private:
-    struct info{
-        string name;
-        string login;
-        int bal;
-    };
+    string name;
+    int bal;
     int cardTot;
     int bet;
     int begBal;
     int binN;
     bool ace;
-    bool status = false;
+    bool status;
 
 };
 

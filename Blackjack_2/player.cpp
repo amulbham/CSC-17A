@@ -19,6 +19,7 @@ player::player() {
     binN =0;
     bet = 0;
     ace = false;
+    status = false;
     
 }
 

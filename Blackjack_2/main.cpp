@@ -18,28 +18,22 @@
 
 using namespace std;
 
-struct Curhand{
-    int cards;  //the players cards for the current hand 
-    int cardTot;//the player cart total for the current hand
-    int bet;    //the player bet for the current hand 
-};
-
 //Global Constants
 
 //User Libraries
 #include "Deck.h"
 #include "player.h"
+vector<player> x;
 
 //Function Prototypes
 void displayGreeting(); //function for greeting player
-void getUser(vector<player>,int); //determines user, initiates greeting
+void getUser(player &,int); //determines user, initiates greeting
 void hitORstay(Curhand &,Deck &);//handles logic for hitting/staying
 
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
      int p;
-     vector<player> x;
 
      
     cout<<"                 Casino Bham's BlackJack"<<endl;
@@ -55,12 +49,11 @@ int main(int argc, char** argv) {
      int i =0;
      while(x.size()<p ){
          x.push_back(player());
-         getUser(x,i);
+         getUser(x[i],i);
          i++;
      }
      
   
-     
      
      
      
@@ -212,55 +205,70 @@ int main(int argc, char** argv) {
  Return --> void
  *******************************************************************************/
 
-void getUser(vector<player> curr,int x){
+void getUser(player &curr, int a){
     fstream player_info;
     char c;
-    //Determine if the user is returning or if it is their first time 
-    cout<<"Would you like to continue(c) or start a new game(n)? c/n"<<endl;
-    cin.get(c);
-    cin.ignore();
-    int count = 1;
+    bool t = true;
     
+    //Determine if the user is returning or if it is their first time 
+    cout<<"Player "<<a+1<<":"<<endl;
+    cout<<"Are you returning or a new player? (r/n)"<<endl;
+    cin.ignore(); cin.get(c);   
+    int count = 1;
     /*if continuing, read all the players currently in the file and ask
      the user to select which account they would like to play on */
-    if (tolower(c) == 'c'){
+    if (tolower(c) == 'r'){
         player_info.open("player.txt", ios::in | ios::binary);
         //Open the player file for binary input 
         cout<<"The current players on record are ..."<<endl;
         //Static cast the binary data to character and display
-        player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
+        
+        player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
+        
        /*Read out all the players, incremented by byte size, each player
         being stored as an object, until the end of the file is reached*/
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
-            cout<<"Name: "<<play.name<<endl;
-            cout<<"Balance: $"<<play.balance<<endl<<endl;
-            player_info.read(reinterpret_cast<char *>(&play), sizeof(play));
+            cout<<"Name: "<<curr.getName()<<endl;
+            cout<<"Balance: $"<<curr.getBal()<<endl;
+            player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
             count++;
         }
         //Close the file to prevent memory leaks 
          player_info.close();
          //Allow the user to choose an account to play on 
-         cout<<"Enter the player number of the account you would\n"
+         do{
+         cout<<"Enter the player number of the account you would"
                 "like to play on"<<endl;
-         cin>>num;
+         cin>>count;
+         for(int i =0; i<a;i++){
+             if(count - 1 == x[i].returnB()){
+                 t = false;
+                 cout<<"This account is already in use!"<<endl;
+                 break;
+             }else {t = true;}
+         }
+         
+         }while(!t);
+         
+         curr.setB(count - 1);
          //Read in the player information based on the account choosen 
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
          //Seek to the memory location of the user account, based on the num
-         player_info.seekg(sizeof(play)*(num-1), ios::beg);
+         player_info.seekg(sizeof(curr)*(count-1), ios::beg);
          //Read in the player information, including their name and balance 
-         player_info.read(reinterpret_cast<char *>(&play),sizeof(play));
-         cout<<"Welcome Back "<<play.name<<"!"<<endl;
+         player_info.read(reinterpret_cast<char *>(&curr),sizeof(curr));
+         cout<<"Welcome Back "<<curr.getName()<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
-         cout<<"Your current balance is $"<<play.balance<<", would"
+         cout<<"Your current balance is $"<<curr.getBal()<<", would"
                  " you like to buy in more? y/n"<<endl;
-         char x; cin>>x;
-         if (tolower(x) == 'y'){
-             cout<<"Enter how much more you like to buy in or type 0 for none "<<play.name<<endl;
+         cin>>c;
+         if (tolower(c) == 'y'){
+             cout<<"Enter how much more you like to buy in or type 0 for none "<<curr.getName()<<endl;
          //Get the buy in as a cstring to prevent run time errors, convert to int using atoi.     
          char y[6];cin.ignore();  cin.getline(y,6);
-         play.balance+=atoi(y);} //Add the buy in to the total player balance 
-         cout<<"Your current balance is $"<<play.balance<<endl;
+         curr.setBal(atoi(y));} //Add the buy in to the total player balance 
+         cout<<"Your current balance is $"<<curr.getBal()<<endl;
                   player_info.close();
                   
     /*if the user is new, call the greeting function and input the name
@@ -270,8 +278,9 @@ void getUser(vector<player> curr,int x){
     displayGreeting(play);
     cout<<"****************************************************************\n";
     //Determine how much the player wants to buy into game
-    cout<<"How much would you like to buy in "<<play.name<<" ?"<<endl;
-    cin>>play.balance;
+    cout<<"How much would you like to buy in "<<curr.getName()<<" ?"<<endl;
+    int b;
+    cin>>b; curr.setBal(b);
     }
 }
 
