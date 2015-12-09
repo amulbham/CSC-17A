@@ -241,7 +241,7 @@ void getUser(player &curr, int a){
          cout<<"Enter the player number of the account you would"
                 "like to play on"<<endl;
          cin>>count;
-         for(int i =0; i<a;i++){
+         for(int i =0; i<x.size();i++){
              if(count - 1 == x[i].returnB()){
                  t = false;
                  cout<<"This account is already in use!"<<endl;

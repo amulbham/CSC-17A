@@ -17,6 +17,7 @@ using namespace std;
 class player {
 public:
     player();
+    
     string getName(){return name;}
     int getBal(){return bal;}
     void setBal(int b){bal += b;}
