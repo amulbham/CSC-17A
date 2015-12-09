@@ -38,15 +38,8 @@ void hitORstay(Curhand &,Deck &);//handles logic for hitting/staying
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
-     int *y = NULL; //set = to the user balance to calculate their winnings/losings
-     char answ;     //sentinel value used to trigger new hand or end game
-     Play x;        //created to store/restore a players balance and name
-     Curhand player;//Object to player the player hand
-     Curhand dealer;//object to track the dealer hand
-     
-     
      int p;
-     vector<player> players;
+     vector<player> x;
 
      
     cout<<"                 Casino Bham's BlackJack"<<endl;
@@ -59,13 +52,14 @@ int main(int argc, char** argv) {
      
      if (p<1 || p>4) {cout<<"Invalid players!"<<endl; goto _np;}
      
-     
-     while(players.size()<p ){
-         int i = 0;
-         players.push_back(player());
-         getUser(players[i]);
+     int i =0;
+     while(x.size()<p ){
+         x.push_back(player());
+         getUser(x,i);
          i++;
      }
+     
+  
      
      
      
@@ -218,7 +212,7 @@ int main(int argc, char** argv) {
  Return --> void
  *******************************************************************************/
 
-void getUser(vector<player> curr){
+void getUser(vector<player> curr,int x){
     fstream player_info;
     char c;
     //Determine if the user is returning or if it is their first time 

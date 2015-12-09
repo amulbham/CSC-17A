@@ -20,14 +20,17 @@ public:
     Deck();
     void shuffleCards();
     void makeDeck();
-    int valueCards();
+    void getFace();
+    void getValue();
+    int drawCard();
+    void dispCards();
     Deck(const Deck& orig);
     virtual ~Deck();
 private:
     vector<int> deck;
-    int card;
+    int card,total;
     string face,value;
-    const int tCards = 52;
+    static const int tCards = 52;
     
 
 };

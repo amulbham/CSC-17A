@@ -6,8 +6,20 @@
  */
 
 #include "player.h"
+#include <vector>
+#include <iostream>
+#include <ctime>
+#include <algorithm>
+#include <string>
 
+using namespace std;
 player::player() {
+    cardTot =0;
+    begBal =0;
+    binN =0;
+    bet = 0;
+    ace = false;
+    
 }
 
 player::player(const player& orig) {
