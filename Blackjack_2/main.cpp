@@ -55,6 +55,10 @@ int main(int argc, char** argv) {
      game.firstTwo();
      game.checkWinLoss();
      
+     //Deal the first card of the dealer
+     game.dealOne(1);
+  
+
 
      
      

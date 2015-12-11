@@ -30,6 +30,14 @@ public:
     void checkWinLoss();
     void setBets();
     void firstTwo();
+    void hitORstay();
+    void dealOne(int);
+    struct dealer {
+        int total;
+        string status;
+        bool ace;
+    };
+    void setDeal(int t);
     blackJack(const blackJack& orig);
     virtual ~blackJack();
 private:
