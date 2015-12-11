@@ -22,27 +22,31 @@ public:
     player();
     string getName(){return name;}
     void setName(string n){name = n;}
+    void setCardT(int card);
+    int giveCardT(){return cardTot;}
     void setBal(int b){bal += b;}
     void setBin(int n){binN = n;}
     void setBet(int c){bet = c;}
-    void setBegBal(int bb){begBal = bb;}
+    void setBegBal();
+    void setbb(int x){begBal -=x; }
     void setAce(){ace = true;}
     void setStat(string s){status = s;}
+    string giveStat(){return status;}
     void setNew(){retNew = "new";}
     void tie(){bal = bal;}
     void win(){bal +=bet;}
     void loss(){bal -=bet;}
-    int getBal(){return bal;}
+    long int getBal(){return bal;}
     int returnB(){return binN;}
     player(const player& orig);
     virtual ~player();
  
 private:
     string name,status,retNew;
-    int bal;
+    long int bal;
     int cardTot;
     int bet;
-    int begBal;
+    long int begBal;
     int binN;
     bool ace;
    

@@ -27,10 +27,14 @@ public:
     void getInfo(player &);
     void disBord();
     void disRules();
+    void checkWinLoss();
+    void setBets();
+    void firstTwo();
     blackJack(const blackJack& orig);
     virtual ~blackJack();
 private:
     vector<player> x;
+    Deck deck;
     int numP;
     int cot;
 };

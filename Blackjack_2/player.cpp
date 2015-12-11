@@ -23,10 +23,31 @@ player::player() {
     ace = false;
     retNew = "return";
     status = "";
-    
-    
+    name = "";
 }
+void player::setCardT(int card){
+    if (card == 14){ace = true; 
+        if (cardTot < 10) card = 11;
+        else{ card = 1; ace = false;}
+    }else if (card>10){
+        card = 10;
+    }
+    
+    cardTot += card;
+    
+    if (ace && cardTot > 21){cardTot -=10;}
+    
 
+}
+void player::setBegBal(){
+    cardTot =0;
+    begBal =bal;
+    bet = 0;
+    ace = false;
+    retNew = "return";
+    status = "";
+
+}
 player::player(const player& orig) {
 }
 

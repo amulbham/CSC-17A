@@ -23,10 +23,64 @@ blackJack::blackJack(int n) {
      while(x.size()<numP ){
          x.push_back(player());
      }
-     Deck deck;
      for(int i =0; i<x.size();i++){
          getInfo(x[i]);
      }
+    
+}
+void blackJack::setBets(){
+    char b[8];
+    for(int i =0; i<x.size();i++){
+        cout<<x[i].getName()<<": "<<endl;
+        cin.ignore();
+        if (x[i].getBal()<0){
+        cout<<"Your balance is below $00.00, you need to buy in more"<<endl;     
+        cout<<"Enter how much more you like to buy in($10,000.00 Limit) or type 0 for none"<<endl;
+         //Get the buy in as a cstring to prevent run time errors, convert to int using atoi.     
+         char y[6];cin.ignore();  cin.getline(y,6);
+         x[i].setBal(atoi(y)); x[i].setbb(atoi(y));
+        } 
+        bet:
+        cout<<"Please enter a bet for the current hand: $"; cin.getline(b,8);
+        
+        if(atoi(b)<100 || atoi(b)>x[i].getBal()){
+        cout<<"Invalid amount! Bet must be at least $100 and no greater than your total balance!"<<endl;
+        cout<<"Your balance is : $"<<x[i].getBal()<<endl;
+        goto bet;
+        }else{
+        cout<<"Thank you for your bet"<<endl;
+        }
+    }
+
+}
+void blackJack::firstTwo(){
+    deck.makeDeck();
+    cout<<"Now Dealing first two cards for each player..."<<endl;
+    int card;
+    for(int i = 0; i<x.size();i++){
+       for(int j =0; j<2; j++) {
+       cout<<x[i].getName()<<": "<<endl;    
+       card = deck.drawCard(); x[i].setCardT(card);
+       }
+       cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+    }
+    cout<<"Results: "<<endl;
+}
+
+void blackJack::checkWinLoss(){
+    for (int i = 0; i<x.size();i++){
+        if (x[i].giveCardT()== 21){
+            cout<<x[i].getName()<<" you hit a 21, congratulations!"<<endl;
+            x[i].setStat("blackjack");        
+        }else if (x[i].giveCardT() > 21){
+            x[i].setStat("loss");
+            cout<<x[i].getName()<<" you busted! Sorry!"<<endl;
+            cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+        }else {
+            cout<<x[i].getName()<<endl;
+            cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+            x[i].setStat("continue");}
+    }
     
 }
 void blackJack::disBord(){
@@ -42,12 +96,13 @@ void blackJack::getInfo(player &curr){
     player output;
     //Determine if the user is returning or if it is their first time 
     _rORn:
-    cout<<"Player "<<cot+1<<":"<<endl;cot++;
+    cout<<"Player "<<cot+1<<":"<<endl;
     cout<<"Are you returning or a new player? (r/n)"<<endl;
-     cin.get(c);cin.ignore(); 
-    if (tolower(c) !== 'r' || tolower(c) !== 'n') {
+    cin>>c; cin.ignore(); 
+    if (tolower(c) != 'r' && tolower(c) != 'n') {
         cout<<"Invalid option!"<<endl; goto _rORn;
     } 
+    cot++;
     int count = 1;
     /*if continuing, read all the players currently in the file and ask
      the user to select which account they would like to play on */

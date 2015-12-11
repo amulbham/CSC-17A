@@ -42,9 +42,19 @@ int main(int argc, char** argv) {
      cin>>p;
      
      if (p<1 || p>4) {cout<<"Invalid players!"<<endl; goto _np;}
-     
+     /*Determine for each player if they are returning or a new player
+      If they are returning, read out the name and balance in memory of the player
+      if they are new, get the player name, and player buy in amount*/
      blackJack game(p);
      game.disBord();
+     /*Get the bets for the hand from each player, keep track of the bet amount
+     , starting balance, and if the player has overdrawn and needs to buy in again*/
+     game.setBets();
+     game.disBord();
+     //Deal the first two cards to the player
+     game.firstTwo();
+     game.checkWinLoss();
+     
 
      
      
