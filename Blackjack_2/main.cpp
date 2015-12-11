@@ -34,17 +34,17 @@ int main(int argc, char** argv) {
      int p;
 
      
-    cout<<"                 Casino Bham's BlackJack"<<endl;
-    game.disBord;
-     //Determine how many players are going to play
+    cout<<"                 Casino Bham's BlackJack"<<endl<<endl;
+
+    //Determine how many players are going to play
     _np:
      cout<<"How many players would like to play? (Up to 4 total)"<<endl;
      cin>>p;
      
      if (p<1 || p>4) {cout<<"Invalid players!"<<endl; goto _np;}
      
-     game blackJack(p);
-     blackJack.disBord();
+     blackJack game(p);
+     game.disBord();
 
      
      

@@ -5,7 +5,6 @@
  * Created on December 8, 2015, 9:12 PM
  */
 
-#include "player.h"
 #include <vector>
 #include <iostream>
 #include <ctime>
@@ -14,6 +13,7 @@
 #include <fstream>
 #include <cstring>
 
+#include "player.h"
 using namespace std;
 player::player() {
     cardTot =0;
@@ -21,7 +21,9 @@ player::player() {
     binN =0;
     bet = 0;
     ace = false;
-    status = false;
+    retNew = "return";
+    status = "";
+    
     
 }
 

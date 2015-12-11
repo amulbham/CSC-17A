@@ -8,8 +8,7 @@
 
 #ifndef GAME_H
 #define	GAME_H
-#include "Deck.h"
-#include "player.h"
+
 #include <vector>
 #include <iostream>
 #include <ctime>
@@ -17,16 +16,19 @@
 #include <string>
 #include <fstream>
 #include <cstring>
+#include "Deck.h"
+#include "player.h"
 using namespace std;
 
-class game {
+class blackJack {
 public:
-    game();
-    game(int n);
+    blackJack();
+    blackJack(int n);
     void getInfo(player &);
     void disBord();
-    game(const game& orig);
-    virtual ~game();
+    void disRules();
+    blackJack(const blackJack& orig);
+    virtual ~blackJack();
 private:
     vector<player> x;
     int numP;
