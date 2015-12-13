@@ -16,10 +16,13 @@
 #include "game.h"
 #include "Deck.h"
 #include "player.h"
+#include "dealer.h"
+
 using namespace std; 
 
 blackJack::blackJack(int n) {
      numP = n;
+     x.clear();
      while(x.size()<numP ){
          x.push_back(player());
      }
@@ -28,52 +31,17 @@ blackJack::blackJack(int n) {
      }
     
 }
-void blackJack::dealOne(int num){
-    int card;
-    if (num == 1){
-    card = deck.drawCard();
-    setDeal(card);
-    cout<<"Dealer Total: "<<dealer.giveTotal()<<endl;
-    }else {
-        do{
-        card = deck.drawCard();
-        setDeal(card);
-        }while(dealer.giveTotal()<17);
-        cout<<"Dealer Total: "<<dealer.giveTotal()<<endl;
-    }
-    if (dealer.giveTotal() == 21){
-        cout<<"Dealer currently has a BlackJack!"<<endl;
-        dealer.setStatus("blackjack");
-    }else if (dealer.giveTotal() > 21){
-        cout<<"Dealer busted! Congratulations to the winners!"<<endl;
-        dealer.setStatus("lose");
-    }else {dealer.setStatus("continue");}
-}
-void blackJack::setDeal(int card){
-      if (card == 14){
-        if (dealer.giveTotal()<= 10){ card = 11;dealer.setAce(true);}
-        else{ card = 1; dealer.setAce(false);}
-    }else if (card>10){
-        card = 10;
-    }
-    
-    dealer.setTotal(card);
-    
-    if (dealer.giveAce() && dealer.giveTotal() > 21){dealer.setTotal(-10);}
-    
-    
-    
 
-}
-void blackJack::setBets(){
+
+void blackJack::setBets(player &play){
     int b;
     for(int i =0; i<x.size();i++){
         cout<<x[i].getName()<<": "<<endl;
         bet:
-        cout<<"Please enter a bet for the current hand: $"; cin>>b; 
+        cout<<"Please enter a bet for the current hand ($50.00 min): $"; cin>>b; 
         
-        if(b<100 || b>x[i].getBal()){
-        cout<<"Invalid amount! Bet must be at least $100 and no greater than your total balance!"<<endl;
+        if(b<50 || b>x[i].getBal()){
+        cout<<"Invalid amount! Bet must be at least $50.00 and no greater than your total balance!"<<endl;
         cout<<"Your balance is : $"<<x[i].getBal()<<endl;
         goto bet;
         }else{
@@ -83,7 +51,7 @@ void blackJack::setBets(){
     }
 
 }
-void blackJack::firstTwo(){
+void blackJack::dealCards(){
     deck.makeDeck();
     cout<<"Now Dealing first two cards for each player..."<<endl;
     int card=0;
@@ -93,94 +61,110 @@ void blackJack::firstTwo(){
        card = deck.drawCard();
        x[i].setCardT(card);
        }
-        x[i].setCardT(-1);
-       cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+       cout<<"Total: "<<x[i].giveTotal()<<endl;
     }
     
-    cout<<endl<<endl;
+    checkWinLoss();
+    
+    cout<<endl;
+    
+    cout<<"Proceeding to dealer hand...."<<endl;
+     card = deck.drawCard();
+     dealer.setCardT(card);
+     cout<<"Dealer Total: "<<dealer.giveTotal()<<endl;
+     if (dealer.giveTotal() > 21) dealer.setStat(3);
+     else if (dealer.giveTotal() == 21 || dealer.giveTotal() >= 17) dealer.setStat(2);
+     else dealer.setStat(1);
 }
 void blackJack::hitORstay(){
     for(int i = 0; i <x.size();i++){
        char d;
        int card;
        cout<<x[i].getName()<<endl;
+       if (x[i].giveStat() == 1){
          do{
             cout<<"Card Total: "<<x[i].giveCardT()<<endl;
             cout<<"Would you like to "
             "hit or stay? H/S"<<endl;
-            cin>>d;
+            cin.get(d); cin.ignore();
             if (tolower(d) == 'h'){
            card = deck.drawCard();
            x[i].setCardT(card);}
-       }while(tolower(d) == 'h' && x[i].giveCardT() < 21); 
-       
-        cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+            else x[i].setStat(2);
+       }while(x[i].giveStat() == 1); 
+       }
+       if (x[i].giveTotal() == 21){
+           cout<<"BlackJack!"<<endl;
+       }else if (x[i].giveTotal() > 21){
+           cout<<"You Busted!"<<endl;
+       }
+        cout<<"Final Card Total: "<<x[i].giveCardT()<<endl;
     }
     
-    end:
+    checkWinLoss();
     cout<<endl;
     
+}
+void blackJack::dealerHand(int num){
+    int card;
+    if (dealer.giveStat() == 1){
+        do{
+        card = deck.drawCard();
+        dealer.setCardT(card);
+        }while(dealer.giveTotal()<17);
+    }
+        cout<<"Dealer Total: "<<dealer.giveTotal()<<endl;
+    
+    if (dealer.giveTotal() > 21){
+        dealer.setStat(3);
+        cout<<"Dealer has Busted! Congratulations to the Winners!"<<endl;
+    }else if (dealer.giveTotal() == 21){
+        dealer.setStat(2);
+        cout<<"Dealer has a BlackJack!"<<endl<<endl;
+    }else dealer.setStat(2);
 }
 void blackJack::checkWinLoss(){
     cout<<endl<<"Results: "<<endl;
     for (int i = 0; i<x.size();i++){
-        if (x[i].giveCardT()== 21){
-            cout<<x[i].getName()<<" you hit a 21, congratulations!"<<endl;
-            x[i].setStat("blackjack");        
-        }else if (x[i].giveCardT() > 21){
-            x[i].setStat("lose");
-            cout<<x[i].getName()<<" you busted! Sorry!"<<endl;
-            cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+        cout<<x[i].getName()<<":"<<endl;
+        if (x[i].giveTotal()== 21){
+            cout<<"you hit a blackjack, congratulations!"<<endl<<endl;
+            x[i].setStat(2);        
+        }else if (x[i].giveTotal() > 21){
+            x[i].setStat(3);
+            cout<<"you busted! Sorry!"<<endl;
+            cout<<"Card Total: "<<x[i].giveTotal()<<endl<<endl;
         }else {
-            cout<<x[i].getName()<<endl;
-            cout<<"Card Total: "<<x[i].giveCardT()<<endl;
-            x[i].setStat("continue");}
+            x[i].setStat(1);
+            cout<<"Card Total: "<<x[i].giveTotal()<<endl;
     }
     
+}
 }
 void blackJack::checkWinner(){
-    if (dealer.giveStatus() == "lose"){
-        for (int i =0; i<x.size(); i++){
-            if (x[i].giveStat() == "continue" || x[i].giveStat() == "blackjack"){
-                x[i].setStat("win");
-            }else{x[i].setStat("lose");}
+    for(int i = 0; i< x.size(); i++){
+      if(x[i].giveStat() == 2){
+        if (dealer.giveTotal() == 21){
+            if (x[i].giveTotal() != 21 ){
+                x[i].setStat(3);
+            }else x[i].setStat(4);
+       }else if (dealer.giveTotal() < 21 ){
+            if (x[i].giveTotal()> dealer.giveTotal()){
+                x[i].setStat(5);
+            }else if(x[i].giveTotal() == dealer.giveTotal()){x[i].setStat(4);}
+            else x[i].setStat(3);
+       }else if (dealer.giveTotal()> 21) x[i].setStat(5);
+   }else x[i].setStat(3); 
     }
-    }else if (dealer.giveStatus() == "blackjack"){
-        for (int i =0; i<x.size(); i++){
-            if (x[i].giveStat() == "blackjack"){
-                x[i].setStat("tie");
-            }else{x[i].setStat("lose");}
-    }
-    }else if (dealer.giveStatus() == "continue"){
-        for (int i =0; i<x.size(); i++){
-            if (x[i].giveStat() == "blackjack"){
-                x[i].setStat("win");
-            }else if (x[i].giveStat() == "continue"){
-               if (x[i].giveCardT() > dealer.giveTotal()) {x[i].setStat("win");
-               }else if (x[i].giveCardT() < dealer.giveTotal()) {x[i].setStat("lose");
-               }else if(x[i].giveCardT() == dealer.giveTotal()) {x[i].setStat("tie"); 
-               }else{x[i].setStat("lose");} }
-    }
-}
-    
-}
-
-void blackJack::calcBal(){
-    for (int i = 0; i<x.size(); i++){
-        if (x[i].giveStat() == "win"){
-            x[i].win();
-        }else if (x[i].giveStat() == "lose")x[i].loss();
-        else {x[i].tie();}
-    }
-
 }
 
 void blackJack::showResults(){
     for (int i = 0; i<x.size(); i++){
-        if (x[i].giveStat() == "win"){
+        if (x[i].giveStat() == 5){
+            x[i].win();
         cout<<x[i].getName()<<" you have won!"<<endl;
         cout<<"Balance: "<<x[i].getBal()<<endl;
-        }else if (x[i].giveStat() == "lose"){
+        }else if (x[i].giveStat() == 3){
         cout<<x[i].getName()<<" you have lost!"<<endl;
         cout<<"Balance: "<<x[i].getBal()<<endl;
         }else{
