@@ -100,16 +100,16 @@ void blackJack::hitORstay(){
            cout<<"You Busted!"<<endl;
        }
         cout<<"Final Card Total: "<<x[i].giveTotal()<<endl<<endl;
+        disBord();
     }
-    
     checkWinLoss();
     cout<<endl;
     
 }
 void blackJack::dealerHand(){
     int card;
-    cout<<"Current Total: "<<dealer.giveTotal()<<endl<<endl;
-    cout<<"Now finishing the dealer hand..."<<endl;
+    cout<<"Current Total: "<<dealer.giveTotal()<<endl;
+    cout<<"Now finishing the dealer hand..."<<endl<<endl;
     if (dealer.giveStat() == 1){
         do{
         card = deck.drawCard();
@@ -127,11 +127,12 @@ void blackJack::dealerHand(){
     }else dealer.setStat(2);
 }
 void blackJack::checkWinLoss(){
+    disBord();
     cout<<endl<<"Results: "<<endl;
     for (int i = 0; i<x.size();i++){
         cout<<x[i].getName()<<":"<<endl;
         if (x[i].giveTotal()== 21){
-            cout<<"you hit a blackjack, congratulations!"<<endl<<endl;
+            cout<<"you hit a blackjack, congratulations!"<<endl;
             x[i].setStat(2);        
         }else if (x[i].giveTotal() > 21){
             x[i].setStat(3);
@@ -141,7 +142,7 @@ void blackJack::checkWinLoss(){
             x[i].setStat(1);
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
     }
-    
+        cout<<endl;
 }
 }
 void blackJack::checkWinner(){

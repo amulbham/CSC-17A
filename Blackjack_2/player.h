@@ -29,7 +29,7 @@ public:
     }
     string getName(){return name;}
     void setName(string n){name = n;}
-    void setBal(long int b){bal += b;}
+    void setBal(long int b){bal = b;}
     void setBin(int n){binN = n;}
     void setBet(long int c){bet = c;}
     void setStat();
