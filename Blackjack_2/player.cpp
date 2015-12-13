@@ -22,6 +22,13 @@ void player::setStat(){
     else if (cardTot > 21) status = 3; // lost
 }
 
+void player::reset(){
+    cardTot = 0;
+    status = 1;
+    ace = false;
+    bet = 0;
+}
+
 player::player(const player& orig) {
 }
 

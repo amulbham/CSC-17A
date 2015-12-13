@@ -30,13 +30,13 @@ public:
     void disRules();
     void checkWinLoss();
     void setBets();
-    void firstTwo();
     void hitORstay();
     void checkWinner();
     void showResults();
     void dealCards();
     void dealerHand();
-    
+    void newHand();
+    void writeInfo(player &);
     blackJack(const blackJack& orig);
     virtual ~blackJack();
 private:

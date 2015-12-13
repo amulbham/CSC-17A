@@ -31,8 +31,10 @@ void dealer::setCardT(int card){
     }
     addTotal(card);
 }
-void dealer::setDone(){
-    status = 2;
+void dealer::reset(){
+    cardTot = 0;
+    status = 1;
+    ace = false;
 }
 void dealer::setStat(){
     if (cardTot < 17) {status = 1;} 

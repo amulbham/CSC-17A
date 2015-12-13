@@ -40,15 +40,17 @@ int main(int argc, char** argv) {
     cout<<"                 Casino Bham's BlackJack"<<endl<<endl;
 
     //Determine how many players are going to play
-    _np:
+    do{
      cout<<"How many players would like to play? (Up to 4 total)"<<endl;
      cin>>p;
      
-     if (p<1 || p>4) {cout<<"Invalid players!"<<endl; goto _np;}
+     if (p<1 || p>4) {cout<<"Invalid players!"<<endl;}
+    }while(p<1 || p>4);
      /*Determine for each player if they are returning or a new player
       If they are returning, read out the name and balance in memory of the player
       if they are new, get the player name, and player buy in amount*/
      blackJack game(p);
+     
      do{
      game.disBord();
      /*Get the bets for the hand from each player, keep track of the bet amount
@@ -78,6 +80,7 @@ int main(int argc, char** argv) {
     
     cout<<"Would you like to play another hand? Y/N"<<endl;
      cin.ignore(); cin.get(agn); 
+     if (tolower(agn) == 'y') game.newHand();
      }while(tolower(agn) == 'y');
 
      

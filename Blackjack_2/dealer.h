@@ -24,13 +24,13 @@ public:
         else ace = true;
     }
     virtual void setStat();
-    void setDone(); 
     void setCardT(int card);
     void addTotal(int card);
     virtual void setStat(int num){status = num;} 
     bool giveAce() {return ace;}
     int giveTotal(){return cardTot;}
     int giveStat(){return status;}
+    void reset();
     dealer(const dealer& orig);
     virtual ~dealer();
 protected:

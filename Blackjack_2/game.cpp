@@ -34,7 +34,7 @@ blackJack::blackJack(int n) {
 
 
 void blackJack::setBets(){
-    int b;
+    long int b;
     for(int i =0; i<x.size();i++){
         cout<<x[i].getName()<<": "<<endl;
         bet:
@@ -99,7 +99,7 @@ void blackJack::hitORstay(){
        }else if (x[i].giveTotal() > 21){
            cout<<"You Busted!"<<endl;
        }
-        cout<<"Final Card Total: "<<x[i].giveTotal()<<endl;
+        cout<<"Final Card Total: "<<x[i].giveTotal()<<endl<<endl;
     }
     
     checkWinLoss();
@@ -108,17 +108,19 @@ void blackJack::hitORstay(){
 }
 void blackJack::dealerHand(){
     int card;
+    cout<<"Current Total: "<<dealer.giveTotal()<<endl<<endl;
+    cout<<"Now finishing the dealer hand..."<<endl;
     if (dealer.giveStat() == 1){
         do{
         card = deck.drawCard();
         dealer.setCardT(card);
         }while(dealer.giveTotal()<17);
     }
-        cout<<"Dealer Total: "<<dealer.giveTotal()<<endl;
+        cout<<"New Total: "<<dealer.giveTotal()<<endl;
     
     if (dealer.giveTotal() > 21){
         dealer.setStat(3);
-        cout<<"Dealer has Busted! Congratulations to the Winners!"<<endl;
+        cout<<"Dealer has Busted!"<<endl;
     }else if (dealer.giveTotal() == 21){
         dealer.setStat(2);
         cout<<"Dealer has a BlackJack!"<<endl<<endl;
@@ -171,7 +173,6 @@ void blackJack::showResults(){
         cout<<x[i].getName()<<" you have lost!"<<endl;
         cout<<"Balance: "<<x[i].giveBal()<<endl;
         }else{
-            x[i].tie();
         cout<<x[i].getName()<<" you have tied the dealer!"<<endl;
         cout<<"Balance: "<<x[i].giveBal()<<endl;
         }
@@ -179,11 +180,33 @@ void blackJack::showResults(){
     }
 }
 
+void blackJack::newHand(){
+    long int y;
+    dealer.reset();
+    for (int i = 0; i< x.size(); i++){
+        x[i].reset();
+        if (x[i].giveBal() < 0){
+           do{ 
+            cout<<x[i].getName()<<endl;
+            cout<<"You must purchase more chips to continue as you are below 00.00!"<<endl;
+            cout<<"Amount(100.00 min::10,000 max): "; cin>>y;
+           }while(y < 100 || y> 10000 );
+           x[i].setBal(y);
+        }
+    }
+    
+}
+
 void blackJack::disBord(){
 cout<<"****************************************************************"<<endl;
 }
 
 blackJack::blackJack(const blackJack& orig) {
+}
+void blackJack::writeInfo(player &curr){
+
+
+
 }
 void blackJack::getInfo(player &curr){
     fstream player_info;
@@ -272,11 +295,12 @@ void blackJack::getInfo(player &curr){
     disBord();
     //Determine how much the player wants to buy into game
     _buyin:
-    cout<<"How much would you like to buy in?($500.00 minimum::$10,000.00 limit)"<<endl;
-    int b;
-    cin>>b; if (b<500 || b>10000) {cout<<"Invalid amount!"<<endl;goto _buyin;}
+    cout<<"How much would you like to buy in?($100.00 minimum::$10,000.00 limit)"<<endl;
+    long int b;
+    cin>>b; if (b<100 || b>10000) {cout<<"Invalid amount!"<<endl;goto _buyin;}
     curr.setBal(b); 
     }
+    disBord();
 }
 
 void blackJack::disRules(){

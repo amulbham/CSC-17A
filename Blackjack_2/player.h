@@ -23,23 +23,21 @@ public:
     player():dealer(){
         name = "";
         bal = 0;
-        begBal = 0;
         bet = 0;
         binN = 0;
         newP = true;
     }
     string getName(){return name;}
     void setName(string n){name = n;}
-    void setBal(long int b){bal = b;}
+    void setBal(long int b){bal += b;}
     void setBin(int n){binN = n;}
-    void setBet(int c){bet = c;}
-    void setbb(int x){begBal -=x; }
+    void setBet(long int c){bet = c;}
     void setStat();
     void setStat(int num){status = num;} 
     void setNew(int num){if (num == 0) newP = true; else newP = false;}
-    void tie(){bal = bal;}
     void win(){bal +=bet;}
     void loss(){bal -=bet;}
+    void reset();
     long int giveBal(){return bal;}
     int givePos(){return binN;}
     player(const player& orig);
@@ -47,8 +45,8 @@ public:
  
 private:
     string name;
-    long int bal,begBal;
-    int bet;
+    long int bal;
+    long int bet;
     int binN;
     bool newP;
    
