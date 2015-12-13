@@ -24,20 +24,17 @@ player::player() {
     retNew = "return";
     status = "";
     name = "";
+    bal = 0;
 }
 void player::setCardT(int card){
-    if (card == 14){ace = true; 
-        if (cardTot < 10) card = 11;
-        else{ card = 1; ace = false;}
-    }else if (card>10){
+    if (card >= 14){ 
+            if (cardTot <= 10) {card = 11;ace = true;}
+            else{ card = 1; ace = false;}
+        }else if (card>10 && card < 14){
         card = 10;
-    }
-    
+        }
     cardTot += card;
-    
-    if (ace && cardTot > 21){cardTot -=10;}
-    
-
+       
 }
 void player::setBegBal(){
     cardTot =0;

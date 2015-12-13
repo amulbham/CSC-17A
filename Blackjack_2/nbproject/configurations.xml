@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Deck.h</itemPath>
+      <itemPath>dealer.h</itemPath>
       <itemPath>game.h</itemPath>
       <itemPath>player.h</itemPath>
     </logicalFolder>
@@ -16,6 +17,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Deck.cpp</itemPath>
+      <itemPath>dealer.cpp</itemPath>
       <itemPath>game.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>player.cpp</itemPath>
@@ -45,6 +47,10 @@
       <item path="Deck.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Deck.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dealer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dealer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -80,6 +86,10 @@
       <item path="Deck.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Deck.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="dealer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="dealer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>

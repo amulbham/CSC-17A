@@ -20,6 +20,26 @@
 #include "player.h"
 using namespace std;
 
+
+class dealer {
+public:
+    dealer(){
+        total = 0;
+        status = "";
+        ace = false;
+    }
+    void setTotal(int x){total +=x;}
+    int giveTotal(){return total;}
+    void setStatus(string s){status = s;}
+    string giveStatus(){return status;}
+    void setAce(bool b){ace = b;}
+    bool giveAce(){return ace;}
+private:
+    int total;
+    string status;
+    bool ace;
+};
+
 class blackJack {
 public:
     blackJack();
@@ -31,21 +51,22 @@ public:
     void setBets();
     void firstTwo();
     void hitORstay();
+    void checkWinner();
+    void calcBal();
+    void showResults();
     void dealOne(int);
-    struct dealer {
-        int total;
-        string status;
-        bool ace;
-    };
     void setDeal(int t);
     blackJack(const blackJack& orig);
     virtual ~blackJack();
 private:
+    dealer dealer;
     vector<player> x;
     Deck deck;
     int numP;
     int cot;
 };
+
+
 
 #endif	/* GAME_H */
 

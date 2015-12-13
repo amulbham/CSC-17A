@@ -15,6 +15,7 @@
 #include <cctype>
 #include <string>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ void displayGreeting(); //function for greeting player
 int main(int argc, char** argv) {
     //Declare Variables
      int p;
+     char agn;
 
      
     cout<<"                 Casino Bham's BlackJack"<<endl<<endl;
@@ -46,6 +48,7 @@ int main(int argc, char** argv) {
       If they are returning, read out the name and balance in memory of the player
       if they are new, get the player name, and player buy in amount*/
      blackJack game(p);
+     do{
      game.disBord();
      /*Get the bets for the hand from each player, keep track of the bet amount
      , starting balance, and if the player has overdrawn and needs to buy in again*/
@@ -54,12 +57,35 @@ int main(int argc, char** argv) {
      //Deal the first two cards to the player
      game.firstTwo();
      game.checkWinLoss();
-     
+     game.disBord();
      //Deal the first card of the dealer
      game.dealOne(1);
-  
+     game.disBord();
+     //Deal the rest of the player hands
+    game.hitORstay();
+    game.checkWinLoss(); 
+    game.disBord();
+    
+    //Deal the rest of the dealers hand
+    game.dealOne(2);
+    game.disBord();
+    
+    
+    //Determine the winner of the hand
+    game.checkWinner();
+    
+    //Determine the new balances based on winners
+    game.calcBal();
+    
+    //Output the results of the hand to the user 
+    game.showResults();
+    game.disBord();
+    
+    cout<<"Would you like to play another hand? Y/N"<<endl;
+     cin.ignore(); cin.get(agn); 
+     }while(tolower(agn) == 'y');
 
-
+     
      
      
  return 0;    

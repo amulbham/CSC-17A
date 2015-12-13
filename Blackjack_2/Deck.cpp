@@ -10,6 +10,7 @@ using namespace std;
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <cstring>
 #include <algorithm>
 #include <string>
 #include <fstream>
