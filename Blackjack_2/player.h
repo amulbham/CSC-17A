@@ -35,6 +35,7 @@ public:
     void setStat();
     void setStat(int num){status = num;} 
     void setNew(int num){if (num == 0) newP = true; else newP = false;}
+    bool giveNew(){return newP;}
     void win(){bal +=bet;}
     void loss(){bal -=bet;}
     void reset();

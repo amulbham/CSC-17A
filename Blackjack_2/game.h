@@ -23,6 +23,7 @@ using namespace std;
 
 class blackJack {
 public:
+    fstream player_info;
     blackJack();
     blackJack(int n);
     void getInfo(player &);
@@ -36,7 +37,7 @@ public:
     void dealCards();
     void dealerHand();
     void newHand();
-    void writeInfo(player &);
+    void writeInfo();
     blackJack(const blackJack& orig);
     virtual ~blackJack();
 private:

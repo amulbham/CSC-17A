@@ -204,13 +204,26 @@ cout<<"****************************************************************"<<endl;
 
 blackJack::blackJack(const blackJack& orig) {
 }
-void blackJack::writeInfo(player &curr){
+void blackJack::writeInfo(){
+    
+ for(int i =0; i<x.size(); i++){
+     fstream player_info("player.txt", ios::in | ios::out | ios::binary);
+     if(x[i].giveNew()) {
+        player_info.close();
+        fstream player_info("player.txt",ios::binary| ios::app);
+        player_info.write(reinterpret_cast<char *>(&x),sizeof(x[i]));
+     }else{
+        player_info.seekp((x[i].givePos()) * sizeof(x[i]), ios::beg);
+        player_info.write(reinterpret_cast<char *>(&x),sizeof(x[i]));
+        
+     }
+ }
+      player_info.close();
 
 
 
 }
 void blackJack::getInfo(player &curr){
-    fstream player_info;
     bool t = true;
     char c;
     player output;
@@ -232,15 +245,15 @@ void blackJack::getInfo(player &curr){
         cout<<"The current players on record are ..."<<endl;
         //Static cast the binary data to character and display
         
-        player_info.read(reinterpret_cast<char *>(&output), sizeof(output));
+        player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
         
        /*Read out all the players, incremented by byte size, each player
         being stored as an object, until the end of the file is reached*/
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
-            cout<<"Name: "<<output.getName()<<endl;
-            cout<<"Balance: $"<<output.giveBal()<<endl;
-            player_info.read(reinterpret_cast<char *>(&output), sizeof(output));
+            cout<<"Name: "<<curr.getName()<<endl;
+            cout<<"Balance: $"<<curr.giveBal()<<endl;
+            player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
             count++;
         }
         //Close the file to prevent memory leaks 
@@ -249,9 +262,9 @@ void blackJack::getInfo(player &curr){
          do{
          cout<<"Enter the player number of the account you would"
                 "like to play on"<<endl;
-         cin>>count;
+         cin>>count; count -=1;
          for(int i =0; i<x.size();i++){
-             if(count - 1 == x[i].givePos()){
+             if(count == x[i].givePos()){
                  t = false;
                  cout<<"This account is already in use!"<<endl;
                  break;
@@ -263,10 +276,10 @@ void blackJack::getInfo(player &curr){
          //Read in the player information based on the account choosen 
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
          //Seek to the memory location of the user account, based on the num
-         player_info.seekg(sizeof(curr)*(count-1), ios::beg);
+         player_info.seekg(sizeof(curr)*(count), ios::beg);
          //Read in the player information, including their name and balance 
          player_info.read(reinterpret_cast<char *>(&curr),sizeof(curr));
-         curr.setBin(count - 1); curr.setNew(1);
+         curr.setBin(count); curr.setNew(1);
          cout<<"Welcome Back "<<curr.getName()<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;

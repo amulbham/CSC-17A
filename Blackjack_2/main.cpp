@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
      if (tolower(agn) == 'y') game.newHand();
      }while(tolower(agn) == 'y');
 
-     
+     game.writeInfo();
      
      
  return 0;    
