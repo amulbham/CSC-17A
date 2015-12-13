@@ -25,6 +25,7 @@ using namespace std;
 #include "Deck.h"
 #include "player.h"
 #include "game.h"
+#include "dealer.h"
 
 //Function Prototypes
 void displayGreeting(); //function for greeting player
@@ -55,27 +56,21 @@ int main(int argc, char** argv) {
      game.setBets();
      game.disBord();
      //Deal the first two cards to the player
-     game.firstTwo();
-     game.checkWinLoss();
+     game.dealCards();
+     
      game.disBord();
-     //Deal the first card of the dealer
-     game.dealOne(1);
-     game.disBord();
+ 
+     
      //Deal the rest of the player hands
     game.hitORstay();
-    game.checkWinLoss(); 
     game.disBord();
     
     //Deal the rest of the dealers hand
-    game.dealOne(2);
+    game.dealerHand();
     game.disBord();
     
-    
-    //Determine the winner of the hand
+    //Calculate the Winners of the hands based on card totals and status of each player
     game.checkWinner();
-    
-    //Determine the new balances based on winners
-    game.calcBal();
     
     //Output the results of the hand to the user 
     game.showResults();

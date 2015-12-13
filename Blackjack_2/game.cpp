@@ -33,16 +33,16 @@ blackJack::blackJack(int n) {
 }
 
 
-void blackJack::setBets(player &play){
+void blackJack::setBets(){
     int b;
     for(int i =0; i<x.size();i++){
         cout<<x[i].getName()<<": "<<endl;
         bet:
         cout<<"Please enter a bet for the current hand ($50.00 min): $"; cin>>b; 
         
-        if(b<50 || b>x[i].getBal()){
+        if(b<50 || b>x[i].giveBal()){
         cout<<"Invalid amount! Bet must be at least $50.00 and no greater than your total balance!"<<endl;
-        cout<<"Your balance is : $"<<x[i].getBal()<<endl;
+        cout<<"Your balance is : $"<<x[i].giveBal()<<endl;
         goto bet;
         }else{
         x[i].setBet(b);    
@@ -53,7 +53,7 @@ void blackJack::setBets(player &play){
 }
 void blackJack::dealCards(){
     deck.makeDeck();
-    cout<<"Now Dealing first two cards for each player..."<<endl;
+    cout<<"Now Dealing first two cards for each player..."<<endl<<endl;
     int card=0;
     for(int i = 0; i<x.size();i++){
        cout<<x[i].getName()<<": "<<endl; 
@@ -61,13 +61,13 @@ void blackJack::dealCards(){
        card = deck.drawCard();
        x[i].setCardT(card);
        }
-       cout<<"Total: "<<x[i].giveTotal()<<endl;
+       cout<<"Total: "<<x[i].giveTotal()<<endl<<endl;
     }
     
     checkWinLoss();
     
     cout<<endl;
-    
+    disBord();
     cout<<"Proceeding to dealer hand...."<<endl;
      card = deck.drawCard();
      dealer.setCardT(card);
@@ -83,14 +83,15 @@ void blackJack::hitORstay(){
        cout<<x[i].getName()<<endl;
        if (x[i].giveStat() == 1){
          do{
-            cout<<"Card Total: "<<x[i].giveCardT()<<endl;
+             cin.ignore();
+            cout<<"Card Total: "<<x[i].giveTotal()<<endl;
             cout<<"Would you like to "
             "hit or stay? H/S"<<endl;
-            cin.get(d); cin.ignore();
+            cin.get(d); 
             if (tolower(d) == 'h'){
            card = deck.drawCard();
-           x[i].setCardT(card);}
-            else x[i].setStat(2);
+           x[i].setCardT(card);
+            }else x[i].setStat(2);
        }while(x[i].giveStat() == 1); 
        }
        if (x[i].giveTotal() == 21){
@@ -98,14 +99,14 @@ void blackJack::hitORstay(){
        }else if (x[i].giveTotal() > 21){
            cout<<"You Busted!"<<endl;
        }
-        cout<<"Final Card Total: "<<x[i].giveCardT()<<endl;
+        cout<<"Final Card Total: "<<x[i].giveTotal()<<endl;
     }
     
     checkWinLoss();
     cout<<endl;
     
 }
-void blackJack::dealerHand(int num){
+void blackJack::dealerHand(){
     int card;
     if (dealer.giveStat() == 1){
         do{
@@ -143,7 +144,8 @@ void blackJack::checkWinLoss(){
 }
 void blackJack::checkWinner(){
     for(int i = 0; i< x.size(); i++){
-      if(x[i].giveStat() == 2){
+      if (x[i].giveTotal() >21) x[i].setStat(3);
+      if(x[i].giveStat() != 3){
         if (dealer.giveTotal() == 21){
             if (x[i].giveTotal() != 21 ){
                 x[i].setStat(3);
@@ -154,7 +156,7 @@ void blackJack::checkWinner(){
             }else if(x[i].giveTotal() == dealer.giveTotal()){x[i].setStat(4);}
             else x[i].setStat(3);
        }else if (dealer.giveTotal()> 21) x[i].setStat(5);
-   }else x[i].setStat(3); 
+   } 
     }
 }
 
@@ -163,17 +165,17 @@ void blackJack::showResults(){
         if (x[i].giveStat() == 5){
             x[i].win();
         cout<<x[i].getName()<<" you have won!"<<endl;
-        cout<<"Balance: "<<x[i].getBal()<<endl;
+        cout<<"Balance: "<<x[i].giveBal()<<endl;
         }else if (x[i].giveStat() == 3){
+            x[i].loss();    
         cout<<x[i].getName()<<" you have lost!"<<endl;
-        cout<<"Balance: "<<x[i].getBal()<<endl;
+        cout<<"Balance: "<<x[i].giveBal()<<endl;
         }else{
+            x[i].tie();
         cout<<x[i].getName()<<" you have tied the dealer!"<<endl;
-        cout<<"Balance: "<<x[i].getBal()<<endl;
+        cout<<"Balance: "<<x[i].giveBal()<<endl;
         }
         disBord();
-        x[i].setCardT(0);
-        x[i].setAce(false);
     }
 }
 
@@ -213,7 +215,7 @@ void blackJack::getInfo(player &curr){
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
             cout<<"Name: "<<output.getName()<<endl;
-            cout<<"Balance: $"<<output.getBal()<<endl;
+            cout<<"Balance: $"<<output.giveBal()<<endl;
             player_info.read(reinterpret_cast<char *>(&output), sizeof(output));
             count++;
         }
@@ -225,7 +227,7 @@ void blackJack::getInfo(player &curr){
                 "like to play on"<<endl;
          cin>>count;
          for(int i =0; i<x.size();i++){
-             if(count - 1 == x[i].returnB()){
+             if(count - 1 == x[i].givePos()){
                  t = false;
                  cout<<"This account is already in use!"<<endl;
                  break;
@@ -240,10 +242,10 @@ void blackJack::getInfo(player &curr){
          player_info.seekg(sizeof(curr)*(count-1), ios::beg);
          //Read in the player information, including their name and balance 
          player_info.read(reinterpret_cast<char *>(&curr),sizeof(curr));
-         curr.setBin(count - 1);
+         curr.setBin(count - 1); curr.setNew(1);
          cout<<"Welcome Back "<<curr.getName()<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
-         cout<<"Your current balance is $"<<curr.getBal()<<endl;
+         cout<<"Your current balance is $"<<curr.giveBal()<<endl;
          cout<<"would you like to buy in more? (Y/N)"<<endl; 
          cin.get(c);cin.ignore();
          if (tolower(c) == 'y'){
@@ -252,13 +254,13 @@ void blackJack::getInfo(player &curr){
          char y[6];cin.ignore();  cin.getline(y,6);
          curr.setBal(atoi(y));} //Add the buy in to the total player balance 
          
-         cout<<"Your current balance is $"<<curr.getBal()<<endl;
+         cout<<"Your current balance is $"<<curr.giveBal()<<endl;
          player_info.close();
                  
     /*if the user is new, call the greeting function and input the name
      to the file*/     
     }else{
-    curr.setNew();  
+    curr.setNew(0);  
     string n; char r;
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
     getline(cin,n); curr.setName(n);
