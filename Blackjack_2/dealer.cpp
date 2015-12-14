@@ -44,8 +44,10 @@ void dealer::setStat(){
 }
 void dealer::addTotal(int card){
     cardTot += card;
-    if (giveAce()==true && cardTot > 21) cardTot -=10;
-    
+    if (giveAce()==true && cardTot > 21) {
+        cardTot -=10;
+        ace = false;
+    }
     setStat();
 }
 dealer::dealer(const dealer& orig) {

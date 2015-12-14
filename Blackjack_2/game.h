@@ -21,12 +21,15 @@
 #include "dealer.h"
 using namespace std;
 
+   struct play_info{
+        char name[25];
+        long int bal;
+        int bN;
+    };
 class blackJack {
 public:
-    fstream player_info;
     blackJack();
     blackJack(int n);
-    void getInfo(player &);
     void disBord();
     void disRules();
     void checkWinLoss();
@@ -37,9 +40,13 @@ public:
     void dealCards();
     void dealerHand();
     void newHand();
-    void writeInfo();
     blackJack(const blackJack& orig);
     virtual ~blackJack();
+    fstream player_info;
+    play_info temp;
+    void getInfo(player &);
+    void writeInfo();
+
 private:
     dealer dealer;
     vector<player> x;
@@ -49,6 +56,8 @@ private:
 };
 
 
+
+    
 
 #endif	/* GAME_H */
 

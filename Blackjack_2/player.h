@@ -16,19 +16,17 @@
 #include <fstream>
 #include <cstring>
 #include "dealer.h"
+
 using namespace std;
 
 class player : public dealer {
 public:
     player():dealer(){
-        name = "";
         bal = 0;
         bet = 0;
-        binN = 0;
+        binN = 5;
         newP = true;
     }
-    string getName(){return name;}
-    void setName(string n){name = n;}
     void setBal(long int b){bal = b;}
     void setBin(int n){binN = n;}
     void setBet(long int c){bet = c;}
@@ -43,9 +41,8 @@ public:
     int givePos(){return binN;}
     player(const player& orig);
     virtual ~player();
- 
+    char name[25];
 private:
-    string name;
     long int bal;
     long int bet;
     int binN;

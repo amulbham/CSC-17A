@@ -78,8 +78,8 @@ int main(int argc, char** argv) {
     game.showResults();
     game.disBord();
     
-    cout<<"Would you like to play another hand? Y/N"<<endl;
-     cin.ignore(); cin.get(agn); 
+    cout<<"Would you like to play another hand? Y/N"<<endl; cin.ignore();
+    cin.get(agn); 
      if (tolower(agn) == 'y') game.newHand();
      }while(tolower(agn) == 'y');
 

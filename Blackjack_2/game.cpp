@@ -36,7 +36,7 @@ blackJack::blackJack(int n) {
 void blackJack::setBets(){
     long int b;
     for(int i =0; i<x.size();i++){
-        cout<<x[i].getName()<<": "<<endl;
+        cout<<x[i].name<<": "<<endl;
         bet:
         cout<<"Please enter a bet for the current hand ($50.00 min): $"; cin>>b; 
         
@@ -48,6 +48,7 @@ void blackJack::setBets(){
         x[i].setBet(b);    
         cout<<"Thank you for your bet"<<endl;
         }
+        disBord();
     }
 
 }
@@ -56,7 +57,7 @@ void blackJack::dealCards(){
     cout<<"Now Dealing first two cards for each player..."<<endl<<endl;
     int card=0;
     for(int i = 0; i<x.size();i++){
-       cout<<x[i].getName()<<": "<<endl; 
+       cout<<x[i].name<<": "<<endl; 
        for(int j =0; j<2; j++) {
        card = deck.drawCard();
        x[i].setCardT(card);
@@ -80,7 +81,7 @@ void blackJack::hitORstay(){
     for(int i = 0; i <x.size();i++){
        char d;
        int card;
-       cout<<x[i].getName()<<endl;
+       cout<<x[i].name<<endl;
        if (x[i].giveStat() == 1){
          do{
              cin.ignore();
@@ -130,7 +131,7 @@ void blackJack::checkWinLoss(){
     disBord();
     cout<<endl<<"Results: "<<endl;
     for (int i = 0; i<x.size();i++){
-        cout<<x[i].getName()<<":"<<endl;
+        cout<<x[i].name<<":"<<endl;
         if (x[i].giveTotal()== 21){
             cout<<"you hit a blackjack, congratulations!"<<endl;
             x[i].setStat(2);        
@@ -167,14 +168,14 @@ void blackJack::showResults(){
     for (int i = 0; i<x.size(); i++){
         if (x[i].giveStat() == 5){
             x[i].win();
-        cout<<x[i].getName()<<" you have won!"<<endl;
+        cout<<x[i].name<<" you have won!"<<endl;
         cout<<"Balance: "<<x[i].giveBal()<<endl;
         }else if (x[i].giveStat() == 3){
             x[i].loss();    
-        cout<<x[i].getName()<<" you have lost!"<<endl;
+        cout<<x[i].name<<" you have lost!"<<endl;
         cout<<"Balance: "<<x[i].giveBal()<<endl;
         }else{
-        cout<<x[i].getName()<<" you have tied the dealer!"<<endl;
+        cout<<x[i].name<<" you have tied the dealer!"<<endl;
         cout<<"Balance: "<<x[i].giveBal()<<endl;
         }
         disBord();
@@ -188,7 +189,7 @@ void blackJack::newHand(){
         x[i].reset();
         if (x[i].giveBal() < 0){
            do{ 
-            cout<<x[i].getName()<<endl;
+            cout<<x[i].name<<endl;
             cout<<"You must purchase more chips to continue as you are below 00.00!"<<endl;
             cout<<"Amount(100.00 min::10,000 max): "; cin>>y;
            }while(y < 100 || y> 10000 );
@@ -204,29 +205,10 @@ cout<<"****************************************************************"<<endl;
 
 blackJack::blackJack(const blackJack& orig) {
 }
-void blackJack::writeInfo(){
-    
- for(int i =0; i<x.size(); i++){
-     fstream player_info("player.txt", ios::in | ios::out | ios::binary);
-     if(x[i].giveNew()) {
-        player_info.close();
-        fstream player_info("player.txt",ios::binary| ios::app);
-        player_info.write(reinterpret_cast<char *>(&x),sizeof(x[i]));
-     }else{
-        player_info.seekp((x[i].givePos()) * sizeof(x[i]), ios::beg);
-        player_info.write(reinterpret_cast<char *>(&x),sizeof(x[i]));
-        
-     }
- }
-      player_info.close();
 
-
-
-}
 void blackJack::getInfo(player &curr){
     bool t = true;
     char c;
-    player output;
     //Determine if the user is returning or if it is their first time 
     _rORn:
     cout<<"Player "<<cot+1<<":"<<endl;
@@ -241,27 +223,30 @@ void blackJack::getInfo(player &curr){
      the user to select which account they would like to play on */
     if (tolower(c) == 'r'){
         player_info.open("player.txt", ios::in | ios::binary);
+        if (!player_info) {cout<<"Error opening file!"<<endl;}
         //Open the player file for binary input 
         cout<<"The current players on record are ..."<<endl;
+        disBord();
         //Static cast the binary data to character and display
         
-        player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
+        player_info.read(reinterpret_cast<char *>(&temp), sizeof(temp));
         
        /*Read out all the players, incremented by byte size, each player
         being stored as an object, until the end of the file is reached*/
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
-            cout<<"Name: "<<curr.getName()<<endl;
-            cout<<"Balance: $"<<curr.giveBal()<<endl;
-            player_info.read(reinterpret_cast<char *>(&curr), sizeof(curr));
+            cout<<"Name: "<<temp.name<<endl;
+            cout<<"Balance: $"<<temp.bal<<endl;
+            player_info.read(reinterpret_cast<char *>(&temp), sizeof(temp));
             count++;
+            disBord();
         }
         //Close the file to prevent memory leaks 
          player_info.close();
          //Allow the user to choose an account to play on 
          do{
          cout<<"Enter the player number of the account you would"
-                "like to play on"<<endl;
+                " like to play on: ";
          cin>>count; count -=1;
          for(int i =0; i<x.size();i++){
              if(count == x[i].givePos()){
@@ -276,31 +261,33 @@ void blackJack::getInfo(player &curr){
          //Read in the player information based on the account choosen 
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
          //Seek to the memory location of the user account, based on the num
-         player_info.seekg(sizeof(curr)*(count), ios::beg);
+         player_info.seekg(sizeof(temp)*(count), ios::beg);
          //Read in the player information, including their name and balance 
-         player_info.read(reinterpret_cast<char *>(&curr),sizeof(curr));
+         player_info.read(reinterpret_cast<char *>(&temp),sizeof(temp));
+         strcpy(curr.name, temp.name); curr.setBal(temp.bal);
          curr.setBin(count); curr.setNew(1);
-         cout<<"Welcome Back "<<curr.getName()<<"!"<<endl;
+         cout<<"Welcome Back "<<curr.name<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;
          cout<<"would you like to buy in more? (Y/N)"<<endl; 
-         cin.get(c);cin.ignore();
+         cin.ignore(); cin.get(c);
          if (tolower(c) == 'y'){
              cout<<"Enter how much more you like to buy in($10,000.00 Limit) or type 0 for none"<<endl;
          //Get the buy in as a cstring to prevent run time errors, convert to int using atoi.     
-         char y[6];cin.ignore();  cin.getline(y,6);
-         curr.setBal(atoi(y));} //Add the buy in to the total player balance 
+            cin.ignore(); long int c; cin>>c; c += curr.giveBal();
+         curr.setBal(c);} //Add the buy in to the total player balance 
          
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;
          player_info.close();
                  
     /*if the user is new, call the greeting function and input the name
-     to the file*/     
+     to the file*/  
+         
     }else{
     curr.setNew(0);  
-    string n; char r;
+    char r;
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
-    getline(cin,n); curr.setName(n);
+    cin.getline(curr.name,25); 
     cout<<"Would you like to hear the rules? (Y/N)"<<endl;
     cin.get(r);cin.ignore();
     if(tolower(r)== 'y'){
@@ -344,6 +331,24 @@ void blackJack::disRules(){
                 "\nof other players do not affect if you win or lose, you are"
                 "\nonly competing against the dealer!"<<endl;
 
+}
+
+void blackJack::writeInfo(){
+ for(int i =0; i<x.size(); i++){
+     strcpy(temp.name, x[i].name);
+     temp.bal = x[i].giveBal();
+     temp.bN = x[i].givePos();
+     player_info.open("player.txt", ios::in | ios::out | ios::binary);
+     if(x[i].giveNew()== true) {
+        player_info.close();
+        player_info.open("player.txt",ios::binary| ios::app);
+        player_info.write(reinterpret_cast<char *>(&temp),sizeof(temp));
+     }else{
+        player_info.seekp((x[i].givePos()) * sizeof(temp), ios::beg);
+        player_info.write(reinterpret_cast<char *>(&temp),sizeof(temp));
+     }
+ }
+      player_info.close();
 }
 blackJack::~blackJack() {
 }
