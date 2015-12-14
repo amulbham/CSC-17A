@@ -21,14 +21,14 @@ using namespace std;
 
 class player : public dealer {
 public:
+    void setBin(int n){binN = n;}
     player():dealer(){
         bal = 0;
         bet = 0;
         newP = true;
-        setBin(5);
+        setBin(10);
     }
     void setBal(long int b){bal = b;}
-    void setBin(int n){binN = n;}
     void setBet(long int c){bet = c;}
     void setStat();
     void setStat(int num){status = num;} 

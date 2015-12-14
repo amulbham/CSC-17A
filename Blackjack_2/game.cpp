@@ -32,7 +32,6 @@ blackJack::blackJack(int n) {
     
 }
 
-
 void blackJack::setBets(){
     long int b;
     for(int i =0; i<x.size();i++){
@@ -242,14 +241,14 @@ void blackJack::getInfo(player &curr){
             disBord();
         }
         //Close the file to prevent memory leaks 
-         player_info.close();
+         player_info.close(); int ply;
          //Allow the user to choose an account to play on 
          do{
          cout<<"Enter the player number of the account you would"
                 " like to play on: ";
-         cin>>count; count -=1;
+         cin>>ply; ply -=1;
          for(int i =0; i<x.size();i++){
-             if(count == x[i].givePos()){
+             if(ply == x[i].givePos()){
                  t = false;
                  cout<<"This account is already in use!"<<endl;
                  break;
@@ -261,11 +260,11 @@ void blackJack::getInfo(player &curr){
          //Read in the player information based on the account choosen 
          player_info.open("player.txt", ios::in|ios::out|ios::binary);
          //Seek to the memory location of the user account, based on the num
-         player_info.seekg(sizeof(temp)*(count), ios::beg);
+         player_info.seekg(sizeof(temp)*(ply), ios::beg);
          //Read in the player information, including their name and balance 
          player_info.read(reinterpret_cast<char *>(&temp),sizeof(temp));
          strcpy(curr.name, temp.name); curr.setBal(temp.bal);
-         curr.setBin(count); curr.setNew(1);
+         curr.setBin(ply); curr.setNew(1);
          cout<<"Welcome Back "<<curr.name<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;
@@ -284,7 +283,7 @@ void blackJack::getInfo(player &curr){
      to the file*/  
          
     }else{
-    curr.setNew(0);  
+    curr.setNew(0);  curr.setBin(30);
     char r;
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
     cin.getline(curr.name,25); 
