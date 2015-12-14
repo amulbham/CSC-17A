@@ -62,17 +62,32 @@ int Deck::drawCard(){
 }
 
 void Deck::shuffleCards(){
+    /*Let the players know any time the deck is re shuffled, 
+     reset the card count to 0*/
     cout<<"Shuffling Cards..."<<endl<<endl;
-    card= 0; //Reset the card number when the deck reshuffles
-    srand (time(0));
+    card= 0; //Reset the card number when the deck re shuffles
+    srand (time(0)); //Random number seed for random_shuffle function
+    
+    /*Deck is shuffled using random_shuffle temp inside the algorithm
+     standard library, this function only works on vectors, so it gave me 
+     all the more reason to put the deck inside in vector*/
     random_shuffle(deck.begin(),deck.end());
 }
 
 void Deck::getFace(){
-        //Set the total to be returned equal to the current card value
+        /*Set the total as equal to the card, then the value of the card
+         is determined from the total, this allowed the NUMBER value of the card
+         to remain separate from the CARD NUMBER, I made all calculations
+         on the total number and used the deck to represent where the card
+         was in the deck*/
         total = deck[card];
         
-        //Determine suit and card total based on value of drawn card 2-53
+        /*Determine suit and card total based on value of drawn card 2-53
+          then I subtracted off a certain value depending on its range
+         to make the values all a number between 2-13, this made it possible
+         to use a switch to display the card name, so first the suit is determined
+         based on its range in the deck, then the value is made a value between
+         2-13, then a value is printed out alongside the suit*/
           if (deck[card]<=14){ 
               face = "Hearts";
           }else if (deck[card]>14 &&deck[card]<=27){
@@ -89,6 +104,10 @@ void Deck::getFace(){
 }
 
 void Deck::dispCards(){
+    /*Function used purely to display the name and suit of each 
+     card that is drawn, since they are not suppose to be bound to any thing
+     in real life, that was how I made my function, display the card
+     return only what the player needs to know, which is the card value*/
     cout<<value<<" of "<<face<<endl;
 }
 

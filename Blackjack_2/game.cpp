@@ -128,16 +128,16 @@ void blackJack::dealerHand(){
 }
 void blackJack::checkWinLoss(){
     disBord();
-    cout<<endl<<"Results: "<<endl;
+    cout<<"Results: "<<endl;
     for (int i = 0; i<x.size();i++){
-        cout<<x[i].name<<":"<<endl;
+        cout<<endl<<x[i].name<<":"<<endl;
         if (x[i].giveTotal()== 21){
             cout<<"you hit a blackjack, congratulations!"<<endl;
             x[i].setStat(2);        
         }else if (x[i].giveTotal() > 21){
             x[i].setStat(3);
             cout<<"you busted! Sorry!"<<endl;
-            cout<<"Card Total: "<<x[i].giveTotal()<<endl<<endl;
+            cout<<"Card Total: "<<x[i].giveTotal()<<endl;
         }else {
             x[i].setStat(1);
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
@@ -164,6 +164,8 @@ void blackJack::checkWinner(){
 }
 
 void blackJack::showResults(){
+    cout<<"Results of Hand and Updated Balances: "<<endl;
+    disBord();
     for (int i = 0; i<x.size(); i++){
         if (x[i].giveStat() == 5){
             x[i].win();
@@ -190,7 +192,7 @@ void blackJack::newHand(){
            do{ 
             cout<<x[i].name<<endl;
             cout<<"You must purchase more chips to continue as you are below 00.00!"<<endl;
-            cout<<"Amount(100.00 min::10,000 max): "; cin>>y;
+            cout<<"Amount(100.00 min::10,000.00 max): "; cin>>y; cin.ignore();
            }while(y < 100 || y> 10000 );
            x[i].setBal(y);
         }
@@ -324,9 +326,9 @@ void blackJack::writeInfo(){
 blackJack::~blackJack() {
 }
 void blackJack::disRules(){
-    cout<<"Basically the point of the game is to get to 21 or as close as"
-                "possible without going over,\notherwise you lose"
-                "\n,in addition, if my card total is higher than yours"
+    cout<<"Basically the point of the game is to get to 21 or as close as\n"
+                "possible without going over, otherwise you lose"
+                "\nIn addition, if my card total is higher than yours"
                 " you also lose"<<endl;
     disBord();
         cout<<"I will deal 2 cards from a regular deck of cards \n"

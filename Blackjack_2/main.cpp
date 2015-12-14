@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
       and deck classes are totally separate and stand alone, in the future more
       game can be added here by simply creating a new class for the game and
       adding a menu here for each game*/
-     blackJack game(p);
+     blackJack blkJck(p);
      
      
      /*Game Loop starts here -> from here is where each new hand starts,
@@ -68,20 +68,20 @@ int main(int argc, char** argv) {
       binary file positions are maintained as that was done in the 
       creation of the blackJack object*/
      do{
-     game.disBord();
+     blkJck.disBord();
      /*Get the bets for the hand from each player, keep track of the bet amount
      , starting balance, and if the player has overdrawn and needs to buy in again*/
-     game.setBets();
-     game.disBord();
+     blkJck.setBets();
+     blkJck.disBord();
      /*The first cards are dealt to each player,the drawnCard function of the 
       * card class is called, a card is printed out, and its value is
       * passed back and added to the players overall card total for 
       * the hand, if the player has any significant hands (blackjacks, busts, etc) 
       * they are displayed after they are encountered.
       each players hand has been displayed*/
-     game.dealCards();
+     blkJck.dealCards();
      
-     game.disBord();
+     blkJck.disBord(); //<- this function just prints out a standard border
  
      
      /*At this point, the players must decide if they want to hit or stay
@@ -91,15 +91,15 @@ int main(int argc, char** argv) {
       Status is tracked after each players hand is finished, meaning
       if they lose they are marked as a loss, if they hit a 21 they are marked
       * as a possible win,if they decide to stay under 21 they are marked for compare */
-    game.hitORstay();
-    game.disBord();
+    blkJck.hitORstay();
+    blkJck.disBord();
     
     /*After the hit stay portion of the hand, assuming that at least 1 of the players
      has not 'busted', the rest of the dealer hand is dealt till the dealer
      hit a value of 17 of greater All the cards were displayed and valued
      using the drawn card function in the deck class*/
-    game.dealerHand();
-    game.disBord();
+    blkJck.dealerHand();
+    blkJck.disBord();
     
     /*Using the status of each player, and the dealer, which was tracked
      after each card draw, a final comparison is held between each player
@@ -108,20 +108,20 @@ int main(int argc, char** argv) {
      * loses, and the players who do have a 21 are marked as a tie. After this
      * the balance of each player is recalculated based on the status of 
      * their hand, tie = no money loss, loss = loss of bet etc.  */
-    game.checkWinner();
+    blkJck.checkWinner();
     
     /*The results of the hand are displayed in a overall report at the end
      of each hand and a recalculated balance is printed out for each 
      player, from here they can decide to play another hand or end the game*/
-    game.showResults();
-    game.disBord();
+    blkJck.showResults();
+    blkJck.disBord();
     /*The players can now decide, after seeing their results, if they want to 
      play again*/
     cout<<"Would you like to play another hand? Y/N"<<endl; cin.ignore();
     cin.get(agn); 
     /*If the players do want to play a new hand, then the game loops back to the start
      of the doWhile loop, all the card values and totals are reset for each player*/
-     if (tolower(agn) == 'y') game.newHand();// <- Resets each players hand
+     if (tolower(agn) == 'y') blkJck.newHand();// <- Resets each players hand
      }while(tolower(agn) == 'y');
      
      /*If the players decide they are finished playing, each players information
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
      the spot on file that represents their binary number, if they are a new player
      their information is appended to the file in a new spot and a binary number
      representing their spot on the file is assigned to the new player*/
-     game.writeInfo();
+     blkJck.writeInfo();
      
      //Exit Stage Right!
  return 0;    
