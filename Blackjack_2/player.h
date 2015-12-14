@@ -24,8 +24,8 @@ public:
     player():dealer(){
         bal = 0;
         bet = 0;
-        binN = 5;
         newP = true;
+        setBin(5);
     }
     void setBal(long int b){bal = b;}
     void setBin(int n){binN = n;}
