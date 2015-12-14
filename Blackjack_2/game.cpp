@@ -303,36 +303,6 @@ void blackJack::getInfo(player &curr){
     }
     disBord();
 }
-
-void blackJack::disRules(){
-    cout<<"Basically the point of the game is to get to 21 or as close as"
-                "possible without going over,\notherwise you lose"
-                "\n,in addition, if my card total is higher than yours"
-                " you also lose"<<endl;
-    disBord();
-        cout<<"I will deal 2 cards from a regular deck of cards \n"
-                "depending on the total value of these cards, you must\n"
-                "decide if you want another card or stay where you are (hit) \n"
-                "Also, note that my job as a dealer is to always hit if my card\n"
-                "value is below 17,if i bust (go over 21) then you automatically\n"
-                "win. So its your choice whether you want to pursue a higher card "
-                "value(at the risk of busting)\nor stay and wait for the dealer to bust\n"
-                "If we score a tie, then the hand ends in a draw \n";
-        cout<<"Also, Jack, Queens, King all have a value of 10\n"
-                "while the Ace has a value of either 1 or 11\n"
-                "All other cards represent their face value\n";
-        cout<<"You will buy in an amount of your choosing which will be tracked throughout the game"<<endl;
-        cout<<"At the start of each hand, you will place a bet: "<<endl;
-        cout<<"If you win, you win 2x your original bet"<<endl;
-        cout<<"A loss means you lose the amount of the bet"<<endl;
-        cout<<"And finally a draw or PUSH results in no loss of money"<<endl;
-        cout<<"Minimum bets: $ 100.00   "<<"Maximum bets: $ 1000.00  "<<endl<<endl;
-        cout<<"Also note, you are playing against the dealer, so the card values"
-                "\nof other players do not affect if you win or lose, you are"
-                "\nonly competing against the dealer!"<<endl;
-
-}
-
 void blackJack::writeInfo(){
  for(int i =0; i<x.size(); i++){
      strcpy(temp.name, x[i].name);
@@ -352,4 +322,36 @@ void blackJack::writeInfo(){
 }
 blackJack::~blackJack() {
 }
+void blackJack::disRules(){
+    cout<<"Basically the point of the game is to get to 21 or as close as"
+                "possible without going over,\notherwise you lose"
+                "\n,in addition, if my card total is higher than yours"
+                " you also lose"<<endl;
+    disBord();
+        cout<<"I will deal 2 cards from a regular deck of cards \n"
+                "depending on the total value of these cards, you must\n"
+                "decide if you want another card or stay where you are (hit) \n"
+                "Also, note that my job as a dealer is to always hit if my card\n"
+                "value is below 17,if i bust (go over 21) then you automatically\n"
+                "win. So its your choice whether you want to pursue a higher card "
+                "value(at the risk of busting)\nor stay and wait for the dealer to bust\n"
+                "If we score a tie, then the hand ends in a draw \n";
+        disBord();
+        cout<<"Also, Jack, Queens, King all have a value of 10\n"
+                "while the Ace has a value of either 1 or 11\n"
+                "All other cards represent their face value\n";
+        cout<<"You will buy in an amount of your choosing which will be tracked throughout the game"<<endl;
+        cout<<"At the start of each hand, you will place a bet: "<<endl;
+        cout<<"If you win, you win 2x your original bet"<<endl;
+        cout<<"A loss means you lose the amount of the bet"<<endl;
+        cout<<"And finally a draw or PUSH results in no loss of money"<<endl;
+        cout<<"Minimum bets: $ 50.00   "<<"Maximum bets: $ ACC BAL  "<<endl<<endl;
+        disBord();
+        cout<<"Also note, you are playing against the dealer, so the card values"
+                "\nof other players do not affect if you win or lose, you are"
+                "\nonly competing against the dealer!"<<endl;
+
+}
+
+
 

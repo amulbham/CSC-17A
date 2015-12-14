@@ -63,6 +63,7 @@ int Deck::drawCard(){
 
 void Deck::shuffleCards(){
     cout<<"Shuffling Cards..."<<endl<<endl;
+    card= 0;
     srand (time(0));
     random_shuffle(deck.begin(),deck.end());
 }

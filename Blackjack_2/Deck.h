@@ -32,10 +32,11 @@ private:
     vector<int> deck;
     int card,total,y;
     string face,value;
-    static const int tCards = 52;
+    static const int tCards = 53;
     
 
 };
+
 
 #endif	/* DECK_H */
 
