@@ -283,7 +283,9 @@ void blackJack::getInfo(player &curr){
      to the file*/  
          
     }else{
-    curr.setNew(0);  curr.setBin(30);
+    player_info.open("player.txt", ios::in | ios::binary);
+    curr.setNew(0);  curr.setBin((sizeof(player_info)/sizeof(curr))+1);
+    player_info.close();
     char r;
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
     cin.getline(curr.name,25); 

@@ -26,7 +26,7 @@ public:
         bal = 0;
         bet = 0;
         newP = true;
-        setBin(10);
+        setBin(50);
     }
     void setBal(long int b){bal = b;}
     void setBet(long int c){bet = c;}
