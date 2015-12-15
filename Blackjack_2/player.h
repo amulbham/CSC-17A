@@ -79,12 +79,14 @@ public:
     virtual ~player();
     char name[25];
 private:
+    //Stores the balance of the player
     long int bal;
+    //stores the bet of the player
     long int bet;
+    //stores the binary position in file of the player
     int binN;
+    //TRUE = new player, FALSE = returning player
     bool newP;
-   
-
 };
 
 #endif	/* PLAYER_H */

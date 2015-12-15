@@ -1,9 +1,11 @@
 /* 
  * File:   main.cpp
  * Author: Amul Bham (Project 1)
- * Purpose: To play Blackjack against 
+ * Purpose: To play multi player Blackjack against 
  * A.I. implementing methods learned from
- * chapters 9-16.
+ * chapters 9-16, Main Function used generally just to control
+ * abstract game flow and logic, as well as obtaining beginning user decisions
+ * such as the number of players
  * Created on October 17, 2015, 2:42 PM
  */
 //System Libraries

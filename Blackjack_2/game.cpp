@@ -1,31 +1,7 @@
 /* 
  * File:   game.cpp
  * Author: Amul.bham
- * Purpose: The Main Purpose of this class was to control the game flow 
- * and logic of the game of BlackJack. This allowed my main function to focus on
- * the more abstract dealings of the program such as guiding which 
- * part of the game is to be executed first, while the game class
- * handled all the minor details and logic points involved in each 
- * part of the game. 
- * - In the game class, their lies a vector of player classes and a
- * instance of a deck class which I decided to aggregate into the game class
- * as any instance of a blackJack game will have to have players and a deck
- * of cards, therefore it was more logical to define the players within
- * the class based on how many players are playing for that given session
- * 
- * - A game of blackjack has -> players, and also has -> a deck of cards and a dealer
- * 
- * - By allowing my main to control the higher abstract game flow, the game 
- * class controlled how each class interacted with each other and passed
- * values of each player to the different parts of the game. The main 
- * was used to control what parts of the black jack game were to be executed
- * in what order. 
- * 
- * - This kept the main as sort of a make file in that it simply controlled 
- * what parts of the game class to execute, this made it so in the future, 
- * I could add other game classes and use the main again to control that game 
- * as well, therefore allowing players to select which game they would want to play
- * 
+ * Purpose : can be found in .h file
  * Created on December 9, 2015, 12:14 AM
  */
 
@@ -69,7 +45,6 @@ blackJack::blackJack(int n) {
      for(int i =0; i<x.size();i++){
          getInfo(x[i]);
      }
-    
 }
 /*After the player info is obtained and assigned to each player instance, 
  each player must place a bet for the upcoming hand
@@ -286,23 +261,25 @@ void blackJack::checkWinLoss(){
     -Ex: If a player busts, and the dealer busts after, the player still loses,
  because the player busted first, however any other players who did not bust will win*/
 void blackJack::checkWinner(){
-    for(int i = 0; i< x.size(); i++){
+   for(int i = 0; i< x.size(); i++){
       //First, if any players are over 21, set them to loss prior to checking anything  
-      if (x[i].giveTotal() >21) x[i].setStat(3);
+     if (x[i].giveTotal() >21) x[i].setStat(3);
+      
       //If they have a valid hand, check against each player
-      if(x[i].giveStat() != 3){
+     if(x[i].giveStat() != 3){
           //If dealer has 21, any player who does not, is set to loss
-        if (dealer.giveTotal() == 21){
+       if (dealer.giveTotal() == 21){
             if (x[i].giveTotal() != 21 ){
                 x[i].setStat(3); //set for loss if !21
             }else x[i].setStat(4); //If they do, then set to 4 for draw
+            
        //If the dealer has not busted, or 21, then the dealer card total
        //must be checked against each player who has not busted     
        }else if (dealer.giveTotal() < 21 ){
             if (x[i].giveTotal()> dealer.giveTotal()){
                 x[i].setStat(5); //player total is higher = win, if = then tie
             }else if(x[i].giveTotal() == dealer.giveTotal()){x[i].setStat(4);}
-            else x[i].setStat(3); //If lower, then the player is set to a loss
+             else x[i].setStat(3); //If lower, then the player is set to a loss
        //If dealer has busted, then every player who has NOT busted, wins
        }else if (dealer.giveTotal()> 21) x[i].setStat(5);
    } 
@@ -369,7 +346,7 @@ void blackJack::newHand(){
     /*Then loop through each player, reset their variables, and determines
      if they ran out of money and need to buy in, set their new balance*/
     for (int i = 0; i< x.size(); i++){
-        x[i].reset();
+        x[i].reset(); //reset each players card values
         if (x[i].giveBal() < 0){
            do{ //Loop while invalid amount 
             cout<<x[i].name<<endl;
@@ -520,7 +497,7 @@ void blackJack::getInfo(player &curr){
     char r;
     //Name stored as cstring as strings cannot be written to file
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
-    cin.getline(curr.name,25); 
+    cin.getline(curr.name,25); //get the new players name
     
     //If they want to hear rules, call disRules function
     cout<<"Would you like to hear the rules? (Y/N)"<<endl;

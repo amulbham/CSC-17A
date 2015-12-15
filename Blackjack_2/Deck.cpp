@@ -111,6 +111,14 @@ void Deck::dispCards(){
     cout<<value<<" of "<<face<<endl;
 }
 
+
+/*getValue -> Used to determine the value of the card in terms of its string value
+ name, and stores it in the value string object for display along with the face
+ 
+ By normalizing all cards to a value between 2-13, I was able to use a switch
+ statement to determine the string value
+ 
+ The card total is not changed and only used as a condition to determine its string value*/
 void Deck::getValue(){
     /*Use a switch to determine the string value of the card
      based on the numerical value*/
