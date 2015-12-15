@@ -28,8 +28,6 @@ using namespace std;
 #include "dealer.h"
 
 //Function Prototypes
-void displayGreeting(); //function for greeting player
-
 //Execution begins here
 int main(int argc, char** argv) {
     //Declare Variables
@@ -57,7 +55,7 @@ int main(int argc, char** argv) {
      /*Create a new instance of the blackJack class, this class control
       all of the game flow of blackJack game for the user, meaning the player
       and deck classes are totally separate and stand alone, in the future more
-      game can be added here by simply creating a new class for the game and
+      games can be added here by simply creating a new class for the game and
       adding a menu here for each game*/
      blackJack blkJck(p);
      
@@ -117,7 +115,7 @@ int main(int argc, char** argv) {
     blkJck.disBord();
     /*The players can now decide, after seeing their results, if they want to 
      play again*/
-    cout<<"Would you like to play another hand? Y/N"<<endl; cin.ignore();
+    cout<<"Would you like to play another hand? Y/N"<<endl; 
     cin.get(agn); 
     /*If the players do want to play a new hand, then the game loops back to the start
      of the doWhile loop, all the card values and totals are reset for each player*/

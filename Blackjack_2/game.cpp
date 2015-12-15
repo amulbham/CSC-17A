@@ -33,23 +33,25 @@ blackJack::blackJack(int n) {
 }
 
 void blackJack::setBets(){
-    long int b;
+    char b[7];
+    cin.ignore();
     for(int i =0; i<x.size();i++){
         cout<<x[i].name<<": "<<endl;
         bet:
-        cout<<"Please enter a bet for the current hand ($50.00 min): $"; cin>>b; 
+        cout<<"Please enter a bet for the current hand ($50.00 min): $"; 
+        cin.getline(b,7); 
         
-        if(b<50 || b>x[i].giveBal()){
+        if(atol(b)<50 || atol(b)>x[i].giveBal()){
         cout<<"Invalid amount! Bet must be at least $50.00 and no greater than your total balance!"<<endl;
         cout<<"Your balance is : $"<<x[i].giveBal()<<endl;
         goto bet;
         }else{
-        x[i].setBet(b);    
+        x[i].setBet(atol(b));    
         cout<<"Thank you for your bet"<<endl;
         }
         disBord();
     }
-
+    cout<<"Good Luck to all Players!"<<endl;
 }
 void blackJack::dealCards(){
     deck.makeDeck();
@@ -83,11 +85,10 @@ void blackJack::hitORstay(){
        cout<<x[i].name<<endl;
        if (x[i].giveStat() == 1){
          do{
-             cin.ignore();
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
             cout<<"Would you like to "
             "hit or stay? H/S"<<endl;
-            cin.get(d); 
+             cin.get(d); cin.ignore();
             if (tolower(d) == 'h'){
            card = deck.drawCard();
            x[i].setCardT(card);
@@ -99,8 +100,8 @@ void blackJack::hitORstay(){
        }else if (x[i].giveTotal() > 21){
            cout<<"You Busted!"<<endl;
        }
-        cout<<"Final Card Total: "<<x[i].giveTotal()<<endl<<endl;
-        disBord();
+        cout<<"Final Card Total: "<<x[i].giveTotal()<<endl;
+        disBord(); 
     }
     checkWinLoss();
     cout<<endl;
@@ -170,14 +171,14 @@ void blackJack::showResults(){
         if (x[i].giveStat() == 5){
             x[i].win();
         cout<<x[i].name<<" you have won!"<<endl;
-        cout<<"Balance: "<<x[i].giveBal()<<endl;
+        cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
         }else if (x[i].giveStat() == 3){
             x[i].loss();    
         cout<<x[i].name<<" you have lost!"<<endl;
-        cout<<"Balance: "<<x[i].giveBal()<<endl;
+        cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
         }else{
         cout<<x[i].name<<" you have tied the dealer!"<<endl;
-        cout<<"Balance: "<<x[i].giveBal()<<endl;
+        cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
         }
         disBord();
     }
@@ -286,7 +287,7 @@ void blackJack::getInfo(player &curr){
          
     }else{
     player_info.open("player.txt", ios::in | ios::binary);
-    curr.setNew(0);  curr.setBin((sizeof(player_info)/sizeof(curr))+1);
+    curr.setNew(0);  curr.setBin((sizeof(player_info)/sizeof(temp))+1);
     player_info.close();
     char r;
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
