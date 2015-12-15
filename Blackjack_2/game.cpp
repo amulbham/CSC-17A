@@ -381,7 +381,6 @@ void blackJack::newHand(){
     }
 }
 
-
 /*disBord() -> used to separate off information and parts of the game for the player
  to ease with clarity and readability, made it easier to insert border versus
  typing out a border each time I needed one, also kept the look 
@@ -392,6 +391,7 @@ cout<<"****************************************************************"<<endl;
 
 blackJack::blackJack(const blackJack& orig) {
 }
+
 /*After a new instance of a player class is created, the player information
  for that instance must be obtained, based on if they are new or returning, 
  the program must make a wealth of choices to determine how to obtain the 
@@ -419,7 +419,9 @@ blackJack::blackJack(const blackJack& orig) {
  * structure, 1 by 1, and then written back into the file "player.txt" in spot 
  * = to their binary number position
  */
+
 void blackJack::getInfo(player &curr){
+    
     //Variables used to store player decisions
     bool t = true;
     char c;
@@ -469,7 +471,7 @@ void blackJack::getInfo(player &curr){
          //Check against other players, make sure 2 people not on same account
          for(int i =0; i<x.size();i++){
              if(ply == x[i].givePos()){
-                 t = false;
+                 t = false;//set loop condition
                  cout<<"This account is already in use!"<<endl;
                  break; //If same, break here, start loop again
              }else {t = true;}
@@ -536,21 +538,49 @@ void blackJack::getInfo(player &curr){
     }
     disBord();
 }
+/*After players are finished playing, I needed a function to handle the logic
+ * for writing the updated players information back into player.txt
+ * 
+ * writeInfo -> Loops through each player and does the followings
+ * 
+ * 1. copy vital player information(balance,name,binary position) into a temp
+ * player_info structure for storage
+ * 
+ * 2. Write player data(stored in a structure) into the file for the size of 
+ * structure and in binary so we can store separate instances of different data types 
+ * 
+ * 3. if player is new -> append the file -> create new instance in the file 
+ *  if player is returning -> overwrite the position in the file = the players
+ *  binary number position * size of the structure(the size of the temp structure
+ * is basically the measurement for incrementing between players in the
+ * binary file, thus their position can always be determined given that a value is tracked
+ * for each player of their position), this will seek the file 
+ *  at the spot that the player previously had their information stored
+ *  (Random Access Memory), and only overwrite their previous data  
+ */
 void blackJack::writeInfo(){
  for(int i =0; i<x.size(); i++){
-     strcpy(temp.name, x[i].name);
+     //Copy the name, position, and updated balance to the temp structure for storage
+     strcpy(temp.name, x[i].name); //use string copy for char string instead of looping
      temp.bal = x[i].giveBal();
      temp.bN = x[i].givePos();
+     
+     //Open up player.txt file for output, and in binary
      player_info.open("player.txt", ios::in | ios::out | ios::binary);
+     
+    //If a players giveNew() functions is true, their information is appended
+     //to the file
      if(x[i].giveNew()== true) {
-        player_info.close();
+        player_info.close();//close and reopen the file for append mode 
         player_info.open("player.txt",ios::binary| ios::app);
         player_info.write(reinterpret_cast<char *>(&temp),sizeof(temp));
+     //For returning players, seek to the position in the file previously 
+        //occupied by the player, and overwrite the previous information
      }else{
         player_info.seekp((x[i].givePos()) * sizeof(temp), ios::beg);
         player_info.write(reinterpret_cast<char *>(&temp),sizeof(temp));
      }
- }
+ }   //close the player.txt file 
       player_info.close();
 }
 blackJack::~blackJack() {
