@@ -1,11 +1,35 @@
 /* 
  * File:   game.cpp
  * Author: Amul.bham
+ * Purpose: The Main Purpose of this class was to control the game flow 
+ * and logic of the game of BlackJack. This allowed my main function to focus on
+ * the more abstract dealings of the program such as guiding which 
+ * part of the game is to be executed first, while the game class
+ * handled all the minor details and logic points involved in each 
+ * part of the game. 
+ * - In the game class, their lies a vector of player classes and a
+ * instance of a deck class which I decided to aggregate into the game class
+ * as any instance of a blackJack game will have to have players and a deck
+ * of cards, therefore it was more logical to define the players within
+ * the class based on how many players are playing for that given session
+ * 
+ * - A game of blackjack has -> players, and also has -> a deck of cards and a dealer
+ * 
+ * - By allowing my main to control the higher abstract game flow, the game 
+ * class controlled how each class interacted with each other and passed
+ * values of each player to the different parts of the game. The main 
+ * was used to control what parts of the black jack game were to be executed
+ * in what order. 
+ * 
+ * - This kept the main as sort of a make file in that it simply controlled 
+ * what parts of the game class to execute, this made it so in the future, 
+ * I could add other game classes and use the main again to control that game 
+ * as well, therefore allowing players to select which game they would want to play
  * 
  * Created on December 9, 2015, 12:14 AM
  */
 
-
+//Libraries
 #include <vector>
 #include <iostream>
 #include <ctime>
@@ -20,43 +44,87 @@
 
 using namespace std; 
 
+
+/*Default Constructor - > must be defined with the amount of players
+ playing as a game cannot be started without players
+ 
+ -The number of players is set, and the x vector has an instance of the player
+ class put inside it equal to the number of players, each class holds each players
+ information such as balance, name, game status, etc.
+ 
+ - After, each instance of player, or each player, is taken through a series
+ of questions to determines if they are new or returning in the getInfo function
+ 
+ -This is all done when the game instance is created, therefore setting the game
+ up with the proper amount of player instances.*/
 blackJack::blackJack(int n) {
      numP = n;
-     x.clear();
+     x.clear(); //Clear the array incase of any faulty memory
+     //Vector allows for dynamic creation of player instances
      while(x.size()<numP ){
          x.push_back(player());
      }
+     //Loop through each player and obtain their information, if they are
+     //returning, then read their information in from the player.txt file
      for(int i =0; i<x.size();i++){
          getInfo(x[i]);
      }
     
 }
-
+/*After the player info is obtained and assigned to each player instance, 
+ each player must place a bet for the upcoming hand
+ - Used a char string to get the bet to account of commas and other user input errors
+ - The bets are set for each player bet variable as they will be needed as the end
+-Used atol to convert the char string after it has been approved*/
 void blackJack::setBets(){
-    char b[7];
+    char b[7]; //Used to temp hold the bet place by each player
     cin.ignore();
+    //Loop through each player and get their bets for the hand
     for(int i =0; i<x.size();i++){
         cout<<x[i].name<<": "<<endl;
         bet:
         cout<<"Please enter a bet for the current hand ($50.00 min): $"; 
         cin.getline(b,7); 
-        
+        //If their bet is invalid, loop back so they can place a valid bet
         if(atol(b)<50 || atol(b)>x[i].giveBal()){
         cout<<"Invalid amount! Bet must be at least $50.00 and no greater than your total balance!"<<endl;
         cout<<"Your balance is : $"<<x[i].giveBal()<<endl;
         goto bet;
         }else{
+        //Set the player bet calling the setBet player function, using atol for conversion    
         x[i].setBet(atol(b));    
         cout<<"Thank you for your bet"<<endl;
         }
+        //Display a border after each player for clarity
         disBord();
     }
     cout<<"Good Luck to all Players!"<<endl;
 }
+
+/*The Deal Card Function:
+ Used to handle the logic and execution of the first part of the game
+ which included dealing the cards for each player and finally dealing 1
+ card for the dealer. 
+ 
+ -First each player is looped through twice with a card being drawn from the 
+ deck each time, after the DrawCard() function prints out each card value,
+ the total is returned and added to the players overall card total
+ 
+ - The checkWinLoss function of the game is called to check for any special 
+ cases, for the first hand it would only be a 21 for any player, set the status
+ for each player , and then give them back their total for clarity
+ 
+ -After each player is dealt, the dealers first card is revealed, and 
+ total printed, from here the next part of the game is ready to execute*/
 void blackJack::dealCards(){
+    /*Create a deck of cards at the start of the game, makeDeck() function
+     * of card class is setup to handle all the logic for creating the deck */
     deck.makeDeck();
     cout<<"Now Dealing first two cards for each player..."<<endl<<endl;
     int card=0;
+    /*Loop through each player, printing their total after each turn,
+     used a double for loop, first one to loop through each instance of 
+     players, and second to loop through 2 cards for each player*/
     for(int i = 0; i<x.size();i++){
        cout<<x[i].name<<": "<<endl; 
        for(int j =0; j<2; j++) {
@@ -65,11 +133,12 @@ void blackJack::dealCards(){
        }
        cout<<"Total: "<<x[i].giveTotal()<<endl<<endl;
     }
-    
+    /*Check for any special conditions after cards are drawn*/
     checkWinLoss();
-    
+    //Proceed to dealer first card - display total
     cout<<endl;
     disBord();
+    //Set the dealer card total in the instance of the dealer class
     cout<<"Proceeding to dealer hand...."<<endl;
      card = deck.drawCard();
      dealer.setCardT(card);
@@ -78,31 +147,53 @@ void blackJack::dealCards(){
      else if (dealer.giveTotal() == 21 || dealer.giveTotal() >= 17) dealer.setStat(2);
      else dealer.setStat(1);
 }
+
+/*The hisORstay function was used to handle all the logic of each player
+ deciding to hit or stay. Allowed my main to simply execute this part of the program
+ and kept the complicated logic bundled away from the abstract logic in my main
+ 
+ - Based on the result of each player hand, their status must be updated accordingly
+ to track if they lost, hit a 21, below 21 , etc. Allowed me to track 
+ how each player should be dealt with in the final part of the program that determines
+ the winners
+ */
 void blackJack::hitORstay(){
+    //Loop through each player
     for(int i = 0; i <x.size();i++){
        char d;
-       int card;
+       int card; //Used to temp store the card value returned from the deck
+       //Display the current player name
        cout<<x[i].name<<endl;
+       /*Only ask for hit or stay if their status is = 1 (continue)
+        if they had a 21 from the first cards, then they are skipped*/
        if (x[i].giveStat() == 1){
-         do{
+         /*Continue looping until player status changes to 2 (finished)
+          which means they chose to stay, busted, or hit a 21*/
+           do{
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
             cout<<"Would you like to "
             "hit or stay? H/S"<<endl;
+            //Determine if user wants to hit or stay
              cin.get(d); cin.ignore();
+             //If they hit, draw a new card, add card value
             if (tolower(d) == 'h'){
            card = deck.drawCard();
            x[i].setCardT(card);
+           //if not then set their status to 2 for finished and go to the next player
             }else x[i].setStat(2);
        }while(x[i].giveStat() == 1); 
        }
+       //If the player hits a 21 or busts, let them know
        if (x[i].giveTotal() == 21){
            cout<<"BlackJack!"<<endl;
        }else if (x[i].giveTotal() > 21){
            cout<<"You Busted!"<<endl;
        }
+       //Display the final card total for each player
         cout<<"Final Card Total: "<<x[i].giveTotal()<<endl;
         disBord(); 
     }
+    //Change status again based on outcome of the hand
     checkWinLoss();
     cout<<endl;
     
