@@ -198,6 +198,19 @@ void blackJack::hitORstay(){
     cout<<endl;
     
 }
+
+/*dealerHand -> The 3rd part of the blackJack gameflow
+ After each player hand is finished in the previous functions, the rest
+ of the dealer hand needed to finish
+ 
+ I decided to create a new function for it as it had a lot of new logic in terms
+ of how to deal with the value and when to stop the hand.
+ 
+ The dealer has to keep drawing until they are at 17 or higher,
+ so I just used a do while loop to keep drawing and adding cards from
+ the deck instance until it reached 17 or higher
+ 
+ After, the status of the dealer must be checked for special conditions such as 21*/
 void blackJack::dealerHand(){
     int card;
     cout<<"Current Total: "<<dealer.giveTotal()<<endl;
@@ -209,97 +222,205 @@ void blackJack::dealerHand(){
         }while(dealer.giveTotal()<17);
     }
         cout<<"New Total: "<<dealer.giveTotal()<<endl;
-    
+    //If dealer is busted, set the status to 3 (loss)
     if (dealer.giveTotal() > 21){
-        dealer.setStat(3);
+        dealer.setStat(3);//set status to loss
         cout<<"Dealer has Busted!"<<endl;
+    //If dealer has blackjack, set status to 2, let player know    
     }else if (dealer.giveTotal() == 21){
         dealer.setStat(2);
         cout<<"Dealer has a BlackJack!"<<endl<<endl;
+    //No special conditions, set status to 2 for check with other players    
     }else dealer.setStat(2);
 }
+
+/*checkWinLoss function -> Used to check the player hand for any special
+ conditions such as a bust or a 21, which in turn allows the program
+ to know how to deal with each player in the upcoming functions
+ 
+ -> Made it separate as it was crucial to the logic of my game 
+ and had to be executed after each player turn
+ 
+ -> Having a function to check statuses always ensured that each player
+ was in the proper 'state' for the next part of the program
+ for Ex: if a player has a status of 3 (which mean they busted) the program
+ will know to not ask them if they would like to hit or stay, or to even
+ check if they won at the end as all players with status 3 have automatically lost*/
 void blackJack::checkWinLoss(){
     disBord();
+    //Display results after each hand, any special conditions
     cout<<"Results: "<<endl;
     for (int i = 0; i<x.size();i++){
         cout<<endl<<x[i].name<<":"<<endl;
         if (x[i].giveTotal()== 21){
             cout<<"you hit a blackjack, congratulations!"<<endl;
-            x[i].setStat(2);        
+            x[i].setStat(2); //set status to finished with hand       
         }else if (x[i].giveTotal() > 21){
-            x[i].setStat(3);
+            x[i].setStat(3); //set status to loss if over 21
             cout<<"you busted! Sorry!"<<endl;
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
-        }else {
+        }else { //if not a bust or 21, set to 1 for can continue
             x[i].setStat(1);
             cout<<"Card Total: "<<x[i].giveTotal()<<endl;
     }
         cout<<endl;
 }
 }
+
+/*The checkWinLoss was used to set the status of each player after each part 
+ of the game. However, I still needed a separate function to actually make
+ * meaning of those statuses. 
+ 
+ checkWinner -> used to interpret the meaning of each players status
+ after the hand has finished, everything checked against dealer status, and a final
+ * win, loss, or tie status are initialized -> after, final results can be displayed
+ 
+ If dealer has a blackjack, all players who wont -> lose
+ If dealer is over 21, all players who don't already have a status of 3 ->win
+ If dealer and player are set to status of 2, then the values are compared, 
+ whoever has a higher card value wins
+ 
+ -Since each players status of winning or losing is separate from the other
+ players, it must be determined independently with each players
+ circumstances taken into account
+    -Ex: If a player busts, and the dealer busts after, the player still loses,
+ because the player busted first, however any other players who did not bust will win*/
 void blackJack::checkWinner(){
     for(int i = 0; i< x.size(); i++){
+      //First, if any players are over 21, set them to loss prior to checking anything  
       if (x[i].giveTotal() >21) x[i].setStat(3);
+      //If they have a valid hand, check against each player
       if(x[i].giveStat() != 3){
+          //If dealer has 21, any player who does not, is set to loss
         if (dealer.giveTotal() == 21){
             if (x[i].giveTotal() != 21 ){
-                x[i].setStat(3);
-            }else x[i].setStat(4);
+                x[i].setStat(3); //set for loss if !21
+            }else x[i].setStat(4); //If they do, then set to 4 for draw
+       //If the dealer has not busted, or 21, then the dealer card total
+       //must be checked against each player who has not busted     
        }else if (dealer.giveTotal() < 21 ){
             if (x[i].giveTotal()> dealer.giveTotal()){
-                x[i].setStat(5);
+                x[i].setStat(5); //player total is higher = win, if = then tie
             }else if(x[i].giveTotal() == dealer.giveTotal()){x[i].setStat(4);}
-            else x[i].setStat(3);
+            else x[i].setStat(3); //If lower, then the player is set to a loss
+       //If dealer has busted, then every player who has NOT busted, wins
        }else if (dealer.giveTotal()> 21) x[i].setStat(5);
    } 
     }
 }
+/*After the status of each player is interpreted and checked against the dealer, 
+ a final status is set. Finally the results are ready to be displayed for the hand
+ in text format, updated balances are displayed after bets are taken into account,
+ and the hand ends
+ 
+ showResults -> I needed a function specifically for 'wrapping up' the hand
+ * and to give a overall report to the players of the implications
+ * 
+ * -I tried to make only for displaying results, tried not to calculate anything
+ * new in this functions
+ * 
+ * - Based on the final status of each player(1,2,3), they are told of the results
+ * and their new balances are calculated accordingly */
 
 void blackJack::showResults(){
     cout<<"Results of Hand and Updated Balances: "<<endl;
     disBord();
+    //Loop through each players status
     for (int i = 0; i<x.size(); i++){
+        //5 = win; bet is added to player balance
         if (x[i].giveStat() == 5){
             x[i].win();
         cout<<x[i].name<<" you have won!"<<endl;
         cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
+        //3 = loss, bet subtracted from balance
         }else if (x[i].giveStat() == 3){
             x[i].loss();    
         cout<<x[i].name<<" you have lost!"<<endl;
         cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
+        //4 = tie; player receives bet back
         }else{
         cout<<x[i].name<<" you have tied the dealer!"<<endl;
         cout<<"Balance: $"<<x[i].giveBal()<<".00"<<endl;
         }
+        //output a border after each player so the results are clear 
         disBord();
     }
 }
 
+/*After each hand, the player is given the option to play a new hand
+ or exit the game, if they wanted to play a new hand, I needed to make sure
+ their player instance was set up again for a new hand
+ 
+ newHand -> Created to reset the dealer and each player
+ instance card total for the next hand, also checks if any of the players
+ have run out of chips, if so, they must buy in more
+ 
+ Basically I needed to ensure after each hand, the players and dealer
+ variables were reset to prevent overlap between hands
+ 
+ -Only certain variable needed to be reset, others such as the player.name and balance
+ were maintained, therefore you could not just create a new instance of
+ the blackJack game as then you would lose player information from previous hand*/
 void blackJack::newHand(){
-    long int y;
+    long int y; //Temp hold buy in value 
+    //Call the dealer reset function first, this resets all the crucial 
+    //dealer variables
     dealer.reset();
+    /*Then loop through each player, reset their variables, and determines
+     if they ran out of money and need to buy in, set their new balance*/
     for (int i = 0; i< x.size(); i++){
         x[i].reset();
         if (x[i].giveBal() < 0){
-           do{ 
+           do{ //Loop while invalid amount 
             cout<<x[i].name<<endl;
             cout<<"You must purchase more chips to continue as you are below 00.00!"<<endl;
             cout<<"Amount(100.00 min::10,000.00 max): "; cin>>y; cin.ignore();
            }while(y < 100 || y> 10000 );
-           x[i].setBal(y);
+           x[i].setBal(y); //Set players new balance
         }
     }
-    
 }
 
+
+/*disBord() -> used to separate off information and parts of the game for the player
+ to ease with clarity and readability, made it easier to insert border versus
+ typing out a border each time I needed one, also kept the look 
+ of the program more of a similar feel*/
 void blackJack::disBord(){
 cout<<"****************************************************************"<<endl;
 }
 
 blackJack::blackJack(const blackJack& orig) {
 }
-
+/*After a new instance of a player class is created, the player information
+ for that instance must be obtained, based on if they are new or returning, 
+ the program must make a wealth of choices to determine how to obtain the 
+ * player information for that given instance
+ 
+ getInfo -> Used to handle getting all player information, each player instance 
+ * if passed through it, determined if the player is new or returning
+ * 
+ * -> From here, the program either reads out the player information on file
+ * and asks the user to select a account - this account number is = to the binary
+ * location number of each player in file, set at the end of each game
+ * OR -> obtains the new players information, assigns it to their instance, 
+ * and then set their binary number position to the total size of the file + 1;
+ * 
+ * -Also, if a player is already loaded into the game by someone else, the function
+ * must check that no 2 players are on the same account 
+ * 
+ * -I used a fstream object to read in the player information, I used a temp
+ * structure to store each player information, display it, and then increment to the
+ * next section (all done as a binary file, as I had to store the name, and int balance)
+ * - If player returning, I read in their information from structure to 
+ * their player class
+ * 
+ * - At the end of game, their names and balances are stored again in the temp
+ * structure, 1 by 1, and then written back into the file "player.txt" in spot 
+ * = to their binary number position
+ */
 void blackJack::getInfo(player &curr){
+    //Variables used to store player decisions
     bool t = true;
     char c;
     //Determine if the user is returning or if it is their first time 
@@ -307,48 +428,53 @@ void blackJack::getInfo(player &curr){
     cout<<"Player "<<cot+1<<":"<<endl;
     cout<<"Are you returning or a new player? (r/n)"<<endl;
     cin>>c; cin.ignore(); 
+    //Needs to be valid as this part is crucial in determining how to deal with that player
     if (tolower(c) != 'r' && tolower(c) != 'n') {
         cout<<"Invalid option!"<<endl; goto _rORn;
     } 
     cot++;
     int count = 1;
     /*if continuing, read all the players currently in the file and ask
-     the user to select which account they would like to play on */
+     the user to select which account they would like to play on
+     * status is set to NOT NEW, program will rewrite this players new 
+     * information in the same spot in file AFTER game finishes */
     if (tolower(c) == 'r'){
+        //Open the player file for input, and as a binary file(has structures)
         player_info.open("player.txt", ios::in | ios::binary);
         if (!player_info) {cout<<"Error opening file!"<<endl;}
         //Open the player file for binary input 
         cout<<"The current players on record are ..."<<endl;
         disBord();
-        //Static cast the binary data to character and display
-        
+        //Static cast the binary data into the temp structure for the size of the
+        //entire temp structure
         player_info.read(reinterpret_cast<char *>(&temp), sizeof(temp));
         
        /*Read out all the players, incremented by byte size, each player
-        being stored as an object, until the end of the file is reached*/
+        information being stored in a structure, until the end of the file is reached*/
         while(!player_info.eof()){
             cout<<"Player "<<count<<endl;
             cout<<"Name: "<<temp.name<<endl;
             cout<<"Balance: $"<<temp.bal<<endl;
             player_info.read(reinterpret_cast<char *>(&temp), sizeof(temp));
             count++;
-            disBord();
+            disBord(); //display a border between each player information
         }
         //Close the file to prevent memory leaks 
-         player_info.close(); int ply;
+         player_info.close(); int ply; //temp value to store player # input
          //Allow the user to choose an account to play on 
-         do{
+         do{ //Loop until value is valid, no repeats are allowed
          cout<<"Enter the player number of the account you would"
                 " like to play on: ";
          cin>>ply; ply -=1;
+         //Check against other players, make sure 2 people not on same account
          for(int i =0; i<x.size();i++){
              if(ply == x[i].givePos()){
                  t = false;
                  cout<<"This account is already in use!"<<endl;
-                 break;
+                 break; //If same, break here, start loop again
              }else {t = true;}
          }
-         
+         //If ply is valid, t set to true, loop ends
          }while(!t);
          
          //Read in the player information based on the account choosen 
@@ -357,8 +483,14 @@ void blackJack::getInfo(player &curr){
          player_info.seekg(sizeof(temp)*(ply), ios::beg);
          //Read in the player information, including their name and balance 
          player_info.read(reinterpret_cast<char *>(&temp),sizeof(temp));
+         /*After appropriate binary information for given player is determined
+          read it into the temp structure for temp storage*/
+         
+         /*Then copy each temp structure variable to the required variables
+          in the given players player instance - read in name, balance, and binary num*/
          strcpy(curr.name, temp.name); curr.setBal(temp.bal);
-         curr.setBin(ply); curr.setNew(1);
+         curr.setBin(ply); curr.setNew(1); //Set player status at NOT NEW
+         
          cout<<"Welcome Back "<<curr.name<<"!"<<endl;
          //Determine if the user would like to purchase more coins 
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;
@@ -369,32 +501,38 @@ void blackJack::getInfo(player &curr){
          //Get the buy in as a cstring to prevent run time errors, convert to int using atoi.     
             cin.ignore(); long int c; cin>>c; c += curr.giveBal();
          curr.setBal(c);} //Add the buy in to the total player balance 
-         
+         //Remind user of updated balance, close player file
          cout<<"Your current balance is $"<<curr.giveBal()<<endl;
          player_info.close();
                  
-    /*if the user is new, call the greeting function and input the name
-     to the file*/  
+    /*if the user is new, obtain new player information, set player status
+     to NEW, this will tell the program to APPEND the player.txt file 
+     to create a new section for the new player versus overriding 
+     another players file*/  
          
     }else{
+        //Open the file just to get the size of it in bytes
     player_info.open("player.txt", ios::in | ios::binary);
     curr.setNew(0);  curr.setBin((sizeof(player_info)/sizeof(temp))+1);
     player_info.close();
     char r;
+    //Name stored as cstring as strings cannot be written to file
     cout<<"A new player! Terrific! First I'll need your name: "<<endl;
     cin.getline(curr.name,25); 
+    
+    //If they want to hear rules, call disRules function
     cout<<"Would you like to hear the rules? (Y/N)"<<endl;
     cin.get(r);cin.ignore();
     if(tolower(r)== 'y'){
         disRules();
     }
     disBord();
-    //Determine how much the player wants to buy into game
+    //Determine how much the player wants to buy into game, loop till valid amount
     _buyin:
     cout<<"How much would you like to buy in?($100.00 minimum::$10,000.00 limit)"<<endl;
     long int b;
     cin>>b; if (b<100 || b>10000) {cout<<"Invalid amount!"<<endl;goto _buyin;}
-    curr.setBal(b); 
+    curr.setBal(b); //set the new players balance in their instance 
     }
     disBord();
 }
@@ -417,6 +555,11 @@ void blackJack::writeInfo(){
 }
 blackJack::~blackJack() {
 }
+
+/*disRule -> Used to display all the rules of the game given a player
+ does not no how to player and prompts to hear them, simply a wall of text, 
+ does not consist of anything significant, but made it cleaner to separate it
+ and only call it if a player prompts the program to do so.*/
 void blackJack::disRules(){
     cout<<"Basically the point of the game is to get to 21 or as close as\n"
                 "possible without going over, otherwise you lose"
