@@ -36,12 +36,14 @@ using namespace std;
 blackJack::blackJack(int n) {
      numP = n;
      x.clear(); //Clear the array incase of any faulty memory
+     
      //Vector allows for dynamic creation of player instances
      while(x.size()<numP ){
+         
+         //push back a new player object for each player
          x.push_back(player());
      }
-     //Loop through each player and obtain their information, if they are
-     //returning, then read their information in from the player.txt file
+     //Loop through each player and obtain their information
      for(int i =0; i<x.size();i++){
          getInfo(x[i]);
      }
@@ -265,7 +267,8 @@ void blackJack::checkWinner(){
       //First, if any players are over 21, set them to loss prior to checking anything  
      if (x[i].giveTotal() >21) x[i].setStat(3);
       
-      //If they have a valid hand, check against each player
+      //If they have a valid hand, check against each possible dealer hand
+     //set their status for win,loss,or tie, the final status of the hand
      if(x[i].giveStat() != 3){
           //If dealer has 21, any player who does not, is set to loss
        if (dealer.giveTotal() == 21){
